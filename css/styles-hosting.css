@@ -1,0 +1,386 @@
+.content__cards {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 20px auto;
+  padding: 10px 8px;
+  color: chocolate;
+}
+
+
+.content__cards h2 {
+  font-size: 30px;
+  font-weight: 200;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.content__cards span {
+  color: #000;
+  font-weight: 600
+}
+
+.content__textos {
+  color: #212121;
+  padding: 10px;
+  font-weight: 200;
+  text-justify: auto;
+}
+
+.card__box {
+  margin: 10px auto;
+  padding: 15px;
+  width: 100%;
+  min-width: 320px;
+  max-width: 320px;
+  min-height: 400px;
+  align-items: center;
+  justify-content: center;
+  /* max-height: 450px; */
+  background-color: whitesmoke;
+  border: 2px solid gainsboro;
+  border-radius: 7px;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  -ms-border-radius: 7px;
+  -o-border-radius: 7px;
+}
+
+.card__box hr {
+  color: whitesmoke;
+  width: 95%;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.card__plan {
+  color: #000;
+  font-weight: 600;
+  margin: 15px auto;
+}
+
+.card__items {
+  margin: 20px;
+}
+
+.card__plan p {
+  color: #aaa;
+}
+
+.card__box h3 {
+  width: 100%;
+  height: 30px;
+  /* padding: 20px auto; */
+}
+
+
+.card__img {
+  width: 60%;
+  text-align: center;
+  margin: 10px auto;
+}
+
+
+.card__precio-da,
+.card__precio-cp {
+  background-color: cadetblue;
+  width: 95%;
+  color: #fff;
+  margin: 0 auto;
+  padding: 10px 25px;
+  border-radius: 7px;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  -ms-border-radius: 7px;
+  -o-border-radius: 7px;
+}
+
+.card__precio-da,
+.card__precio-cp {
+  background-color: rgb(57, 107, 109);
+  width: 95%;
+  color: #fff;
+  margin: 0 auto;
+  padding: 10px 25px;
+  border-radius: 7px;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  -ms-border-radius: 7px;
+  -o-border-radius: 7px;
+}
+
+.card__precio-da div,
+.card__precio-cp div {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: left;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.card__precio {
+  color: red;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.card__contratar {
+  background-color: chocolate;
+  width: 95%;
+  color: #000;
+  font-weight: 600;
+  margin: 10px auto;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 7px;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  -ms-border-radius: 7px;
+  -o-border-radius: 7px;
+}
+
+.icon {
+  margin: -50% 0 35% 0;
+}
+
+.icon i {
+  width: 70px;
+  height: 70px;
+  line-height: 70px;
+  border: 1px solid chocolate;
+  font-size: 30px;
+  color: chocolate;
+  border-radius: 50%;
+  transition: .4s;
+  -webkit-transition: .4s;
+  -moz-transition: .4s;
+  -ms-transition: .4s;
+  -o-transition: .4s;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+
+.content__hosting {
+  display: block;
+  width: 100%;
+  max-width: 1440px;
+  /* align-items: center;
+  justify-content: center; */
+  /* margin: 10px; */
+  /* padding: 3% 0 3% 0; */
+  /* overflow: hidden; */
+  /* padding: 40px; */
+}
+
+.caja__hosting {
+  display: inline-block;
+  width: 90px;
+  height: 140px;
+  min-height: 106px;
+  border: 2px solid gray;
+  padding: 2px;
+  text-align: center;
+  /* padding: 1.5% 1% 1% 1%; */
+  /* padding: 1%; */
+  /* margin: 0.5%; */
+  font-size: 13px;
+  line-height: 16px;
+  /* float: left; */
+  vertical-align: middle;
+  margin-bottom: 3px;
+}
+
+.caja__hosting h4 {
+  width: 100%;
+  height: 50px;
+  margin: 0 auto;
+  color: #212121;
+  font-size: 14px;
+
+}
+
+.caja__hosting h5 {
+  width: 100%;
+  height: 80px;
+  color: #212121;
+  font-size: 12px;
+}
+
+.fa-3x {
+  font-size: 1.8em;
+  margin: 5px 0 0 0;
+}
+
+.nrja {
+  color: chocolate;
+}
+
+.nav-content li a:active {
+  background-color: chocolate;
+  border-radius: 50px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  -ms-border-radius: 50px;
+  -o-border-radius: 50px;
+}
+
+.icon:active i {
+  background: #fff;
+  color: #ff2c57
+}
+
+@media (hover:hover) {
+
+  .nav-content li a:hover {
+    background-color: chocolate;
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -ms-border-radius: 50px;
+    -o-border-radius: 50px;
+  }
+
+  .icon:hover i {
+    background: #fff;
+    color: #ff2c57
+  }
+}
+
+.footer {
+  display: block;
+  width: 100%;
+  height: 100px;
+  background-color: #000;
+  padding: 30px;
+  text-align: center;
+  color: #ececec;
+  font-size: 12px;
+}
+
+.footer p {
+  margin: 10px 0;
+}
+
+@media screen and (min-width: 500px) {
+
+  /* .caja__hosting {
+    width: 130px;
+    height: 170px;
+    padding: 5px;
+    font-size: 14px;
+    line-height: 16px;
+    vertical-align: middle;
+    margin-bottom: 5px;
+  }
+
+  .caja__hosting h5 {
+    width: 100%;
+    height: 50px;
+    font-size: 14px;
+    color: #212121;
+  }
+
+  .caja__hosting h6 {
+    width: 100%;
+    height: 80px;
+    font-size: 13px;
+    color: #212121;
+  } */
+
+  .fa-3x {
+    font-size: 2em;
+    margin: 10px 0 10px 0;
+  }
+
+  .content__cards {
+    display: block;
+    width: 100%;
+    max-width: 1024px;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  .card__box {
+    display: inline-block;
+    width: 400px;
+
+  }
+
+  .caja__hosting {
+    width: 250px;
+    height: 170px;
+    font-size: 14px;
+    line-height: 16px;
+    vertical-align: middle;
+    margin-bottom: 5px;
+    margin: 15px;
+  }
+
+  .caja__hosting h4 {
+    width: 100%;
+    height: 50px;
+    color: #212121;
+  }
+
+  .caja__hosting h5 {
+    width: 100%;
+    height: 80px;
+    color: #212121;
+  }
+
+  .footer {
+    font-size: 16px;
+  }
+}
+
+
+@media screen and (min-width: 768px) {
+  .content__cards {
+    width: 100%;
+    max-width: 760px;
+  }
+
+}
+
+@media screen and (min-width: 1024px) {
+
+  .content__cards {
+    width: 100%;
+    max-width: 1024px;
+  }
+
+  .card__box {
+    min-width: 450px;
+  }
+
+  .card__precio-da div,
+  .card__precio-cp div {
+    font-size: 16px;
+  }
+
+
+}
+
+@media screen and (min-width: 1440px) {
+
+
+  .card__img {
+    background-color: #fff;
+  }
+
+  /* .card__box::before {
+    content: "";
+    padding: 15px auto;
+  } */
+
+  .content__hosting {
+    width: 1024px;
+
+  }
+
+
+}

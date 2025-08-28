@@ -1,0 +1,1410 @@
+:root {
+  --bg-primary: rgb(34, 34, 34);
+  --bg-secondary: rgb(184, 182, 182);
+  --bg-ssp: rgb(0, 73, 112);
+  --bg-alert: rgb(96, 207, 211);
+  --menu-primary: rgb(0, 73, 112);
+
+  --color-primary: rgb(255, 255, 255);
+  --color-secondary: rgb(134, 82, 47);
+  --color-terciary: rgb(104, 101, 101);
+
+  --text-primary: rgb(255, 255, 255);
+  --text-secondary: rgb(153, 153, 153);
+  --text-terciary: rgb(235, 155, 27);
+  --text-negro: rgb(0, 0, 0);
+  --text-ssp: rgb(236, 31, 36);
+
+  --alert-danger: rgb(248, 153, 0);
+  --alert-success: rgb(46, 199, 105);
+  --text-error: rgb(236, 31, 36);
+  --black: #111111bd;
+  --white: #fff;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-primary);
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1 {
+  color: var(--color-primary);
+  font-size: 34px;
+}
+
+span {
+  color: var(--text-ssp);
+  font-weight: 600;
+}
+
+textarea {
+  resize: none;
+}
+
+.main {
+  width: 100%;
+  height: auto;
+}
+
+.social__link {
+  width: 50px;
+  height: 50px;
+  margin: 15px;
+}
+
+.main-nav {
+  position: fixed;
+  width: 100%;
+  min-width: 320px;
+  height: 40px;
+  display: flex;
+  top: 0;
+  padding: 0;
+  background-color: var(--menu-primary);
+  z-index: 99;
+  /* box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.75); */
+  box-shadow: 0px 3px 0px 0px rgb(236, 31, 36, 0.80);
+  -webkit-box-shadow: 0px 3px 0px 0px rgb(236, 31, 36, 0.80);
+  -moz-box-shadow: 0px 3px 0px 0px rgb(236, 31, 36, 0.80);
+
+}
+
+.main-menu {
+  /* position: fixed; */
+  width: 100%;
+  /* max-width: 100%; */
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-around;
+  list-style: none;
+  /* border: 2px solid transparent; */
+  padding: 0;
+
+}
+
+.main-menu-social {
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-around;
+  list-style: none;
+  padding: 0;
+
+  display: none;
+}
+
+/* .main-menu__item {
+  padding: 5px;
+} */
+
+/* .main-logo {
+  margin: 10px auto;
+}
+
+.nav__item {
+  width: 12px;
+  margin: 0 10px 0 5px;
+  color: var(--color-secondary);
+}
+
+.linea {
+  font-weight: normal;
+  width: 100%;
+} */
+
+.none {
+  display: none;
+}
+
+.main-section {
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  height: auto;
+  text-align: center;
+}
+
+.main-descripcion,
+.sec-clientes {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  color: var(--color-primary);
+}
+
+.main-descripcion {
+  text-align: left;
+}
+
+.img-index {
+  width: 40%;
+  margin: 20px auto;
+}
+
+/* Servicios y Consejos del automotor */
+.row {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.seccion {
+  width: 100%;
+  background-color: var(--color-terciary);
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.center-grap {
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tit {
+  padding-top: 10px;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+/* servicios */
+.modbox,
+.consejos-col {
+  background-color: #fff;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid #222;
+  margin-top: 10px;
+}
+
+.modbox {
+  max-width: 280px;
+  min-width: 280px;
+  height: 340px;
+  max-height: 340px;
+  min-height: 340px;
+}
+
+
+.modulo {
+  text-align: center;
+  font-size: 18px;
+}
+
+.img-wrap {
+  width: 100%;
+  text-align: center;
+}
+
+.vcenter li {
+  text-align: left;
+  font-size: 14px;
+}
+
+/* Consejos */
+.consejos-col {
+  width: 100%;
+  max-width: 280px;
+  background-color: var(--bg-terciary);
+  border: none;
+}
+
+.marcador {
+  max-width: 280px;
+  list-style: square;
+  padding-right: 15px;
+  text-align: left;
+}
+
+.consejos-col i {
+  font-weight: bold;
+}
+
+/* LOGIN */
+.login__fieldset {
+  max-width: 320px;
+  margin-top: 100px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  background-color: var(--bg-primary);
+  color: var(--color-primary);
+  border: 2px solid var(--menu-primary);
+  border-radius: 10px;
+}
+
+legend {
+  margin: 0 auto;
+}
+
+.div__login,
+.div__pass {
+  color: var(--color-primary);
+  text-align: left;
+  padding: 20px 5px;
+}
+
+.form__login input[type="text"] {
+  margin-left: 40px;
+  /* text-transform: uppercase; */
+}
+
+.form__login input[type="password"] {
+  margin-left: 10px;
+}
+
+.form__login input[type="text"],
+.form__login input[type="password"] {
+  width: 200px;
+  background: var(--bg-primary);
+  border-radius: 0.25em;
+  color: var(--color-primary);
+  font-size: 1em;
+  padding: 0.25em;
+  border: none;
+  border-bottom: 1px solid white;
+  border-radius: 0;
+}
+
+.form__login input:placeholder-shown {
+  text-transform: none
+}
+
+.form__login input[type="submit"] {
+  width: 100%;
+  padding: 10px 5px;
+  font-size: 20px;
+  color: var(--color-primary);
+  background-color: var(--menu-primary);
+  border-radius: 10px;
+  border: 2px solid var(--color-secondary);
+}
+
+.div__button {
+  cursor: pointer;
+}
+
+.alert {
+  width: 300px;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: var(--bg-ssp);
+  border-radius: 10PX;
+  text-align: center;
+}
+
+.alert-primary {
+  color: var(--alert-success);
+}
+
+.alert-danger {
+  color: var(--alert-danger);
+}
+
+/* CLIENTES*/
+.slc-clientes {
+  font-size: 18px;
+}
+
+.clientes-item {
+  display: block;
+  text-align: left;
+  margin: 10px auto 0;
+}
+
+.form__clientes input[type="text"],
+.form__clientes input[type="tel"],
+.form__clientes input[type="number"] {
+  width: 100%;
+  background: var(--bg-secondary);
+  border-radius: 0.25em;
+  color: var(--color-primary);
+  font-size: 1em;
+  padding: 0.25em;
+}
+
+
+.cliente__button {
+  width: 60%;
+  margin-top: 20px;
+  padding: 10px 5px;
+  color: var(--color-primary);
+  background-color: var(--menu-primary);
+  border-color: var(--color-secondary);
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.form__clientes {
+  width: 100%;
+}
+
+/* VEHICULOS*/
+
+.cli-vehiculos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  max-width: 320px;
+  margin: 10px auto;
+}
+
+.cli-vehiculos-main {
+  margin: 20px;
+}
+
+.cli-vehiculos-linea {
+  display: inline-flex;
+  flex-direction: row;
+  width: 100%;
+  text-align: left;
+  /* padding: 20px auto; */
+}
+
+.cli-vehiculos-titulo {
+  width: 80px;
+  color: var(--text-secondary);
+}
+
+.cli-vehiculos-detalle {
+  width: 210px;
+  color: var(--color-primary);
+  font-size: 18px;
+  font-weight: 600;
+  font-style: oblique;
+}
+
+.error__vehiculo {
+  text-align: center;
+  color: var(--text-terciary);
+}
+
+.error__vehiculo,
+.cli-vehiculos-main {
+  padding: 10px 10px;
+  border: 2px solid var(--text-primary);
+  border-radius: 7px;
+
+}
+
+.footer {
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* position: fixed; */
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background-color: var(--menu-primary);
+  font-size: 10px;
+  display: none;
+}
+
+
+.div__clientes,
+.vehDatos__clientes {
+  min-width: 300px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #ffffff;
+}
+
+.consultas__patentes {
+  /* background-color: #F26250; */
+  max-width: 320px;
+  min-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.div__presupuestos {
+  width: 100%;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.div__reparaciones {
+  width: 100%;
+  max-width: 320px;
+  min-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ventanas modal*/
+.modal__container-clienV {
+  max-width: 320px;
+  min-width: 320px;
+  /* margin-left: auto;
+  margin-right: auto; */
+  margin: 50px auto;
+  width: 90%;
+  /* height: auto; */
+  max-height: 80%;
+  background-color: rgb(57, 68, 74);
+  padding: 1em;
+  border-radius: 6px;
+  transform: var(--transform);
+  transition: var(--transition);
+  /* margin-left: auto;
+  margin-right: auto; */
+  overflow: auto;
+}
+
+.V__cliente {
+  max-width: 320px;
+  min-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.RepTit__clientes,
+.RVDatos__clientes,
+.PRepTit__clientes,
+.PRVDatos__clientes {
+  max-width: 1440px;
+  min-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.usrTit__clientes,
+.modal__userClie,
+.modal__modificacion,
+.newVeh__Clientes,
+.vehTit__clientes,
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #111111bd;
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .6s .9s;
+  --transform: translateY(-100vh);
+  --transition: transform .8s;
+}
+
+.modal__userClie {
+  z-index: 1;
+}
+
+.modal--show {
+  opacity: 1;
+  pointer-events: unset;
+  transition: opacity .6s;
+  --transform: translateY(0);
+  --transition: transform .8s .8s;
+}
+
+.modal__container-clieUsr,
+.modal__container-usrclie,
+.modal__container,
+.modal__container-clie {
+  margin: auto;
+  width: 90%;
+  height: auto;
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 10px;
+  transform: var(--transform);
+  transition: var(--transition);
+  /* z-index: 10; */
+}
+
+.modal__container {
+  max-width: 320px;
+  margin: auto;
+}
+
+.modal__container-presu {
+  min-width: 320px;
+  max-width: 320px;
+  margin: auto;
+  background-color: rgb(196, 240, 196);
+  height: auto;
+  border-radius: 6px;
+  padding: 1em;
+  transform: var(--transform);
+  transition: var(--transition);
+  overflow: auto;
+}
+
+.modal__container-clie {
+  width: 100%;
+  max-width: 320px;
+  background-color: rgb(183, 209, 224);
+  margin: auto;
+}
+
+.modal__container-clieUsr {
+  width: 100%;
+  min-width: 320px;
+  max-width: 320px;
+  background-color: rgb(87, 92, 57);
+  margin: auto;
+  font-size: 12px;
+}
+
+.modal__container-usrclie {
+  width: 100%;
+  max-width: 320px;
+}
+
+.fila {
+  display: table-row;
+  color: #ffffff;
+}
+
+.col {
+  display: table-cell;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.tit__tabla {
+  background-color: var(--bg-ssp);
+  width: 100%;
+  /* width: 320px;
+  margin-left: auto;
+  margin-right: auto; */
+}
+
+.dat__tabla {
+  /* background-color: var(--bg-ssp); */
+  width: 100%;
+  /* width: 320px;
+  margin-left: auto;
+  margin-right: auto; */
+
+}
+
+
+.presu {
+  min-width: 90px;
+  max-width: 90px;
+  text-align: center;
+}
+
+.modelo {
+  min-width: 100px;
+  max-width: 100px;
+  text-align: center;
+}
+
+.marca {
+  min-width: 100px;
+  max-width: 100px;
+  text-align: center;
+}
+
+.client {
+  max-width: 150px;
+  min-width: 150px;
+  text-align: left;
+}
+
+.fecha,
+.fecIng,
+.fecEnt {
+  max-width: 100px;
+  min-width: 100px;
+}
+
+.npresu {
+  max-width: 60px;
+  min-width: 60px;
+}
+
+.descript-t,
+.km,
+.fecha,
+.fecIng,
+.fecEnt,
+.npresu {
+  text-align: center;
+}
+
+.km {
+  max-width: 100px;
+  min-width: 100px;
+}
+
+.descript-t {
+  background-color: var(--bg-ssp);
+  max-width: 120px;
+  min-width: 120px;
+  color: #fff;
+}
+
+.descript-d {
+  /* background-color: #616060; */
+  max-width: calc(100% - 120px);
+  min-width: calc(100% - 120px);
+  color: #fff;
+  text-align: left;
+}
+
+.monto {
+  min-width: 90px;
+  max-width: 90px;
+  text-align: left;
+}
+
+.factu {
+  max-width: 80px;
+  min-width: 80px;
+  text-align: center;
+}
+
+.patente {
+  max-width: 80px;
+  min-width: 80px;
+  text-align: center;
+}
+
+.accion {
+  min-width: 6px;
+  max-width: 6px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.direccion,
+.mail {
+  min-width: 200px;
+  max-width: 200px;
+  text-align: left;
+  word-wrap: normal;
+}
+
+.loc,
+.pro {
+  min-width: 90px;
+  max-width: 90px;
+  text-align: left;
+}
+
+.cpost,
+.contacto,
+.telefono,
+.celular {
+  min-width: 80px;
+  max-width: 80px;
+  text-align: left;
+}
+
+.cuit {
+  min-width: 90px;
+  max-width: 90px;
+  text-align: left;
+}
+
+.unshow {
+  opacity: 0;
+}
+
+.show {
+  padding: 20px 0;
+  opacity: 1;
+}
+
+.nombre,
+.apellido,
+.dni {
+  min-width: 60px;
+  max-width: 60px;
+}
+
+.usuario,
+.clave {
+  max-width: 60px;
+  min-width: 60px;
+}
+
+
+.modal__title {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.modal__items {
+  width: 100%;
+  display: block;
+}
+
+.modal__item {
+  display: inline-block;
+  width: 35%;
+  margin-bottom: 10px;
+}
+
+.modal__input {
+  width: 58%;
+  margin-bottom: 10px;
+}
+
+.modal__textarea-item {
+  display: block;
+  width: 100%;
+}
+
+.modal__textarea-input {
+  width: 100%;
+}
+
+.modal__close,
+.modal__cancel {
+  margin: 10px;
+  text-decoration: none;
+  color: #fff;
+  padding: .5em 1.5em;
+  border: 1px solid;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color .3s;
+}
+
+.modal__close {
+  background-color: #F26250;
+}
+
+.modal__cancel {
+  background-color: #14125ace;
+}
+
+.btn__center {
+  display: inline-block;
+  margin: auto;
+  width: 100%;
+  text-align: center;
+}
+
+/*modal presupuesto*/
+
+.textarea__presu {
+  width: 98%;
+  height: 70px;
+}
+
+.modal__form-Presu {
+  width: 100%;
+  height: auto;
+}
+
+.model__presu-fieldset {
+  margin: auto;
+  /* padding: 10px; */
+  background-color: var(--bg-primary);
+  color: var(--color-primary);
+  border: 2px solid var(--menu-primary);
+  border-radius: 10px;
+}
+
+/* .factu, */
+.modal__input-fec,
+.modal__input-pat {
+  margin: 10px;
+}
+
+.modal__empresa {
+  display: inline-block;
+  margin: auto;
+  width: 100%;
+  text-align: center;
+  /* padding: 20px; */
+}
+
+.modal__cliente-presu,
+.modal__marca-presu,
+.modal__modelo-presu {
+  color: #fff;
+  /* text-align: center; */
+}
+
+.modal__cliente-presu,
+.modal__marcaModelo {
+  display: inline-block;
+  width: 300px;
+  margin: 10px 0 15px 0;
+  text-align: center;
+  align-content: center;
+}
+
+.tabla__show-32,
+.tabla__show-48,
+.tabla__show-60,
+.tabla__show-76,
+.tabla__show-102,
+.tabla__show-120,
+.tabla__show {
+  display: none;
+}
+
+.modal__item-desc,
+.modal__input-desc,
+.modal__item-imp,
+.modal__input-imp,
+.modal__btn-agregar {
+  display: inline-block;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.modal__item-presu {
+  display: inline-block;
+  width: 38%;
+  padding: 10px 0 0 5px;
+}
+
+.modal__input-presu {
+  display: inline-block;
+  width: 45%;
+  padding-right: 5px;
+}
+
+.ar {
+  text-align: right;
+}
+
+.ac {
+  text-align: center;
+}
+
+.al {
+  text-align: left;
+}
+
+.modal__inputDias-presu {
+  display: inline-block;
+  width: 20px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
+.modal__item-desc,
+.modal__input-desc {
+  width: 90px;
+}
+
+.modal__item-imp,
+.modal__input-imp {
+  width: 100px;
+}
+
+.modal__btn-agregar {
+  width: 100px;
+}
+
+.modal__item-tot {
+  text-align: right;
+}
+
+/* FIN MODAL */
+
+.origen {
+  text-align: center;
+  text-decoration: none;
+}
+
+.contact-form {
+  width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contact-form {
+  --form-ok-color: #4caf50;
+  --form-error-color: #f44336;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+
+.contact-form * {
+  padding: 0.5rem;
+  margin: 2rem auto;
+  display: block;
+  width: 100%;
+}
+
+.contact-form textarea {
+  resize: none;
+}
+
+.contact-form legend,
+.contact-form-response {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.contact-form input,
+.contact-form textarea {
+  font-size: 1rem;
+  font-family: sans-serif;
+}
+
+.contact-form input[type="submit"] {
+  width: 100%;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.contact-form *::placeholder {
+  color: #000;
+}
+
+.contact-form [required]:valid {
+  border: thin solid var(--form-ok-color);
+}
+
+.contact-form [required]:invalid {
+  border: thin solid var(--form-error-color);
+}
+
+.contact-form-loader {
+  width: 15%;
+}
+
+.contact-form-error {
+  margin-top: -1rem;
+  font-size: 80%;
+  background-color: var(--form-error-color);
+  color: #ffffff;
+  transition: all 800ms ease;
+}
+
+.contact-form-error.is-active {
+  display: block;
+  animation: show-message 1s 1 normal 0s ease-out both;
+}
+
+.contact-form-loader {
+  text-align: center;
+}
+
+.none {
+  display: none;
+}
+
+@keyframes show-mesage {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+/* @MEDIA*/
+@media (hover:hover) {
+  .main-menu__link:hover {
+    /* height: 50px;
+    border: 3px solid var(--text-negro); */
+    border-bottom: 3px solid var(--text-ssp);
+  }
+
+  .social__link:hover {
+    border-bottom: 3px solid var(--text-ssp);
+  }
+
+  .moda__close:hover {
+    color: orangered;
+    background-color: #fff;
+  }
+}
+
+@media screen and (min-width: 360px) {
+
+  .div__clientes,
+  .vehDatos__clientes {
+    min-width: 350px;
+    max-width: 350px;
+    /* margin-left: auto;
+    margin-right: auto; */
+  }
+
+  .client {
+    max-width: 150px;
+    min-width: 150px;
+    text-align: left;
+  }
+}
+
+@media screen and (min-width: 480px) {
+  .tabla__show-48 {
+    display: table-cell;
+  }
+
+  .div__clientes,
+  .vehDatos__clientes {
+    min-width: 470px;
+    max-width: 470px;
+    /* margin-left: auto;
+    margin-right: auto; */
+  }
+
+}
+
+@media screen and (min-width: 600px) {
+  .main-menu__item {
+    padding: 1em;
+  }
+
+  .tabla__show-60 {
+    display: table-cell;
+  }
+
+  .div__clientes,
+  .vehDatos__clientes {
+    min-width: 590px;
+    max-width: 590px;
+    /* margin-left: auto;
+    margin-right: auto; */
+  }
+
+  /* .main-section {
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 30px;
+  } */
+
+  .main-descripcion {
+    width: 600px;
+    padding-bottom: 20px;
+  }
+
+  .img-index {
+    width: 200px;
+  }
+
+  .row {
+    width: 100%;
+    max-width: 1440px;
+    text-align: center;
+  }
+
+  .modbox {
+    display: inline-block;
+  }
+
+  .consejos-col {
+    width: 100%;
+    max-width: 540px;
+  }
+
+  .marcador {
+    max-width: 540px;
+  }
+
+}
+
+/* TABLET */
+@media screen and (min-width: 768px) {
+  .main {
+    padding-bottom: 60px;
+  }
+
+  .main-menu-social {
+    /* position: fixed; */
+    display: flex;
+    width: 100px;
+  }
+
+  .main-nav {
+    width: 100vw;
+  }
+
+  .main-menu {
+    margin-left: calc((100vw - 700px) / 2);
+    width: 600px;
+  }
+
+  .tabla__show-76 {
+    display: table-cell;
+  }
+
+  .div__clientes,
+  .vehDatos__clientes {
+    max-width: 750px;
+    max-width: 750px;
+    /* margin-left: auto;
+    margin-right: auto; */
+  }
+
+  /* .main-section { */
+  /* position: relative; */
+  /* top: 40px; */
+  /* width: 100%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px; */
+  /* } */
+
+  .form__clientes {
+    width: 100%;
+    min-width: 280px;
+    max-width: 400px;
+    margin-top: 5em;
+    margin-left: 40%;
+  }
+
+  /* vehiculos*/
+  .cli-vehiculos {
+    max-width: 1240px;
+    display: flex;
+  }
+
+  .cli-vehiculos-main {
+    width: 320px;
+    min-height: 300px;
+  }
+
+  .consejos-col {
+    width: 100%;
+    max-width: 740px;
+  }
+
+  .marcador {
+    max-width: 640px;
+  }
+
+  .contact-form * {
+    max-width: 768px;
+  }
+
+  /* .tabla__show {
+    display: table-cell;
+  } */
+
+}
+
+@media screen and (min-width: 1024px) {
+  .tabla__show-102 {
+    display: table-cell;
+  }
+
+  .div__clientes,
+  .vehDatos__clientes {
+    max-width: 1014px;
+    max-width: 1014px;
+    /* margin-left: auto;
+    margin-right: auto; */
+  }
+}
+
+@media screen and (min-width: 1200px) {
+
+  .tabla__show-120 {
+    display: table-cell;
+  }
+
+  .div__clientes,
+  .vehDatos__clientes {
+    max-width: 1190px;
+    max-width: 1190px;
+    /* margin-left: auto;
+    margin-right: auto; */
+  }
+}
+
+@media screen and (min-width: 1440px) {
+
+  /* .none {
+    display: block;
+  } */
+
+  .main-nav {
+    /* width: 1440px; */
+    /* align-items: center; */
+    align-content: center;
+    /*
+    margin-left: auto;
+    margin-right: auto; */
+  }
+
+  .main-menu {
+    margin-left: calc((100vw - 1000px) / 2);
+    width: 800px;
+    align-items: center;
+    align-content: center;
+    box-shadow: #000;
+  }
+
+  .main-menu-social {
+    width: 200px;
+    align-items: flex-end;
+    align-content: center;
+  }
+
+  .main-menu-social,
+  .main-menu__item {
+    padding: 1em;
+  }
+
+  .tabla__show {
+    display: table-cell;
+  }
+
+  .div__clientes,
+  .vehDatos__clientes {
+    min-width: 1440px;
+    max-width: 1440px;
+    /* margin-left: auto;
+    margin-right: auto; */
+  }
+
+
+  .consultas__patentes {
+    max-width: 1040px;
+    min-width: 1040px;
+  }
+
+  .div__presupuestos {
+    max-width: 900px;
+    min-width: 900px;
+  }
+
+  .div__reparaciones {
+    width: 100%;
+    max-width: 1200px;
+    min-width: 1200px;
+  }
+
+  /* ventanas modal*/
+  .modal__container-clienV {
+    max-width: 1300px;
+    min-width: 1300px;
+    /*
+    width: 90%;
+    max-height: 90%;
+    background-color: rgb(57, 68, 74);
+    padding: 1em;
+    border-radius: 6px;
+    transform: var(--transform);
+    transition: var(--transition);
+    overflow: auto;
+    */
+  }
+
+
+  .V__cliente,
+  .RepTit__clientes,
+  .RVDatos__clientes,
+  .PRepTit__clientes,
+  .PRVDatos__clientes {
+    max-width: 1250px;
+    min-width: 1250px;
+  }
+
+
+  .modal__container-clieUsr,
+  .modal__container-usrclie,
+  .modal__container,
+  .modal__container-clie {
+    width: 90%;
+    height: auto;
+    padding: 1em;
+    font-size: 16px;
+  }
+
+  .modal__container-presu {
+    min-width: 500px;
+    max-width: 500px;
+  }
+
+  .modal__container-clie {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .modal__container-clieUsr {
+    width: 100%;
+    min-width: 830px;
+    max-width: 830px;
+  }
+
+  .modal__item {
+    display: inline-block;
+    width: 35%;
+    margin-bottom: 10px;
+  }
+
+  .nombre,
+  .apellido,
+  .dni {
+    max-width: 150px;
+    min-width: 150px;
+  }
+
+  .usuario,
+  .clave {
+    max-width: 100px;
+    min-width: 100px;
+  }
+
+  .modal__title {
+    font-size: 2.5rem;
+  }
+
+  /* .fila {
+    display: table-row;
+    color: #ffffff;
+  } */
+
+  /* .col {
+    display: table-cell;
+    padding: 12px;
+    font-size: 16px;
+  } */
+
+  .textarea__presu {
+    height: 150px;
+  }
+
+  .modal__close,
+  .modal__cancel {
+    margin: 10px;
+    padding: 1em 3em;
+    font-weight: 500;
+
+  }
+
+  .modal__cliente-presu,
+  .modal__marcaModelo {
+    width: 200px;
+    text-align: left;
+  }
+
+}

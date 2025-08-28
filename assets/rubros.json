@@ -1,0 +1,382 @@
+[
+  {
+    "id_rubro": 1,
+    "rubro": "APPLE",
+    "imagen": null
+  },
+  {
+    "id_rubro": 2,
+    "rubro": "AUDIO",
+    "imagen": null
+  },
+  {
+    "id_rubro": 3,
+    "rubro": "AUDIO CAR",
+    "imagen": null
+  },
+  {
+    "id_rubro": 4,
+    "rubro": "AURICULAR",
+    "imagen": null
+  },
+  {
+    "id_rubro": 5,
+    "rubro": "AURICULAR C/MIC",
+    "imagen": null
+  },
+  {
+    "id_rubro": 7,
+    "rubro": "CAMARA DIGITAL",
+    "imagen": null
+  },
+  {
+    "id_rubro": 8,
+    "rubro": "CAMARA IP",
+    "imagen": null
+  },
+  {
+    "id_rubro": 9,
+    "rubro": "CAPTURADORA",
+    "imagen": null
+  },
+  {
+    "id_rubro": 15,
+    "rubro": "CELULARES",
+    "imagen": null
+  },
+  {
+    "id_rubro": 16,
+    "rubro": "CONECTIVIDAD",
+    "imagen": "conectividad.webp"
+  },
+  {
+    "id_rubro": 17,
+    "rubro": "CONSOLA",
+    "imagen": null
+  },
+  {
+    "id_rubro": 18,
+    "rubro": "CONTROLADOR FISCAL",
+    "imagen": null
+  },
+  {
+    "id_rubro": 19,
+    "rubro": "COOLER",
+    "imagen": "cooler-1.webp"
+  },
+  {
+    "id_rubro": 20,
+    "rubro": "DVD RW",
+    "imagen": null
+  },
+  {
+    "id_rubro": 21,
+    "rubro": "ELECTRICIDAD",
+    "imagen": null
+  },
+  {
+    "id_rubro": 22,
+    "rubro": "ELECTRODOMESTICOS",
+    "imagen": null
+  },
+  {
+    "id_rubro": 23,
+    "rubro": "ESTABILIZADORES",
+    "imagen": null
+  },
+  {
+    "id_rubro": 24,
+    "rubro": "FUENTES",
+    "imagen": "fuente-1.webp"
+  },
+  {
+    "id_rubro": 25,
+    "rubro": "FUNDA",
+    "imagen": null
+  },
+  {
+    "id_rubro": 26,
+    "rubro": "GABINETE",
+    "imagen": "gabinete-1.webp"
+  },
+  {
+    "id_rubro": 27,
+    "rubro": "HD EXTERNO",
+    "imagen": null
+  },
+  {
+    "id_rubro": 28,
+    "rubro": "HD NOTEBOOK",
+    "imagen": null
+  },
+  {
+    "id_rubro": 29,
+    "rubro": "HD SATA",
+    "imagen": null
+  },
+  {
+    "id_rubro": 30,
+    "rubro": "HD SSD DISCO SOLIDO",
+    "imagen": null
+  },
+  {
+    "id_rubro": 31,
+    "rubro": "IMPRESORA ZEBRA",
+    "imagen": null
+  },
+  {
+    "id_rubro": 32,
+    "rubro": "IMPRESORAS LASER",
+    "imagen": null
+  },
+  {
+    "id_rubro": 33,
+    "rubro": "IMPRESORAS MULTIFUNCION",
+    "imagen": null
+  },
+  {
+    "id_rubro": 34,
+    "rubro": "IMPRESORAS TERMICA",
+    "imagen": null
+  },
+  {
+    "id_rubro": 35,
+    "rubro": "IMPRESORAS TINTA",
+    "imagen": null
+  },
+  {
+    "id_rubro": 38,
+    "rubro": "LECTORES",
+    "imagen": null
+  },
+  {
+    "id_rubro": 39,
+    "rubro": "MEMORIA DE CAMARAS",
+    "imagen": null
+  },
+  {
+    "id_rubro": 40,
+    "rubro": "MEMORIAS",
+    "imagen": "memoria.webp"
+  },
+  {
+    "id_rubro": 41,
+    "rubro": "MICRO AMD",
+    "imagen": null
+  },
+  {
+    "id_rubro": 42,
+    "rubro": "MICRO INTEL",
+    "imagen": "micro-intel.webp"
+  },
+  {
+    "id_rubro": 43,
+    "rubro": "MICROFONO",
+    "imagen": null
+  },
+  {
+    "id_rubro": 44,
+    "rubro": "MINI MOUSE",
+    "imagen": null
+  },
+  {
+    "id_rubro": 45,
+    "rubro": "MINI PC",
+    "imagen": null
+  },
+  {
+    "id_rubro": 46,
+    "rubro": "MONITOR LED",
+    "imagen": "monitor.webp"
+  },
+  {
+    "id_rubro": 47,
+    "rubro": "MOTHER AM4",
+    "imagen": null
+  },
+  {
+    "id_rubro": 48,
+    "rubro": "MOTHER APU",
+    "imagen": null
+  },
+  {
+    "id_rubro": 49,
+    "rubro": "MOTHER INTEL",
+    "imagen": "motheboard.webp"
+  },
+  {
+    "id_rubro": 50,
+    "rubro": "MOTHER Y MICRO",
+    "imagen": null
+  },
+  {
+    "id_rubro": 51,
+    "rubro": "MOUSE OPTICO",
+    "imagen": null
+  },
+  {
+    "id_rubro": 52,
+    "rubro": "MOUSE PS2",
+    "imagen": null
+  },
+  {
+    "id_rubro": 53,
+    "rubro": "MOUSE USB",
+    "imagen": null
+  },
+  {
+    "id_rubro": 54,
+    "rubro": "MOUSE WIRELESS",
+    "imagen": null
+  },
+  {
+    "id_rubro": 55,
+    "rubro": "MOUSE Y AURICULAR",
+    "imagen": null
+  },
+  {
+    "id_rubro": 56,
+    "rubro": "MOUSE Y MOUSEPAD",
+    "imagen": null
+  },
+  {
+    "id_rubro": 57,
+    "rubro": "NOTEBOOK ACCESORIOS",
+    "imagen": null
+  },
+  {
+    "id_rubro": 58,
+    "rubro": "NOTEBOOK",
+    "imagen": "notebook.webp"
+  },
+  {
+    "id_rubro": 60,
+    "rubro": "PARLANTES",
+    "imagen": null
+  },
+  {
+    "id_rubro": 61,
+    "rubro": "PC ARMADA",
+    "imagen": "desktop-1.webp"
+  },
+  {
+    "id_rubro": 62,
+    "rubro": "PEN DRIVE",
+    "imagen": null
+  },
+  {
+    "id_rubro": 64,
+    "rubro": "PLACA DE SONIDO",
+    "imagen": "placa_sonido.webp"
+  },
+  {
+    "id_rubro": 65,
+    "rubro": "PLACA DE VIDEO",
+    "imagen": "placa_video-1.webp"
+  },
+  {
+    "id_rubro": 66,
+    "rubro": "PLAYSTATION",
+    "imagen": null
+  },
+  {
+    "id_rubro": 67,
+    "rubro": "PROYECTOR",
+    "imagen": null
+  },
+  {
+    "id_rubro": 68,
+    "rubro": "SCANERS",
+    "imagen": null
+  },
+  {
+    "id_rubro": 70,
+    "rubro": "SERVIDORES",
+    "imagen": null
+  },
+  {
+    "id_rubro": 71,
+    "rubro": "SISTEMA DE SEGURIDAD",
+    "imagen": null
+  },
+  {
+    "id_rubro": 72,
+    "rubro": "SOFT",
+    "imagen": null
+  },
+  {
+    "id_rubro": 73,
+    "rubro": "SOPORTES",
+    "imagen": null
+  },
+  {
+    "id_rubro": 74,
+    "rubro": "TABLET PC",
+    "imagen": null
+  },
+  {
+    "id_rubro": 75,
+    "rubro": "TABLET",
+    "imagen": null
+  },
+  {
+    "id_rubro": 76,
+    "rubro": "TECLADO MOUSE AURICULAR Y WEBCAM",
+    "imagen": null
+  },
+  {
+    "id_rubro": 77,
+    "rubro": "TECLADO MOUSE PAD Y AURICULAR",
+    "imagen": null
+  },
+  {
+    "id_rubro": 78,
+    "rubro": "TECLADO MOUSE Y AURICULAR",
+    "imagen": null
+  },
+  {
+    "id_rubro": 79,
+    "rubro": "TECLADO USB",
+    "imagen": null
+  },
+  {
+    "id_rubro": 80,
+    "rubro": "TECLADO WIRELESS",
+    "imagen": null
+  },
+  {
+    "id_rubro": 81,
+    "rubro": "TECLADO Y MOUSE",
+    "imagen": null
+  },
+  {
+    "id_rubro": 82,
+    "rubro": "TECLADO Y MOUSE WIRELESS",
+    "imagen": null
+  },
+  {
+    "id_rubro": 83,
+    "rubro": "TELEFONIA",
+    "imagen": null
+  },
+  {
+    "id_rubro": 95,
+    "rubro": "TV LED / LCD",
+    "imagen": null
+  },
+  {
+    "id_rubro": 96,
+    "rubro": "VARIOS",
+    "imagen": null
+  },
+  {
+    "id_rubro": 97,
+    "rubro": "WEB CAM",
+    "imagen": null
+  },
+  {
+    "id_rubro": 98,
+    "rubro": "WIRELESS",
+    "imagen": null
+  }
+]
