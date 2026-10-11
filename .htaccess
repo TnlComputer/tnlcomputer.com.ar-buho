@@ -1,7 +1,11 @@
 # Para hostings donde no se puede apuntar el dominio a /public (DirectAdmin con FTP):
 # todas las peticiones pasan a public/, así .env, vendor, storage, etc. nunca quedan expuestos.
+DirectoryIndex index.php
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    # Si ya se reescribió a public/ (lo hace el .htaccess de public), no volver a tocarla.
+    RewriteCond %{REQUEST_URI} !^/public/
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
 
