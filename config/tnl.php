@@ -6,7 +6,13 @@ return [
     'tagline' => 'Tecnología para tu empresa: hosting, desarrollo web, hardware y service técnico.',
     'email' => env('TNL_EMAIL', 'info@tnlcomputer.com.ar'),
     // Casilla que recibe los formularios y pedidos.
-    'notify_to' => env('TNL_NOTIFY_TO', 'jorgemartinez@tnlcomputer.com.ar'),
+    // Casillas que reciben los avisos internos, según el tipo. Los mails a clientes salen desde MAIL_FROM_ADDRESS
+    // (no-reply@), que no recibe respuestas: así esa dirección no sirve para spam ni para listas.
+    'notify' => [
+        'contacto' => env('TNL_MAIL_INFO', 'info@tnlcomputer.com.ar'),
+        'service' => env('TNL_MAIL_SERVICE', 'service@tnlcomputer.com.ar'),
+        'pedido' => env('TNL_MAIL_PEDIDOS', 'info@tnlcomputer.com.ar'),
+    ],
     'whatsapp' => env('TNL_WHATSAPP', '5491149156462'),
     'whatsapp_label' => '+54 9 11 4915-6462',
 

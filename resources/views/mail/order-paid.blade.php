@@ -38,6 +38,6 @@
 </x-mail::button>
 
 @unless ($admin)
-{{ __('¿Dudas? Respondé este mail o escribinos por WhatsApp al :phone.', ['phone' => config('tnl.whatsapp_label')]) }}
+{{ __('Este mail se envía desde una casilla que no recibe respuestas. ¿Dudas? Escribinos a :email o por WhatsApp al :phone.', ['email' => config('tnl.notify.pedido'), 'phone' => config('tnl.whatsapp_label')]) }}
 @endunless
 </x-mail::message>
