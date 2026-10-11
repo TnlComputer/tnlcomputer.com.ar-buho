@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+/** Cabeceras de seguridad para todas las respuestas. */
+class SecurityHeaders
+{
+    public function handle(Request $request, Closure $next): Response
+    {
+        $response = $next($request);
+
+        $headers = [
+            'X-Content-Type-Options' => 'nosniff',
+            'X-Frame-Options' => 'SAMEORIGIN',
+            'Referrer-Policy' => 'strict-origin-when-cross-origin',
+            'Permissions-Policy' => 'camera=(), microphone=(), geolocation=(), payment=()',
+            'Cross-Origin-Opener-Policy' => 'same-origin',
+        ];
+
+        if ($request->isSecure()) {
+            $headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';
+        }
+
+        foreach ($headers as $name => $value) {
+            if (! $response->headers->has($name)) {
+                $response->headers->set($name, $value);
+            }
+        }
+
+        // Las páginas de pedidos y del panel tienen datos personales: que no queden en cachés intermedias.
+        if ($request->is('admin*', 'pedido/*', 'en/pedido/*', 'checkout', 'en/checkout')) {
+            $response->headers->set('Cache-Control', 'no-store, private');
+        }
+
+        return $response;
+    }
+}
