@@ -54,7 +54,7 @@ class FormController extends Controller
         $message = Message::create($data + ['type' => $type, 'ip' => $request->ip(), 'locale' => app()->getLocale()]);
 
         try {
-            Mail::to(config('tnl.notify_to'))->locale('es')->send(new NewMessage($message));
+            Mail::to(config('tnl.notify.'.$type))->locale('es')->send(new NewMessage($message));
         } catch (\Throwable $e) {
             // El mensaje queda guardado en /admin aunque falle el mail.
             Log::error("No se pudo enviar el mail del mensaje #{$message->id}", ['error' => $e->getMessage()]);

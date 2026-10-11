@@ -1,0 +1,11 @@
+# Para hostings donde no se puede apuntar el dominio a /public (DirectAdmin con FTP):
+# todas las peticiones pasan a public/, así .env, vendor, storage, etc. nunca quedan expuestos.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Respaldo por si mod_rewrite fallara: nunca servir archivos ocultos ni de configuración.
+<FilesMatch "^(\.|composer\.(json|lock)|package(-lock)?\.json|artisan|phpunit\.xml|vite\.config\.js|empaquetar\.ps1)">
+    Require all denied
+</FilesMatch>

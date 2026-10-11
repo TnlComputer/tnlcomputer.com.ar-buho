@@ -73,7 +73,7 @@ class PaymentSync
     {
         try {
             Mail::to($order->email)->locale($order->locale)->send(new OrderPaid($order));
-            Mail::to(config('tnl.notify_to'))->locale('es')->send(new OrderPaidAdmin($order));
+            Mail::to(config('tnl.notify.pedido'))->locale('es')->send(new OrderPaidAdmin($order));
         } catch (\Throwable $e) {
             Log::error("No se pudieron enviar los mails del pedido {$order->number()}", ['error' => $e->getMessage()]);
         }

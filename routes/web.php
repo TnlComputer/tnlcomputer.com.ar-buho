@@ -10,6 +10,12 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
+// Instalador de un solo uso (hosting sin SSH). Solo existe con INSTALL_TOKEN en el .env y sin installed.lock.
+if (\App\Http\Controllers\InstallController::enabled()) {
+    Route::get('/instalar', [\App\Http\Controllers\InstallController::class, 'show']);
+    Route::post('/instalar', [\App\Http\Controllers\InstallController::class, 'run'])->middleware('throttle:5,1');
+}
+
 // Sitio público. Se registra dos veces: en español (/...) y en inglés (/en/..., rutas "en.*").
 $site = function () {
     Route::controller(PageController::class)->group(function () {
