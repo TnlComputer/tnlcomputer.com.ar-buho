@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Certification;
+use App\Models\HostingPlan;
+use App\Models\Product;
+use App\Models\Project;
+use App\Models\Skill;
+use Illuminate\View\View;
+
+class PageController extends Controller
+{
+    public function home(): View
+    {
+        return view('pages.home', [
+            'featured' => Product::with('category')->visible()->where('featured', true)->latest('updated_at')->take(8)->get(),
+            'projects' => Project::where('active', true)->orderByDesc('featured')->orderBy('sort')->take(3)->get(),
+        ]);
+    }
+
+    public function hosting(): View
+    {
+        return view('pages.hosting', [
+            'plans' => HostingPlan::where('active', true)->orderBy('sort')->get()->groupBy('panel'),
+        ]);
+    }
+
+    public function design(): View
+    {
+        return view('pages.design', [
+            'projects' => Project::where('active', true)->orderByDesc('featured')->orderBy('sort')->take(3)->get(),
+        ]);
+    }
+
+    public function service(): View
+    {
+        return view('pages.service');
+    }
+
+    public function contact(): View
+    {
+        return view('pages.contact');
+    }
+
+    public function portfolio(): View
+    {
+        $certifications = Certification::orderByDesc('issued_at')->get();
+
+        return view('pages.portfolio', [
+            'projects' => Project::where('active', true)->orderByDesc('featured')->orderBy('sort')->get(),
+            'skills' => Skill::orderBy('id')->orderBy('sort')->get()->groupBy('group'),
+            'certifications' => $certifications,
+            'issuers' => $certifications->countBy('issuer')->sortDesc(),
+        ]);
+    }
+}

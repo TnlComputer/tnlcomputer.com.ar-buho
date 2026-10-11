@@ -1,0 +1,134 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/space-grotesk';
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Space Grotesk Variable', 'Inter Variable', ui-sans-serif, sans-serif;
+
+    /* Magenta del logo (pantalla del monitor) */
+    --color-brand-50: #fdf2fb;
+    --color-brand-100: #fbe6f7;
+    --color-brand-200: #f6cdef;
+    --color-brand-300: #eea5e0;
+    --color-brand-400: #e070c9;
+    --color-brand-500: #c946ae;
+    --color-brand-600: #a8338f;
+    --color-brand-700: #8a2874;
+    --color-brand-800: #712460;
+    --color-brand-900: #5f2251;
+
+    /* Celeste de las lágrimas del logo */
+    --color-sky-accent: #7cc4ee;
+
+    --color-ink-950: #0b0a12;
+    --color-ink-900: #13111d;
+    --color-ink-800: #1d1a2b;
+    --color-ink-700: #2b2740;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        @apply bg-white text-zinc-800 antialiased dark:bg-ink-950 dark:text-zinc-200;
+    }
+
+    h1, h2, h3, h4 {
+        @apply font-display tracking-tight text-zinc-950 dark:text-white;
+    }
+
+    :focus-visible {
+        @apply outline-2 outline-offset-2 outline-brand-500;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+@layer components {
+    .container-x {
+        @apply mx-auto w-full max-w-[110rem] px-4 sm:px-6 lg:px-10;
+    }
+
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition
+            disabled:cursor-not-allowed disabled:opacity-60;
+    }
+
+    .btn-primary {
+        @apply bg-brand-600 text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700;
+    }
+
+    .btn-secondary {
+        @apply border border-zinc-300 bg-white text-zinc-900 hover:border-zinc-400 hover:bg-zinc-50
+            dark:border-ink-700 dark:bg-ink-900 dark:text-white dark:hover:bg-ink-800;
+    }
+
+    .btn-whatsapp {
+        @apply bg-[#25d366] text-[#073b1c] hover:bg-[#1fbe5b];
+    }
+
+    .card {
+        @apply rounded-2xl border border-zinc-200 bg-white dark:border-ink-700 dark:bg-ink-900;
+    }
+
+    .eyebrow {
+        @apply text-sm font-semibold tracking-wide text-brand-600 uppercase dark:text-brand-400;
+    }
+
+    .chip {
+        @apply inline-flex items-center rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-700
+            dark:bg-ink-800 dark:text-zinc-300;
+    }
+
+    .input {
+        @apply block w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-sm text-zinc-900
+            placeholder:text-zinc-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 focus:outline-none
+            dark:border-ink-700 dark:bg-ink-900 dark:text-white;
+    }
+
+    .label {
+        @apply mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300;
+    }
+
+    .prose-tnl p + p {
+        @apply mt-4;
+    }
+
+    /* Carrusel infinito de marcas */
+    .marquee {
+        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+
+    .marquee-track {
+        animation: marquee 40s linear infinite;
+    }
+
+    .marquee:hover .marquee-track {
+        animation-play-state: paused;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .marquee-track {
+            animation: none;
+        }
+    }
+}
+
+@keyframes marquee {
+    to {
+        transform: translateX(-50%);
+    }
+}
