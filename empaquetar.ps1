@@ -12,11 +12,13 @@ $tmp = Join-Path $env:TEMP 'tnl-dist'
 if (Test-Path $tmp) { Remove-Item $tmp -Recurse -Force }
 New-Item -ItemType Directory $tmp | Out-Null
 
-robocopy . $tmp /E /NFL /NDL /NJH /NJS /XD node_modules vendor dist tests .git storage uploads _para_eliminar /XF .env database.sqlite empaquetar.ps1 *.log | Out-Null
+robocopy . $tmp /E /NFL /NDL /NJH /NJS /XD node_modules vendor dist tests .git storage uploads _para_eliminar /XF .env database.sqlite empaquetar.ps1 *.log .phpunit.result.cache | Out-Null
 
 # storage: solo la estructura de carpetas, sin logs, sesiones ni caché locales
 robocopy storage "$tmp\storage" /E /NFL /NDL /NJH /NJS /XF *.log *.php-* | Out-Null
 Get-ChildItem "$tmp\storage\framework" -Recurse -File | Where-Object Name -ne '.gitignore' | Remove-Item -Force
+# Caché de arranque generada en esta PC (lista paquetes de desarrollo): Laravel la regenera en el servidor
+Get-ChildItem "$tmp\bootstrap\cache" -File -Filter *.php | Remove-Item -Force
 
 Write-Host 'Instalando dependencias de producción...'
 Push-Location $tmp
