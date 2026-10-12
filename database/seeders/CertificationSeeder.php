@@ -25,8 +25,11 @@ class CertificationSeeder extends Seeder
         foreach ($certs as $cert) {
             $title = trim($cert['title']);
             Certification::updateOrCreate(
-                ['title' => $title, 'issuer' => $cert['issuer']],
+                // Se identifica por archivo: así cambiar el título no crea un certificado duplicado.
+                isset($cert['files'][0]['file']) ? ['file' => $cert['files'][0]['file']] : ['title' => $title, 'issuer' => $cert['issuer']],
                 [
+                    'title' => $title,
+                    'issuer' => $cert['issuer'],
                     // "2023" o "2023-10" se completan a una fecha válida (si no, se guardaría como 1970).
                     'issued_at' => match (true) {
                         (bool) preg_match('/^\d{4}$/', (string) ($cert['date'] ?? '')) => $cert['date'].'-01-01',
