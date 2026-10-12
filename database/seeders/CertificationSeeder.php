@@ -27,7 +27,12 @@ class CertificationSeeder extends Seeder
             Certification::updateOrCreate(
                 ['title' => $title, 'issuer' => $cert['issuer']],
                 [
-                    'issued_at' => $cert['date'] ?? null,
+                    // "2023" o "2023-10" se completan a una fecha válida (si no, se guardaría como 1970).
+                    'issued_at' => match (true) {
+                        (bool) preg_match('/^\d{4}$/', (string) ($cert['date'] ?? '')) => $cert['date'].'-01-01',
+                        (bool) preg_match('/^\d{4}-\d{2}$/', (string) ($cert['date'] ?? '')) => $cert['date'].'-01',
+                        default => $cert['date'] ?? null,
+                    },
                     'file' => $cert['files'][0]['file'] ?? null,
                     'featured' => Str::contains(Str::lower($title), self::FEATURED_KEYWORDS),
                 ],
