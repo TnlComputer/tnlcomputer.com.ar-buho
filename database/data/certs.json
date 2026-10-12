@@ -319,6 +319,17 @@
     ]
   },
   {
+    "title": "Inmersión Emprende con IA (Alura + Código Facilito)",
+    "issuer": "Alura G9",
+    "date": "2025-11-01",
+    "files": [
+      {
+        "file": "assets/certs/Alura G9/Certificados/Certificado Participacion  Inmersion emprende con IA - 2025-11 - Alura .pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
     "title": "Practicando con Java: Challenge Conversor de Monedas",
     "issuer": "Alura G9",
     "date": "2025-10-13",
@@ -506,6 +517,17 @@
     ]
   },
   {
+    "title": "HTML y CSS: trabajando con responsividad y publicación de proyectos",
+    "issuer": "Alura G9",
+    "date": "2025-07-28",
+    "files": [
+      {
+        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso HTML y CSS_ trabajando con responsividad y publicación de proyectos - Alura-28-07-2025.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
     "title": "HTML y CSS: clases, posicionamiento y Flexbox",
     "issuer": "Alura G9",
     "date": "2025-07-27",
@@ -528,12 +550,133 @@
     ]
   },
   {
+    "title": "Ingeniería de Prompt: creando prompts eficaces para la IA generativa",
+    "issuer": "Alura G9",
+    "date": "2025-07-27",
+    "files": [
+      {
+        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Ingeniería de Prompt_ creando prompts eficaces para la IA generativa - Alura-27-07-2025.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
     "title": "Git y GitHub: repositorio, commit y versiones (6 h)",
     "issuer": "Alura G9",
     "date": "2025-07-26",
     "files": [
       {
         "file": "assets/certs/nuevos/2025-07-26-alura-g9-git-y-github-repositorio-commit-y-versiones.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Practicando Lógica de Programación - Challenge Amigo secreto",
+    "issuer": "Alura G9",
+    "date": "2025-07-26",
+    "files": [
+      {
+        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Practicando Lógica de Programación_ Challenge Amigo secreto - Alura-26-07-2025.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "IA: explorando el potencial de la Inteligencia Artificial Generativa",
+    "issuer": "Alura G9",
+    "date": "2025-07-26",
+    "files": [
+      {
+        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso IA_ explorando el potencial de la Inteligencia Artificial Generativa - Alura-26-07-2025.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Lógica de programación: explorar funciones y listas",
+    "issuer": "Alura G9",
+    "date": "2025-07-25",
+    "files": [
+      {
+        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Lógica de programación_ explorar funciones y listas - Alura-25-07-2025.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Lógica de programación: sumérgete en la programación con JavaScript",
+    "issuer": "Alura G9",
+    "date": "2025-07-24",
+    "files": [
+      {
+        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Lógica de programación_ sumérgete en la programación con JavaScript - Alura-24-07-2025.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "LinkedIn para profesionales: construye tu marca y genera oportunidades",
+    "issuer": "Alura G9",
+    "date": "2025-07-23",
+    "files": [
+      {
+        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso LinkedIn para profesionales_ construye tu marca y genera oportunidades - Alura-23-07-2025.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Aprendizaje con IA: personalizando tu rutina con ChatGPT",
+    "issuer": "Alura G9",
+    "date": "2025-07-23",
+    "files": [
+      {
+        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Aprendizaje con IA_ personalizando tu rutina con ChatGPT - Alura-23-07-2025.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Formación Desarrollo Personal G9",
+    "issuer": "Alura G9",
+    "date": "2025-07-22",
+    "files": [
+      {
+        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Formación Desarrollo Personal G9 - ONE - Alura-22-07-2025.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Foco: Enfocarse trae más resultados para el día a día",
+    "issuer": "Alura G9",
+    "date": "2025-07-22",
+    "files": [
+      {
+        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Foco_ Enfocarse trae más resultados para el día a día - Alura-22-07-2025.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Aprender a aprender - tecnicas para tu autodesarrollo",
+    "issuer": "Alura G9",
+    "date": "2025-07-22",
+    "files": [
+      {
+        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Aprender a aprender_ tecnicas para tu autodesarrollo - Alura-22-07-2025.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Hábitos: Ser productivo para cumplir sus metas personales",
+    "issuer": "Alura G9",
+    "date": "2025-07-21",
+    "files": [
+      {
+        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Hábitos_ Ser productivo para cumplir sus metas personales - Alura-21-07-2025.pdf",
         "ext": "pdf"
       }
     ]
@@ -561,20 +704,9 @@
     ]
   },
   {
-    "title": "Formación Desarrollo Personal G9",
-    "issuer": "Alura G9",
-    "date": "2025",
-    "files": [
-      {
-        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Formación Desarrollo Personal G9 - ONE - Alura-22-07-2025.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
     "title": "Principiante en Programación G9 - ONE (78 h)",
     "issuer": "Alura G9",
-    "date": "2025",
+    "date": "2025-07-01",
     "files": [
       {
         "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Formación - Alura-07-2025.pdf",
@@ -583,133 +715,12 @@
     ]
   },
   {
-    "title": "Practicando Lógica de Programación - Challenge Amigo secreto",
-    "issuer": "Alura G9",
-    "date": "2025",
+    "title": "Python-inicial",
+    "issuer": "Talento Tech",
+    "date": "2024-12-01",
     "files": [
       {
-        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Practicando Lógica de Programación_ Challenge Amigo secreto - Alura-26-07-2025.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Lógica de programación: sumérgete en la programación con JavaScript",
-    "issuer": "Alura G9",
-    "date": "2025",
-    "files": [
-      {
-        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Lógica de programación_ sumérgete en la programación con JavaScript - Alura-24-07-2025.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Lógica de programación: explorar funciones y listas",
-    "issuer": "Alura G9",
-    "date": "2025",
-    "files": [
-      {
-        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Lógica de programación_ explorar funciones y listas - Alura-25-07-2025.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "LinkedIn para profesionales: construye tu marca y genera oportunidades",
-    "issuer": "Alura G9",
-    "date": "2025",
-    "files": [
-      {
-        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso LinkedIn para profesionales_ construye tu marca y genera oportunidades - Alura-23-07-2025.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Ingeniería de Prompt: creando prompts eficaces para la IA generativa",
-    "issuer": "Alura G9",
-    "date": "2025",
-    "files": [
-      {
-        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Ingeniería de Prompt_ creando prompts eficaces para la IA generativa - Alura-27-07-2025.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "IA: explorando el potencial de la Inteligencia Artificial Generativa",
-    "issuer": "Alura G9",
-    "date": "2025",
-    "files": [
-      {
-        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso IA_ explorando el potencial de la Inteligencia Artificial Generativa - Alura-26-07-2025.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Hábitos: Ser productivo para cumplir sus metas personales",
-    "issuer": "Alura G9",
-    "date": "2025",
-    "files": [
-      {
-        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Hábitos_ Ser productivo para cumplir sus metas personales - Alura-21-07-2025.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "HTML y CSS: trabajando con responsividad y publicación de proyectos",
-    "issuer": "Alura G9",
-    "date": "2025",
-    "files": [
-      {
-        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso HTML y CSS_ trabajando con responsividad y publicación de proyectos - Alura-28-07-2025.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Foco: Enfocarse trae más resultados para el día a día",
-    "issuer": "Alura G9",
-    "date": "2025",
-    "files": [
-      {
-        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Foco_ Enfocarse trae más resultados para el día a día - Alura-22-07-2025.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Aprendizaje con IA: personalizando tu rutina con ChatGPT",
-    "issuer": "Alura G9",
-    "date": "2025",
-    "files": [
-      {
-        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Aprendizaje con IA_ personalizando tu rutina con ChatGPT - Alura-23-07-2025.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Aprender a aprender - tecnicas para tu autodesarrollo",
-    "issuer": "Alura G9",
-    "date": "2025",
-    "files": [
-      {
-        "file": "assets/certs/Alura G9/Certificados/Jorge Gustavo Martinez - Curso Aprender a aprender_ tecnicas para tu autodesarrollo - Alura-22-07-2025.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Inmersión Emprende con IA (Alura + Código Facilito)",
-    "issuer": "Alura G9",
-    "date": "2025",
-    "files": [
-      {
-        "file": "assets/certs/Alura G9/Certificados/Certificado Participacion  Inmersion emprende con IA - 2025-11 - Alura .pdf",
+        "file": "assets/certs/Talento Tech/Diploma_CAC-Python-inicial2024-12.pdf",
         "ext": "pdf"
       }
     ]
@@ -717,7 +728,7 @@
   {
     "title": "Taller de prácticas Laravel + Vue.js (150 h)",
     "issuer": "Ademass",
-    "date": "2024",
+    "date": "2024-05-01",
     "files": [
       {
         "file": "assets/certs/Ademass/certificado practica Laravel-vue - 2024-05.pdf",
@@ -726,12 +737,188 @@
     ]
   },
   {
-    "title": "Python-inicial",
-    "issuer": "Talento Tech",
-    "date": "2024",
+    "title": "TypeScript",
+    "issuer": "Ademass",
+    "date": "2023-12-01",
     "files": [
       {
-        "file": "assets/certs/Talento Tech/Diploma_CAC-Python-inicial2024-12.pdf",
+        "file": "assets/certs/Ademass/2023-12 - Certificado Curso de TypeScript.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Symfony",
+    "issuer": "Ademass",
+    "date": "2023-12-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-12 - Certificado - Curso Symfony.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Node",
+    "issuer": "Ademass",
+    "date": "2023-11-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-11 - Certificado - Curso de Node.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Taller de Laravel + Vue",
+    "issuer": "Ademass",
+    "date": "2023-11-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-11 - Cerfificado - Taller de Laravel + Vue.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Python",
+    "issuer": "Ademass",
+    "date": "2023-11-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-11 - Cerfificado - Curso de Python.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Bash",
+    "issuer": "Ademass",
+    "date": "2023-11-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-11 - Cerfificado - Curso de Bash.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "PayPal",
+    "issuer": "Ademass",
+    "date": "2023-11-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-11 - Cerfificado - Curso PayPal.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Solid",
+    "issuer": "Ademass",
+    "date": "2023-10-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de Solid.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "PHP",
+    "issuer": "Ademass",
+    "date": "2023-10-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de PHP.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Curso de Laravel",
+    "issuer": "Ademass",
+    "date": "2023-10-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de Laravel.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "JavaScript",
+    "issuer": "Ademass",
+    "date": "2023-10-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de JavaScript.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Java",
+    "issuer": "Ademass",
+    "date": "2023-10-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de Java.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Curso de CSS3",
+    "issuer": "Ademass",
+    "date": "2023-10-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de CSS3.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Bootstrap 5",
+    "issuer": "Ademass",
+    "date": "2023-10-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de Bootstrap.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Git - GitHub",
+    "issuer": "Ademass",
+    "date": "2023-09-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-09 - Certificado - Curso de Git - GitHub.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "Taller de CSS3",
+    "issuer": "Ademass",
+    "date": "2023-08-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-08 - Certificado - Taller CSS3.pdf",
+        "ext": "pdf"
+      }
+    ]
+  },
+  {
+    "title": "HTML 5",
+    "issuer": "Ademass",
+    "date": "2023-08-01",
+    "files": [
+      {
+        "file": "assets/certs/Ademass/2023-08 - Certificado - Curso de HTML5.pdf",
         "ext": "pdf"
       }
     ]
@@ -831,193 +1018,6 @@
     "files": [
       {
         "file": "assets/certs/OpenBootCamp/Certificaciones OB/Certificación - ReactJS Basico - OB - 2023-02-14.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "TypeScript",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-12 - Certificado Curso de TypeScript.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Symfony",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-12 - Certificado - Curso Symfony.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Node",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-11 - Certificado - Curso de Node.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Taller de Laravel + Vue",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-11 - Cerfificado - Taller de Laravel + Vue.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Python",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-11 - Cerfificado - Curso de Python.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Bash",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-11 - Cerfificado - Curso de Bash.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "PayPal",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-11 - Cerfificado - Curso PayPal.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Solid",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de Solid.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "PHP",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de PHP.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Curso de Laravel",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de Laravel.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "JavaScript",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de JavaScript.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Java",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de Java.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Curso de CSS3",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de CSS3.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Bootstrap 5",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-10 - Certificado - Curso de Bootstrap.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Git - GitHub",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-09 - Certificado - Curso de Git - GitHub.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "Taller de CSS3",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-08 - Certificado - Taller CSS3.pdf",
-        "ext": "pdf"
-      }
-    ]
-  },
-  {
-    "title": "HTML 5",
-    "issuer": "Ademass",
-    "date": "2023",
-    "files": [
-      {
-        "file": "assets/certs/Ademass/2023-08 - Certificado - Curso de HTML5.pdf",
         "ext": "pdf"
       }
     ]
