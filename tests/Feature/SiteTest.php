@@ -55,6 +55,19 @@ class SiteTest extends TestCase
         $this->get('/en/no-existe')->assertNotFound()->assertSee('Page not found');
     }
 
+    public function test_portfolio_downloads_as_pdf_in_both_languages(): void
+    {
+        $this->get('/portfolio')->assertSee(url('/portfolio/descargar'), false);
+        $this->get('/en/portfolio')->assertSee(url('/en/portfolio/descargar'), false)->assertSee('Download PDF');
+
+        $es = $this->get('/portfolio/descargar')->assertOk()->assertHeader('Content-Type', 'application/pdf');
+        $this->assertStringStartsWith('%PDF', $es->getContent());
+        $this->assertStringContainsString('jorge-gustavo-martinez-portfolio.pdf', $es->headers->get('Content-Disposition'));
+
+        $en = $this->get('/en/portfolio/descargar')->assertOk()->assertHeader('Content-Type', 'application/pdf');
+        $this->assertStringContainsString('portfolio-en.pdf', $en->headers->get('Content-Disposition'));
+    }
+
     public function test_language_switch_keeps_the_same_page(): void
     {
         $this->product();

@@ -25,6 +25,7 @@ $site = function () {
         Route::get('/service', 'service')->name('service');
         Route::get('/contacto', 'contact')->name('contact');
         Route::get('/portfolio', 'portfolio')->name('portfolio');
+        Route::get('/portfolio/descargar', 'portfolioPdf')->middleware('throttle:10,1')->name('portfolio.pdf');
     });
 
     Route::middleware('throttle:forms')->group(function () {

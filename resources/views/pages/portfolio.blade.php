@@ -17,6 +17,7 @@
                 <p class="mt-6 max-w-xl text-xl text-zinc-600 dark:text-zinc-400">{{ __($p['lead']) }}</p>
                 <div class="mt-8 flex flex-wrap gap-3">
                     <a href="#proyectos" class="btn btn-primary">{{ __('Ver proyectos') }}</a>
+                    <a href="{{ lroute('portfolio.pdf') }}" class="btn btn-secondary" download><x-icon name="download" class="size-4" /> {{ __('Descargar PDF') }}</a>
                     <a href="{{ $p['linkedin'] }}" target="_blank" rel="noopener" class="btn btn-secondary"><x-icon name="linkedin" class="size-4" /> LinkedIn</a>
                     <a href="{{ $p['github'] }}" target="_blank" rel="noopener" class="btn btn-secondary"><x-icon name="github" class="size-4" /> GitHub</a>
                 </div>

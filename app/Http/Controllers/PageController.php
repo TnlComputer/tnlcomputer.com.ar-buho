@@ -7,7 +7,10 @@ use App\Models\HostingPlan;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\Skill;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class PageController extends Controller
 {
@@ -45,13 +48,29 @@ class PageController extends Controller
 
     public function portfolio(): View
     {
+        return view('pages.portfolio', $this->portfolioData());
+    }
+
+    /** El mismo contenido del portfolio en un PDF para descargar (en el idioma actual). */
+    public function portfolioPdf(): Response
+    {
+        $name = config('tnl.profile.name');
+
+        return Pdf::loadView('pdf.portfolio', $this->portfolioData())
+            ->setPaper('a4')
+            ->setOption(['chroot' => public_path(), 'isRemoteEnabled' => false, 'isFontSubsettingEnabled' => true])
+            ->download(Str::slug($name).'-portfolio'.(is_en() ? '-en' : '').'.pdf');
+    }
+
+    private function portfolioData(): array
+    {
         $certifications = Certification::orderByDesc('issued_at')->get();
 
-        return view('pages.portfolio', [
+        return [
             'projects' => Project::where('active', true)->orderByDesc('featured')->orderBy('sort')->get(),
             'skills' => Skill::orderBy('id')->orderBy('sort')->get()->groupBy('group'),
             'certifications' => $certifications,
             'issuers' => $certifications->countBy('issuer')->sortDesc(),
-        ]);
+        ];
     }
 }
