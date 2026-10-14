@@ -29,3 +29,7 @@ Thumbs.db
 /_para_eliminar
 # Lista del proveedor (precios de costo): no se publica; va en el zip de despliegue
 /database/data/catalogo.csv
+# Búsqueda de imágenes en MercadoLibre: herramienta local, no la usa el sitio
+/app/Console/Commands/FetchProductImages.php
+/app/Services/MercadoLibreImages.php
+/config/mercadolibre.php

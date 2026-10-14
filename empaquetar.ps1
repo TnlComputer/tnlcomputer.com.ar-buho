@@ -12,7 +12,7 @@ $tmp = Join-Path $env:TEMP 'tnl-dist'
 if (Test-Path $tmp) { Remove-Item $tmp -Recurse -Force }
 New-Item -ItemType Directory $tmp | Out-Null
 
-robocopy . $tmp /E /NFL /NDL /NJH /NJS /XD node_modules vendor dist tests .git storage uploads _para_eliminar /XF .env database.sqlite empaquetar.ps1 *.log .phpunit.result.cache | Out-Null
+robocopy . $tmp /E /NFL /NDL /NJH /NJS /XD node_modules vendor dist tests .git storage uploads _para_eliminar /XF .env database.sqlite empaquetar.ps1 FetchProductImages.php MercadoLibreImages.php mercadolibre.php *.log .phpunit.result.cache | Out-Null
 
 # storage: solo la estructura de carpetas, sin logs, sesiones ni caché locales
 robocopy storage "$tmp\storage" /E /NFL /NDL /NJH /NJS /XF *.log *.php-* | Out-Null
