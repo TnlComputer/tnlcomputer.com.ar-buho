@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Message;
 use App\Models\Product;
 use App\Models\User;
+use App\Support\FormGuard;
 use Database\Seeders\HostingPlanSeeder;
 use Database\Seeders\PortfolioSeeder;
 use Database\Seeders\ShippingZoneSeeder;
@@ -123,6 +124,33 @@ class SiteTest extends TestCase
 
         $this->post('/contacto', ['name' => 'Bot', 'email' => 'bot@example.com', 'subject' => 'x', 'body' => 'x', 'website' => 'spam'])->assertRedirect();
         $this->assertSame(0, Message::count());
+    }
+
+    public function test_forms_reject_submissions_faster_than_a_person(): void
+    {
+        Mail::fake();
+        config(['tnl.form_min_seconds' => 3]);
+        $data = ['name' => 'Ana', 'email' => 'ana@example.com', 'subject' => 'Consulta', 'body' => 'Hola'];
+
+        // La página trae la hora de carga cifrada.
+        $this->get('/contacto')->assertSee('name="'.FormGuard::FIELD.'"', false);
+
+        // Sin el campo (bot que no cargó la página) o con un valor falsificado: se descarta en silencio.
+        $this->post('/contacto', $data)->assertSessionHas('sent');
+        $this->post('/contacto', $data + [FormGuard::FIELD => (string) now()->subHour()->timestamp])->assertSessionHas('sent');
+        $this->assertSame(0, Message::count());
+
+        // Enviado al instante: se le pide a la persona que lo intente de nuevo, sin perder lo que escribió.
+        $this->post('/contacto', $data + [FormGuard::FIELD => FormGuard::stamp()])
+            ->assertSessionHasErrors('form')
+            ->assertSessionHasInput('body', 'Hola');
+        $this->assertSame(0, Message::count());
+
+        // Pasados los segundos mínimos, se guarda normalmente.
+        $stamp = FormGuard::stamp();
+        $this->travel(5)->seconds();
+        $this->post('/contacto', $data + [FormGuard::FIELD => $stamp])->assertSessionHasNoErrors();
+        $this->assertSame(1, Message::count());
     }
 
     public function test_service_form_only_accepts_known_reasons(): void

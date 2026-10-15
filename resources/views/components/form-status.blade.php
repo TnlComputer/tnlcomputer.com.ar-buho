@@ -6,6 +6,6 @@
 @endif
 @if ($errors->any())
     <div class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-900 dark:border-red-900 dark:bg-red-950/50 dark:text-red-200" role="alert">
-        {{ __('Revisá los campos marcados.') }}
+        {{ $errors->first('form') ?: __('Revisá los campos marcados.') }}
     </div>
 @endif

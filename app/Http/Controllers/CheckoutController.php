@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\ShippingZone;
 use App\Services\MercadoPago;
 use App\Support\Cart;
+use App\Support\FormGuard;
 use App\Support\PostalCodeResolver;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -65,8 +66,11 @@ class CheckoutController extends Controller
 
     public function store(Request $request, PostalCodeResolver $resolver): RedirectResponse
     {
-        if ($request->filled('website')) { // honeypot
+        if (FormGuard::isBot($request)) {
             return redirect(lroute('cart.index'));
+        }
+        if (FormGuard::tooFast($request)) {
+            return back()->withInput()->withErrors(['form' => __('Esperá unos segundos y volvé a enviar el formulario.')]);
         }
 
         $lines = $this->cart->lines();

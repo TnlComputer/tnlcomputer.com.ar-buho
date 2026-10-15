@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\NewMessage;
 use App\Models\Message;
+use App\Support\FormGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -46,9 +47,12 @@ class FormController extends Controller
 
     private function store(Request $request, string $type, array $data): RedirectResponse
     {
-        // Honeypot: los bots completan el campo oculto; les respondemos "ok" sin guardar nada.
-        if ($request->filled('website')) {
+        // A los bots les respondemos "ok" sin guardar nada.
+        if (FormGuard::isBot($request)) {
             return back()->with('sent', true);
+        }
+        if (FormGuard::tooFast($request)) {
+            return back()->withInput()->withErrors(['form' => __('Esperá unos segundos y volvé a enviar el formulario.')]);
         }
 
         $message = Message::create($data + ['type' => $type, 'ip' => $request->ip(), 'locale' => app()->getLocale()]);

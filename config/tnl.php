@@ -13,6 +13,9 @@ return [
         'service' => env('TNL_MAIL_SERVICE', 'service@tnlcomputer.com.ar'),
         'pedido' => env('TNL_MAIL_PEDIDOS', 'info@tnlcomputer.com.ar'),
     ],
+    // Segundos mínimos entre que se carga un formulario y se envía (anti-spam). 0 = desactivado.
+    'form_min_seconds' => (int) env('TNL_FORM_MIN_SECONDS', 3),
+
     'whatsapp' => env('TNL_WHATSAPP', '5491149156462'),
     'whatsapp_label' => '+54 9 11 4915-6462',
 
