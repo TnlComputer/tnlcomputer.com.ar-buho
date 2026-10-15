@@ -47,7 +47,7 @@
             <div class="card p-6">
                 <div class="flex items-center justify-between gap-3">
                     <h2 class="font-sans text-base font-semibold">Pagos en Mercado Pago</h2>
-                    @if ($order->payments->isNotEmpty())
+                    @if ($order->payments->where('provider', 'mercadopago')->isNotEmpty())
                         <form method="POST" action="{{ route('admin.orders.refresh', $order) }}">@csrf<button class="text-sm font-semibold text-brand-600 hover:underline">Volver a consultar</button></form>
                     @endif
                 </div>
@@ -83,8 +83,10 @@
                             <a href="mailto:{{ $order->email }}?subject={{ rawurlencode('Link de pago de tu pedido '.$order->number()) }}&body={{ rawurlencode($order->paymentLinkMessage()) }}" class="btn btn-secondary !py-2"><x-icon name="mail" class="size-4" /> Enviar por email</a>
                         </div>
                     @endif
-                    <form method="POST" action="{{ route('admin.orders.update', $order) }}" class="mt-4 border-t border-zinc-100 pt-4 dark:border-ink-700" data-confirm="¿Marcar el pedido como pagado? Hacelo cuando veas el cobro acreditado en Mercado Pago.">
+                    <form method="POST" action="{{ route('admin.orders.update', $order) }}" class="mt-4 space-y-3 border-t border-zinc-100 pt-4 dark:border-ink-700" data-confirm="¿Marcar el pedido como pagado? Hacelo cuando veas el cobro acreditado en Mercado Pago.">
                         @csrf @method('PUT')
+                        <x-field name="operation_id" label="N° de operación de Mercado Pago" inputmode="numeric" required
+                            hint="Está en Mercado Pago → Actividad → el cobro. Queda guardado para ubicarlo si tenés que reintegrar." />
                         <button name="action" value="paid" class="btn btn-primary !py-2">Marcar como pagado</button>
                     </form>
                 </div>
@@ -111,7 +113,15 @@
                         <button name="action" value="cancel" class="text-sm font-semibold text-red-600 hover:underline">Cancelar pedido</button>
                     </form>
                 @endif
-                <p class="mt-4 text-xs text-zinc-500">Los reintegros se hacen desde Mercado Pago; al hacerlo, el pedido pasa solo a "Reintegrado".</p>
+                @if ($order->status !== 'refunded' && $order->payments->where('provider', 'manual')->where('status', 'approved')->isNotEmpty())
+                    <form method="POST" action="{{ route('admin.orders.update', $order) }}" class="mt-4 border-t border-zinc-100 pt-4 dark:border-ink-700" data-confirm="¿Marcar como reintegrado? Hacelo después de devolver el dinero desde la operación en Mercado Pago.">
+                        @csrf @method('PUT')
+                        <button name="action" value="refunded" class="text-sm font-semibold text-red-600 hover:underline">Marcar como reintegrado</button>
+                    </form>
+                    <p class="mt-4 text-xs text-zinc-500">Cobro con link manual: el reintegro se hace desde la operación en Mercado Pago (link en "Pagos") y después se marca acá.</p>
+                @else
+                    <p class="mt-4 text-xs text-zinc-500">Los reintegros se hacen desde Mercado Pago; al hacerlo, el pedido pasa solo a "Reintegrado".</p>
+                @endif
             </div>
 
             <div class="card p-6 text-sm">

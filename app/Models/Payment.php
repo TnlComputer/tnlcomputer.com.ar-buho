@@ -53,6 +53,10 @@ class Payment extends Model
     /** "Tarjeta de crédito VISA •••• 1234 · 3 cuotas" */
     public function methodLabel(): string
     {
+        if ($this->provider === 'manual') {
+            return __('Link de pago de Mercado Pago');
+        }
+
         $label = __(self::TYPES[$this->payment_type] ?? 'Mercado Pago');
         if ($this->payment_method && in_array($this->payment_type, ['credit_card', 'debit_card', 'prepaid_card'], true)) {
             $label .= ' '.strtoupper(preg_replace('/^deb/', '', $this->payment_method));

@@ -261,10 +261,23 @@ class CheckoutTest extends TestCase
         $this->get("/admin/pedidos/{$order->id}")->assertSee('Enviar por WhatsApp')->assertSee(rawurlencode('https://mpago.la/abc123'), false);
         $this->get("/pedido/{$order->token}")->assertSee('href="https://mpago.la/abc123"', false);
 
-        $admin->put("/admin/pedidos/{$order->id}", ['action' => 'paid'])->assertRedirect();
+        // Para marcarlo pagado hace falta el número de operación de Mercado Pago (sirve para reintegrar).
+        $admin->put("/admin/pedidos/{$order->id}", ['action' => 'paid'])->assertSessionHasErrors('operation_id');
+        $admin->put("/admin/pedidos/{$order->id}", ['action' => 'paid', 'operation_id' => '12ab'])->assertSessionHasErrors('operation_id');
+        $admin->put("/admin/pedidos/{$order->id}", ['action' => 'paid', 'operation_id' => '129193555737'])->assertRedirect();
         $this->assertSame('paid', $order->fresh()->status);
         $this->assertNotNull($order->fresh()->paid_at);
-        $this->get("/pedido/{$order->token}")->assertDontSee('https://mpago.la/abc123');
+        $this->assertDatabaseHas('payments', ['order_id' => $order->id, 'provider' => 'manual', 'provider_id' => '129193555737', 'status' => 'approved', 'amount' => 207500]);
+        $this->get("/pedido/{$order->token}")->assertDontSee('https://mpago.la/abc123')->assertSee('Link de pago de Mercado Pago');
+        $this->get("/admin/pedidos/{$order->id}")->assertSee('activities?q=129193555737', false)->assertSee('Marcar como reintegrado');
+
+        // La misma operación no se puede asociar a otro pedido.
+        $other = $this->makeOrder();
+        $admin->put("/admin/pedidos/{$other->id}", ['action' => 'paid', 'operation_id' => '129193555737'])->assertSessionHasErrors('operation_id');
+
+        $admin->put("/admin/pedidos/{$order->id}", ['action' => 'refunded'])->assertRedirect();
+        $this->assertSame('refunded', $order->fresh()->status);
+        $this->assertDatabaseHas('payments', ['provider_id' => '129193555737', 'status' => 'refunded', 'amount_refunded' => 207500]);
     }
 
     public function test_general_payment_link_is_used_when_mercado_pago_api_is_off(): void

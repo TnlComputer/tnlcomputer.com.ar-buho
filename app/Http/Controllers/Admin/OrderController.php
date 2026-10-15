@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Services\PaymentSync;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -40,13 +41,20 @@ class OrderController extends Controller
     public function update(Request $request, Order $order): RedirectResponse
     {
         $data = $request->validate([
-            'action' => ['required', Rule::in(['paid', 'ship', 'deliver', 'cancel', 'tracking', 'payment_link'])],
+            'action' => ['required', Rule::in(['paid', 'refunded', 'ship', 'deliver', 'cancel', 'tracking', 'payment_link'])],
             'tracking_code' => ['nullable', 'string', 'max:100'],
             'payment_link' => ['nullable', 'url:https', 'max:500'],
+            // Número de operación de Mercado Pago del cobro con link manual: sirve para ubicarlo y reintegrarlo.
+            'operation_id' => ['exclude_unless:action,paid', 'required', 'regex:/^\d{6,20}$/', Rule::unique('payments', 'provider_id')],
+        ], [
+            'operation_id.required' => 'Ingresá el número de operación del cobro en Mercado Pago.',
+            'operation_id.regex' => 'El número de operación tiene solo números (lo ves en el detalle del cobro en Mercado Pago).',
+            'operation_id.unique' => 'Esa operación ya está asociada a un pedido.',
         ]);
 
         match ($data['action']) {
-            'paid' => $order->update(['status' => Order::PAID, 'paid_at' => $order->paid_at ?? now()]),
+            'paid' => $this->markPaid($order, $data['operation_id']),
+            'refunded' => $this->markRefunded($order),
             'ship' => $order->update(['status' => Order::SHIPPED, 'shipped_at' => now(), 'tracking_code' => $data['tracking_code'] ?? $order->tracking_code]),
             'deliver' => $order->update(['status' => Order::DELIVERED, 'delivered_at' => now()]),
             'cancel' => $order->update(['status' => Order::CANCELLED]),
@@ -57,10 +65,32 @@ class OrderController extends Controller
         return back()->with('status', 'Pedido actualizado.');
     }
 
-    /** Vuelve a consultar en Mercado Pago todos los pagos del pedido (por si se perdió un aviso). */
+    /** Cobro con link manual: queda registrado con su número de operación, como un pago más del pedido. */
+    private function markPaid(Order $order, string $operationId): void
+    {
+        DB::transaction(function () use ($order, $operationId) {
+            $order->payments()->create([
+                'provider' => 'manual', 'provider_id' => $operationId, 'status' => 'approved',
+                'amount' => $order->total, 'approved_at' => now(),
+            ]);
+            $order->update(['status' => Order::PAID, 'paid_at' => $order->paid_at ?? now()]);
+        });
+    }
+
+    /** Reintegro hecho en Mercado Pago de un cobro manual (los automáticos se actualizan solos). */
+    private function markRefunded(Order $order): void
+    {
+        DB::transaction(function () use ($order) {
+            $order->payments()->where('provider', 'manual')->where('status', 'approved')
+                ->update(['status' => 'refunded', 'amount_refunded' => DB::raw('amount')]);
+            $order->update(['status' => Order::REFUNDED]);
+        });
+    }
+
+    /** Vuelve a consultar en Mercado Pago los pagos automáticos del pedido (por si se perdió un aviso). */
     public function refresh(Order $order, PaymentSync $sync): RedirectResponse
     {
-        foreach ($order->payments as $payment) {
+        foreach ($order->payments->where('provider', 'mercadopago') as $payment) {
             $sync->sync($payment->provider_id, $order);
         }
 
