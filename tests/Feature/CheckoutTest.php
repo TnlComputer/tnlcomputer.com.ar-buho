@@ -247,6 +247,41 @@ class CheckoutTest extends TestCase
         $this->get("/pedido/{$order->token}")->assertSee('AB123');
     }
 
+    public function test_admin_can_charge_with_a_manual_payment_link(): void
+    {
+        $order = $this->makeOrder();
+        $admin = $this->actingAs(User::factory()->create());
+
+        $admin->put("/admin/pedidos/{$order->id}", ['action' => 'payment_link', 'payment_link' => 'javascript:alert(1)'])
+            ->assertSessionHasErrors('payment_link');
+        $admin->put("/admin/pedidos/{$order->id}", ['action' => 'payment_link', 'payment_link' => 'https://mpago.la/abc123'])
+            ->assertRedirect();
+
+        // El admin ve los botones con el mensaje armado y el cliente paga con ese link (aunque la API esté configurada).
+        $this->get("/admin/pedidos/{$order->id}")->assertSee('Enviar por WhatsApp')->assertSee(rawurlencode('https://mpago.la/abc123'), false);
+        $this->get("/pedido/{$order->token}")->assertSee('href="https://mpago.la/abc123"', false);
+
+        $admin->put("/admin/pedidos/{$order->id}", ['action' => 'paid'])->assertRedirect();
+        $this->assertSame('paid', $order->fresh()->status);
+        $this->assertNotNull($order->fresh()->paid_at);
+        $this->get("/pedido/{$order->token}")->assertDontSee('https://mpago.la/abc123');
+    }
+
+    public function test_general_payment_link_is_used_when_mercado_pago_api_is_off(): void
+    {
+        config(['services.mercadopago.access_token' => null, 'tnl.payment_link' => 'https://link.mercadopago.com.ar/tnl']);
+        $order = $this->makeOrder();
+
+        $this->get("/pedido/{$order->token}")
+            ->assertSee('href="https://link.mercadopago.com.ar/tnl"', false)
+            ->assertSee($order->number());
+        $this->assertStringContainsString('ingresá el monto', $order->paymentLinkMessage());
+
+        // Con la API activa y sin link propio, sigue el pago automático.
+        config(['services.mercadopago.access_token' => 'TEST-token']);
+        $this->get("/pedido/{$order->token}")->assertDontSee('https://link.mercadopago.com.ar/tnl');
+    }
+
     private function makeOrder(array $attrs = []): Order
     {
         $order = Order::create($attrs + [

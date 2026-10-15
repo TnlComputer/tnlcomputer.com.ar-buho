@@ -65,6 +65,31 @@
         </div>
 
         <aside class="space-y-6">
+            @if (in_array($order->status, ['pending', 'rejected', 'in_process']))
+                <div class="card p-6">
+                    <h2 class="font-sans text-base font-semibold">Cobro con link de pago</h2>
+                    <p class="mt-1 text-xs text-zinc-500">Creá el link en Mercado Pago (Link de pago) por {{ money($order->total) }}, pegalo acá y mandáselo al cliente. En la página del pedido, el botón "Pagar" lo usa.</p>
+                    <form method="POST" action="{{ route('admin.orders.update', $order) }}" class="mt-4 space-y-3">
+                        @csrf @method('PUT')
+                        <x-field name="payment_link" label="Link de pago" type="url" placeholder="https://mpago.la/..." :value="$order->payment_link" />
+                        <button name="action" value="payment_link" class="btn btn-secondary !py-2">Guardar link</button>
+                    </form>
+                    @if ($link = $order->manualPaymentLink())
+                        @if ($order->usesGeneralPaymentLink())
+                            <p class="mt-3 text-xs text-amber-700 dark:text-amber-300">Sin link propio: se usa el link general del negocio y el mensaje le indica al cliente el monto a pagar.</p>
+                        @endif
+                        <div class="mt-4 flex flex-wrap gap-2 border-t border-zinc-100 pt-4 dark:border-ink-700">
+                            <a href="https://wa.me/{{ preg_replace('/\D/', '', $order->phone) }}?text={{ rawurlencode($order->paymentLinkMessage()) }}" target="_blank" rel="noopener" class="btn btn-whatsapp !py-2"><x-icon name="whatsapp" class="size-4" /> Enviar por WhatsApp</a>
+                            <a href="mailto:{{ $order->email }}?subject={{ rawurlencode('Link de pago de tu pedido '.$order->number()) }}&body={{ rawurlencode($order->paymentLinkMessage()) }}" class="btn btn-secondary !py-2"><x-icon name="mail" class="size-4" /> Enviar por email</a>
+                        </div>
+                    @endif
+                    <form method="POST" action="{{ route('admin.orders.update', $order) }}" class="mt-4 border-t border-zinc-100 pt-4 dark:border-ink-700" data-confirm="¿Marcar el pedido como pagado? Hacelo cuando veas el cobro acreditado en Mercado Pago.">
+                        @csrf @method('PUT')
+                        <button name="action" value="paid" class="btn btn-primary !py-2">Marcar como pagado</button>
+                    </form>
+                </div>
+            @endif
+
             <div class="card p-6">
                 <h2 class="font-sans text-base font-semibold">Gestión</h2>
                 <form method="POST" action="{{ route('admin.orders.update', $order) }}" class="mt-4 space-y-3">

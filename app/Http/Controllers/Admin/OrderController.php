@@ -33,19 +33,25 @@ class OrderController extends Controller
         return view('admin.orders.show', ['order' => $order->load('items.product', 'payments')]);
     }
 
-    /** Cambios manuales de estado: preparado/enviado, entregado, cancelado; y código de seguimiento. */
+    /**
+     * Cambios manuales: pagado (cobro con link manual), preparado/enviado, entregado, cancelado;
+     * código de seguimiento y link de pago manual.
+     */
     public function update(Request $request, Order $order): RedirectResponse
     {
         $data = $request->validate([
-            'action' => ['required', Rule::in(['ship', 'deliver', 'cancel', 'tracking'])],
+            'action' => ['required', Rule::in(['paid', 'ship', 'deliver', 'cancel', 'tracking', 'payment_link'])],
             'tracking_code' => ['nullable', 'string', 'max:100'],
+            'payment_link' => ['nullable', 'url:https', 'max:500'],
         ]);
 
         match ($data['action']) {
+            'paid' => $order->update(['status' => Order::PAID, 'paid_at' => $order->paid_at ?? now()]),
             'ship' => $order->update(['status' => Order::SHIPPED, 'shipped_at' => now(), 'tracking_code' => $data['tracking_code'] ?? $order->tracking_code]),
             'deliver' => $order->update(['status' => Order::DELIVERED, 'delivered_at' => now()]),
             'cancel' => $order->update(['status' => Order::CANCELLED]),
             'tracking' => $order->update(['tracking_code' => $data['tracking_code']]),
+            'payment_link' => $order->update(['payment_link' => $data['payment_link'] ?? null]),
         };
 
         return back()->with('status', 'Pedido actualizado.');

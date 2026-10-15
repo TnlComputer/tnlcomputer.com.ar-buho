@@ -80,10 +80,18 @@
                             @if ($order->status === 'rejected')
                                 <p class="mb-4 text-sm text-zinc-600 dark:text-zinc-400">{{ __('No se te cobró nada. Podés intentar con otra tarjeta o medio de pago.') }}</p>
                             @endif
-                            <form method="POST" action="{{ lroute('orders.pay', $order) }}" data-once>
-                                @csrf
-                                <button class="btn btn-primary" data-label="{{ __('Redirigiendo a Mercado Pago…') }}"><x-icon name="shield" class="size-4" /> {{ $order->status === 'rejected' ? __('Reintentar el pago') : __('Pagar :amount', ['amount' => money($order->total)]) }}</button>
-                            </form>
+                            {{-- Link cargado a mano en el pedido > preferencia automática > link general del negocio. --}}
+                            @if ($order->payment_link || (! $paymentsEnabled && $order->manualPaymentLink()))
+                                <a href="{{ $order->manualPaymentLink() }}" target="_blank" rel="noopener" class="btn btn-primary"><x-icon name="shield" class="size-4" /> {{ __('Pagar :amount', ['amount' => money($order->total)]) }}</a>
+                                @if ($order->usesGeneralPaymentLink())
+                                    <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">{{ __('Al pagar, ingresá el monto :amount y en el detalle el número de pedido :number.', ['amount' => money($order->total), 'number' => $order->number()]) }}</p>
+                                @endif
+                            @else
+                                <form method="POST" action="{{ lroute('orders.pay', $order) }}" data-once>
+                                    @csrf
+                                    <button class="btn btn-primary" data-label="{{ __('Redirigiendo a Mercado Pago…') }}"><x-icon name="shield" class="size-4" /> {{ $order->status === 'rejected' ? __('Reintentar el pago') : __('Pagar :amount', ['amount' => money($order->total)]) }}</button>
+                                </form>
+                            @endif
                             @include('shop.partials.payment-badges')
                         </div>
                     @endif

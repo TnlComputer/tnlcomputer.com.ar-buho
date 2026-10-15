@@ -235,6 +235,7 @@
     "Otros": "Other",
     "Pagado": "Paid",
     "Pagar :amount": "Pay :amount",
+    "Al pagar, ingresá el monto :amount y en el detalle el número de pedido :number.": "When paying, enter the amount :amount and the order number :number in the description.",
     "Pago": "Payment",
     "Pago aprobado": "Payment approved",
     "Pago en proceso": "Payment in process",

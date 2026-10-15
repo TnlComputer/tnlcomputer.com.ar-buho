@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Services\MercadoPago;
 use App\Services\PaymentSync;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -27,6 +28,9 @@ class OrderController extends Controller
             $order->refresh();
         }
 
-        return view('shop.order', ['order' => $order->load('items', 'payments')]);
+        return view('shop.order', [
+            'order' => $order->load('items', 'payments'),
+            'paymentsEnabled' => app(MercadoPago::class)->configured(),
+        ]);
     }
 }

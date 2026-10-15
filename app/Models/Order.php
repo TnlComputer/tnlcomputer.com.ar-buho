@@ -32,7 +32,7 @@ class Order extends Model
     protected $fillable = [
         'token', 'status', 'customer_name', 'email', 'phone', 'dni', 'shipping_zone_id', 'shipping_zone_name',
         'postal_code', 'address', 'city', 'province', 'notes', 'subtotal', 'shipping_cost', 'total', 'currency',
-        'mp_preference_id', 'tracking_code', 'locale', 'ip', 'paid_at', 'shipped_at', 'delivered_at',
+        'mp_preference_id', 'payment_link', 'tracking_code', 'locale', 'ip', 'paid_at', 'shipped_at', 'delivered_at',
     ];
 
     protected $casts = [
@@ -92,6 +92,37 @@ class Order extends Model
     public function canPay(): bool
     {
         return in_array($this->status, [self::PENDING, self::REJECTED], true);
+    }
+
+    /**
+     * Link de pago manual: el cargado en el pedido o, si no hay, el link fijo del negocio (sin monto).
+     * Se usa mientras no se pueda generar la preferencia automática de Mercado Pago.
+     */
+    public function manualPaymentLink(): ?string
+    {
+        return $this->payment_link ?: (config('tnl.payment_link') ?: null);
+    }
+
+    /** El link manual es el general del negocio: el cliente tiene que escribir el monto al pagar. */
+    public function usesGeneralPaymentLink(): bool
+    {
+        return blank($this->payment_link) && filled(config('tnl.payment_link'));
+    }
+
+    /** Mensaje para mandarle al cliente el link de pago (WhatsApp o email). */
+    public function paymentLinkMessage(): string
+    {
+        $lines = [
+            "¡Hola {$this->customer_name}! Te paso el link para pagar tu pedido {$this->number()} por ".money($this->total).' con Mercado Pago:',
+            $this->manualPaymentLink(),
+        ];
+        if ($this->usesGeneralPaymentLink()) {
+            $lines[] = 'Al pagar, ingresá el monto '.money($this->total).' y en el detalle el número de pedido '.$this->number().'.';
+        }
+        $lines[] = 'Podés seguir el estado del pedido acá: '.route($this->locale === 'en' ? 'en.orders.show' : 'orders.show', $this);
+        $lines[] = '¡Gracias! TNL Computer';
+
+        return implode("\n\n", $lines);
     }
 
     public function amountApproved(): float
