@@ -98,7 +98,7 @@ class SiteTest extends TestCase
 
     public function test_home_has_business_structured_data(): void
     {
-        $this->get('/')->assertSee('"@type":"ComputerStore"', false);
+        $this->get('/')->assertSee('{"@context":"https://schema.org","@type":"ComputerStore"', false);
         $this->get('/hosting')->assertDontSee('application/ld+json', false);
     }
 
