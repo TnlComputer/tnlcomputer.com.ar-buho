@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\GoogleFeedController;
 use App\Http\Controllers\MercadoPagoWebhookController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
@@ -60,6 +61,7 @@ Route::post('/webhooks/mercadopago', MercadoPagoWebhookController::class)
     ->name('webhooks.mercadopago');
 
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('/feed/google.xml', GoogleFeedController::class)->name('feed.google');
 
 // URLs del sitio viejo: 301 para no perder posicionamiento ni links compartidos.
 foreach ([

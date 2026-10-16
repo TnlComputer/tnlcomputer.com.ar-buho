@@ -97,6 +97,25 @@ class SiteTest extends TestCase
             ->assertDontSee('/tienda/producto/B', false);
     }
 
+    public function test_google_feed_lists_buyable_products_with_photo(): void
+    {
+        $img = 'img/productos/catalogo/41817.png';
+        $this->product(['code' => 'A', 'name' => 'Caddy SATA', 'price' => 12500, 'image' => $img]);
+        $this->product(['code' => 'B', 'name' => 'Sin foto']);
+        $this->product(['code' => 'C', 'name' => 'Cooler (solo para PC armada)', 'image' => $img]);
+        $this->product(['code' => 'D', 'name' => 'Inactivo', 'image' => $img, 'active' => false]);
+
+        $this->get('/feed/google.xml')->assertOk()
+            ->assertHeader('Content-Type', 'application/xml; charset=utf-8')
+            ->assertSee('<?xml version="1.0" encoding="UTF-8"?>'."\n<rss", false)
+            ->assertSee('<g:id>A</g:id>', false)
+            ->assertSee('<g:price>12500.00 ARS</g:price>', false)
+            ->assertSee('<g:link>'.url('/tienda/producto/A').'</g:link>', false)
+            ->assertDontSee('<g:id>B</g:id>', false)
+            ->assertDontSee('<g:id>C</g:id>', false)
+            ->assertDontSee('<g:id>D</g:id>', false);
+    }
+
     public function test_home_has_business_structured_data(): void
     {
         $this->get('/')->assertSee('{"@context":"https://schema.org","@type":"ComputerStore"', false);
