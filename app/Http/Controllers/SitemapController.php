@@ -28,7 +28,9 @@ class SitemapController extends Controller
         Product::visible()->orderBy('code')->select('code')
             ->each(fn ($product) => $add('shop.show', $product));
 
-        return response()->view('sitemap', ['urls' => $urls])
-            ->header('Content-Type', 'application/xml; charset=utf-8');
+        // La declaración va fuera de la vista: con short_open_tag activo (como en el hosting) PHP toma "<?xml" como código.
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n".view('sitemap', ['urls' => $urls])->render();
+
+        return response($xml)->header('Content-Type', 'application/xml; charset=utf-8');
     }
 }

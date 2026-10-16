@@ -91,6 +91,7 @@ class SiteTest extends TestCase
 
         $this->get('/sitemap.xml')->assertOk()
             ->assertHeader('Content-Type', 'application/xml; charset=utf-8')
+            ->assertSee('<?xml version="1.0" encoding="UTF-8"?>'."\n<urlset", false)
             ->assertSee('<loc>'.url('/hosting').'</loc>', false)
             ->assertSee('<loc>'.url('/en/tienda/producto/A').'</loc>', false)
             ->assertDontSee('/tienda/producto/B', false);
