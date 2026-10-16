@@ -19,9 +19,18 @@ class Project extends Model
         'active' => 'boolean',
     ];
 
-    /** Ruta relativa a public/ (img/portfolio/... o uploads/proyectos/...). */
+    /** Ruta relativa a public/ (img/portfolio/... o uploads/proyectos/...). Si hay una versión .webp al lado, usa esa (pesa mucho menos). */
     public function imageUrl(): ?string
     {
-        return $this->image ? asset(implode('/', array_map('rawurlencode', explode('/', $this->image)))) : null;
+        if (! $this->image) {
+            return null;
+        }
+        $path = $this->image;
+        $webp = preg_replace('/\.(png|jpe?g)$/i', '.webp', $path);
+        if ($webp !== $path && is_file(public_path($webp))) {
+            $path = $webp;
+        }
+
+        return asset(implode('/', array_map('rawurlencode', explode('/', $path))));
     }
 }

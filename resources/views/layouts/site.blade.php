@@ -66,6 +66,10 @@
         @endphp
         <script type="application/ld+json">{!! json_encode($business, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
     @endif
+    {{-- Fuentes precargadas: si llegan después del primer pintado, el texto cambia de tamaño y mueve la página (CLS). --}}
+    @foreach (['inter/files/inter-latin-wght-normal', 'space-grotesk/files/space-grotesk-latin-wght-normal'] as $font)
+        <link rel="preload" href="{{ Vite::asset("node_modules/@fontsource-variable/{$font}.woff2") }}" as="font" type="font/woff2" crossorigin>
+    @endforeach
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>

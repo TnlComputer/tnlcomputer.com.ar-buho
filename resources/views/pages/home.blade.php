@@ -30,6 +30,7 @@
             <div class="relative">
                 <div class="absolute -inset-4 -z-10 rounded-[2.5rem] bg-gradient-to-br from-brand-500/20 to-sky-400/20 blur-2xl"></div>
                 <img src="{{ asset('img/secciones/pexels-pok-rie-1024.webp') }}" alt="{{ __('Componentes de computadora') }}" width="1024" height="683"
+                     srcset="{{ asset('img/secciones/pexels-pok-rie-640.webp') }} 640w, {{ asset('img/secciones/pexels-pok-rie-1024.webp') }} 1024w" sizes="(min-width: 1024px) 560px, 100vw"
                      class="aspect-[4/3] w-full rounded-[2rem] object-cover shadow-2xl shadow-zinc-900/20" fetchpriority="high">
                 <div class="card absolute -bottom-6 -left-4 hidden items-center gap-3 p-4 shadow-xl sm:flex">
                     <span class="grid size-11 place-items-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"><x-icon name="shield" /></span>
@@ -107,7 +108,7 @@
 
     {{-- Por qué TNL --}}
     <section class="container-x grid items-center gap-12 py-20 md:py-28 lg:grid-cols-2">
-        <img src="{{ asset('img/secciones/service-1-1024.webp') }}" alt="{{ __('Técnico reparando una computadora') }}" loading="lazy" width="1024" height="683" class="aspect-[4/3] w-full rounded-[2rem] object-cover">
+        <img src="{{ asset('img/secciones/service-1-1024.webp') }}" srcset="{{ asset('img/secciones/service-1-640.webp') }} 640w, {{ asset('img/secciones/service-1-1024.webp') }} 1024w" sizes="(min-width: 1024px) 600px, 100vw" alt="{{ __('Técnico reparando una computadora') }}" loading="lazy" width="1024" height="683" class="aspect-[4/3] w-full rounded-[2rem] object-cover">
         <div>
             <p class="eyebrow">{{ __('Por qué elegirnos') }}</p>
             <h2 class="mt-3 text-3xl font-bold sm:text-4xl">{{ __('Atención directa, de alguien que sabe') }}</h2>
