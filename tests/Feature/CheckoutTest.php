@@ -247,6 +247,17 @@ class CheckoutTest extends TestCase
         $this->get("/pedido/{$order->token}")->assertSee('AB123');
     }
 
+    public function test_delivered_order_asks_for_a_google_review(): void
+    {
+        config(['tnl.google_review' => 'https://g.page/r/test/review']);
+        $order = $this->makeOrder(['status' => 'paid']);
+
+        $this->get("/pedido/{$order->token}")->assertDontSee('Dejar una reseña');
+
+        $order->update(['status' => 'delivered', 'delivered_at' => now()]);
+        $this->get("/pedido/{$order->token}")->assertSee('Dejar una reseña')->assertSee('href="https://g.page/r/test/review"', false);
+    }
+
     public function test_admin_can_charge_with_a_manual_payment_link(): void
     {
         $order = $this->makeOrder();

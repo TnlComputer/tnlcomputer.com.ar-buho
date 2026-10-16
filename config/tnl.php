@@ -22,6 +22,9 @@ return [
     'whatsapp' => env('TNL_WHATSAPP', '5491149156462'),
     'whatsapp_label' => '+54 9 11 4915-6462',
 
+    // Link para dejar una reseña en el Perfil de Empresa de Google. Vacío = no se muestra.
+    'google_review' => env('TNL_GOOGLE_REVIEW', 'https://g.page/r/CcniWzCtyV3NEBM/review'),
+
     'social' => [
         'Instagram' => 'https://www.instagram.com/tnlcomputer/',
         'Facebook' => 'https://www.facebook.com/TNLCOMPUTER',

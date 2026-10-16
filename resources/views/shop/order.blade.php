@@ -97,6 +97,17 @@
                     @endif
                 </section>
 
+                @if ($order->status === 'delivered' && config('tnl.google_review'))
+                    <section class="card flex flex-wrap items-center gap-4 p-6">
+                        <x-icon name="star" class="size-6 shrink-0 text-amber-500" />
+                        <div class="min-w-0 flex-1">
+                            <h2 class="font-sans text-base font-semibold">{{ __('¿Cómo te fue con tu compra?') }}</h2>
+                            <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{{ __('Tu opinión en Google nos ayuda mucho y le sirve a otros clientes.') }}</p>
+                        </div>
+                        <a href="{{ config('tnl.google_review') }}" target="_blank" rel="noopener" class="btn btn-primary">{{ __('Dejar una reseña') }}</a>
+                    </section>
+                @endif
+
                 {{-- Pagos --}}
                 @if ($order->payments->isNotEmpty())
                     <section class="card p-6">

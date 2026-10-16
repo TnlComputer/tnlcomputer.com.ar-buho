@@ -178,6 +178,9 @@
                 <ul class="mt-4 space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
                     <li><a href="mailto:{{ config('tnl.email') }}" class="flex items-center gap-2 hover:text-brand-600 dark:hover:text-brand-400"><x-icon name="mail" class="size-4" /> {{ config('tnl.email') }}</a></li>
                     <li><a href="{{ whatsapp_url() }}" target="_blank" rel="noopener" class="flex items-center gap-2 hover:text-brand-600 dark:hover:text-brand-400"><x-icon name="whatsapp" class="size-4" /> {{ config('tnl.whatsapp_label') }}</a></li>
+                    @if (config('tnl.google_review'))
+                        <li><a href="{{ config('tnl.google_review') }}" target="_blank" rel="noopener" class="flex items-center gap-2 hover:text-brand-600 dark:hover:text-brand-400"><x-icon name="star" class="size-4" /> {{ __('Dejanos tu reseña en Google') }}</a></li>
+                    @endif
                     <li>
                         <a href="{{ locale_url(is_en() ? 'es' : 'en') }}" hreflang="{{ is_en() ? 'es' : 'en' }}" class="flex items-center gap-2 hover:text-brand-600 dark:hover:text-brand-400">
                             <x-icon name="sparkles" class="size-4" /> {{ is_en() ? 'View site in Spanish' : 'Ver sitio en inglés' }}
