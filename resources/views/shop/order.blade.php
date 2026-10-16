@@ -99,7 +99,7 @@
                     @if ($order->canCancel())
                         <form method="POST" action="{{ lroute('orders.cancel', $order) }}" class="mt-5" data-confirm="{{ __('¿Cancelar el pedido :number? No se te cobró nada.', ['number' => $order->number()]) }}">
                             @csrf
-                            <button class="text-sm text-zinc-500 underline-offset-4 hover:text-red-600 hover:underline">{{ __('Ya no lo quiero: cancelar el pedido') }}</button>
+                            <button class="btn btn-secondary"><x-icon name="x" class="size-4" /> {{ __('Cancelar pedido') }}</button>
                         </form>
                     @elseif ($order->status === 'cancelled' && ! $order->paid_at)
                         <p class="mt-5 text-sm text-zinc-600 dark:text-zinc-400">{{ __('No se te cobró nada. Si cambiás de idea, podés volver a comprar desde la tienda.') }}</p>

@@ -239,11 +239,11 @@ class CheckoutTest extends TestCase
     {
         $order = $this->makeOrder();
 
-        $this->get("/pedido/{$order->token}")->assertSee('Ya no lo quiero: cancelar el pedido');
+        $this->get("/pedido/{$order->token}")->assertSee('Cancelar pedido');
         $this->post("/pedido/{$order->token}/cancelar")->assertRedirect("/pedido/{$order->token}");
 
         $this->assertSame('cancelled', $order->fresh()->status);
-        $this->get("/pedido/{$order->token}")->assertSee('Pedido cancelado')->assertDontSee('Ya no lo quiero');
+        $this->get("/pedido/{$order->token}")->assertSee('Pedido cancelado')->assertDontSee('Cancelar pedido');
         $this->post("/pedido/{$order->token}/pagar")->assertForbidden();
     }
 
