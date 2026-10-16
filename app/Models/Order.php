@@ -94,6 +94,12 @@ class Order extends Model
         return in_array($this->status, [self::PENDING, self::REJECTED], true);
     }
 
+    /** El cliente puede cancelar mientras no haya pagado nada (ni haya un pago en revisión). */
+    public function canCancel(): bool
+    {
+        return $this->canPay();
+    }
+
     /**
      * Link de pago manual: el cargado en el pedido o, si no hay, el link fijo del negocio (sin monto).
      * Se usa mientras no se pueda generar la preferencia automática de Mercado Pago.
@@ -134,17 +140,22 @@ class Order extends Model
     /**
      * Recalcula el estado a partir de los pagos informados por Mercado Pago.
      * Con dos tarjetas llegan dos pagos aprobados: el pedido queda pagado cuando la suma cubre el total.
-     * No toca pedidos ya enviados, entregados o cancelados a mano.
+     * No toca pedidos ya enviados, entregados o cancelados; salvo un cancelado sin cobrar que después se paga
+     * completo (el cliente canceló pero terminó el pago en otra pestaña): ese pasa a pagado para no perder la venta.
      */
     public function syncStatusFromPayments(): void
     {
-        if (in_array($this->status, [self::SHIPPED, self::DELIVERED, self::CANCELLED], true)) {
+        if (in_array($this->status, [self::SHIPPED, self::DELIVERED], true)) {
             return;
         }
 
         $this->load('payments');
         $approved = $this->amountApproved();
         $total = (float) $this->total;
+
+        if ($this->status === self::CANCELLED && ($this->paid_at || $approved + 0.01 < $total)) {
+            return;
+        }
 
         $status = match (true) {
             $approved + 0.01 >= $total => self::PAID,

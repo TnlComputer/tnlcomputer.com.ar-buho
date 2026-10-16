@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Services\MercadoPago;
 use App\Services\PaymentSync;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
@@ -32,5 +33,15 @@ class OrderController extends Controller
             'order' => $order->load('items', 'payments'),
             'paymentsEnabled' => app(MercadoPago::class)->configured(),
         ]);
+    }
+
+    /** El cliente se arrepiente antes de pagar. Si igual termina un pago en Mercado Pago, el pedido vuelve a pagado. */
+    public function cancel(Order $order): RedirectResponse
+    {
+        abort_unless($order->canCancel(), 403);
+
+        $order->update(['status' => Order::CANCELLED]);
+
+        return redirect(lroute('orders.show', $order));
     }
 }

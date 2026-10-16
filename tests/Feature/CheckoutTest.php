@@ -235,6 +235,50 @@ class CheckoutTest extends TestCase
         $this->get('/pedido/'.$order->id)->assertNotFound();
     }
 
+    public function test_customer_can_cancel_an_unpaid_order(): void
+    {
+        $order = $this->makeOrder();
+
+        $this->get("/pedido/{$order->token}")->assertSee('Ya no lo quiero: cancelar el pedido');
+        $this->post("/pedido/{$order->token}/cancelar")->assertRedirect("/pedido/{$order->token}");
+
+        $this->assertSame('cancelled', $order->fresh()->status);
+        $this->get("/pedido/{$order->token}")->assertSee('Pedido cancelado')->assertDontSee('Ya no lo quiero');
+        $this->post("/pedido/{$order->token}/pagar")->assertForbidden();
+    }
+
+    public function test_customer_cannot_cancel_a_paid_order(): void
+    {
+        $order = $this->makeOrder(['status' => 'paid', 'paid_at' => now()]);
+
+        $this->post("/pedido/{$order->token}/cancelar")->assertForbidden();
+        $this->assertSame('paid', $order->fresh()->status);
+    }
+
+    public function test_payment_finished_after_cancelling_marks_the_order_paid(): void
+    {
+        $order = $this->makeOrder();
+        $this->post("/pedido/{$order->token}/cancelar");
+        Http::fake(['api.mercadopago.com/v1/payments/500' => Http::response($this->paymentPayload($order, ['id' => 500]))]);
+
+        $this->signedWebhook('500')->assertOk();
+
+        $this->assertSame('paid', $order->fresh()->status);
+        Mail::assertSent(OrderPaidAdmin::class);
+    }
+
+    public function test_admin_cancelled_paid_order_stays_cancelled_on_resync(): void
+    {
+        $order = $this->makeOrder();
+        Http::fake(['api.mercadopago.com/v1/payments/600' => Http::response($this->paymentPayload($order, ['id' => 600]))]);
+        $this->signedWebhook('600');
+        $order->refresh()->update(['status' => 'cancelled']);
+
+        $this->signedWebhook('600')->assertOk();
+
+        $this->assertSame('cancelled', $order->fresh()->status);
+    }
+
     public function test_admin_can_ship_an_order(): void
     {
         $order = $this->makeOrder(['status' => 'paid']);

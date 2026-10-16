@@ -34,6 +34,7 @@ $site = function () {
         Route::post('/service', [FormController::class, 'service'])->name('service.send');
         Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
         Route::post('/pedido/{order}/pagar', [CheckoutController::class, 'pay'])->name('orders.pay');
+        Route::post('/pedido/{order}/cancelar', [OrderController::class, 'cancel'])->name('orders.cancel');
     });
 
     Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout');
