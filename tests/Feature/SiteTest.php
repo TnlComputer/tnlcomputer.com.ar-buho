@@ -81,6 +81,25 @@ class SiteTest extends TestCase
     {
         $this->get('/hosting.html')->assertStatus(301)->assertRedirect('/hosting');
         $this->get('/hardware.html')->assertStatus(301)->assertRedirect('/tienda');
+        $this->get('/hardware')->assertStatus(301)->assertRedirect('/tienda');
+    }
+
+    public function test_sitemap_lists_pages_and_visible_products(): void
+    {
+        $this->product(['code' => 'A']);
+        $this->product(['code' => 'B', 'active' => false]);
+
+        $this->get('/sitemap.xml')->assertOk()
+            ->assertHeader('Content-Type', 'application/xml; charset=utf-8')
+            ->assertSee('<loc>'.url('/hosting').'</loc>', false)
+            ->assertSee('<loc>'.url('/en/tienda/producto/A').'</loc>', false)
+            ->assertDontSee('/tienda/producto/B', false);
+    }
+
+    public function test_home_has_business_structured_data(): void
+    {
+        $this->get('/')->assertSee('"@type":"ComputerStore"', false);
+        $this->get('/hosting')->assertDontSee('application/ld+json', false);
     }
 
     public function test_out_of_stock_and_inactive_products_are_hidden(): void

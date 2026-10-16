@@ -25,8 +25,9 @@ DirectoryIndex index.php
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
     # Redirect Trailing Slashes If Not A Folder...
+    # Se toma la URL de THE_REQUEST (la que pidió el navegador): REQUEST_URI ya trae el /public/ que agrega el .htaccess de la raíz.
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteCond %{THE_REQUEST} ^\S+\s([^?\s]+?)/+[?\s]
     RewriteRule ^ %1 [L,R=301]
 
     # Send Requests To Front Controller...

@@ -8,6 +8,7 @@ use App\Http\Controllers\MercadoPagoWebhookController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 // Instalador de un solo uso (hosting sin SSH). Solo existe con INSTALL_TOKEN en el .env y sin installed.lock.
@@ -57,11 +58,14 @@ Route::post('/webhooks/mercadopago', MercadoPagoWebhookController::class)
     ->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class)
     ->name('webhooks.mercadopago');
 
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+
 // URLs del sitio viejo: 301 para no perder posicionamiento ni links compartidos.
 foreach ([
     'index.html' => 'home', 'hosting.html' => 'hosting', 'design.html' => 'design', 'hardware.html' => 'shop.index',
     'producto.html' => 'shop.index', 'carrito.html' => 'cart.index', 'service.html' => 'service',
     'contacto.html' => 'contact', 'portfolio.html' => 'portfolio',
+    'hardware' => 'shop.index', 'design' => 'design', 'producto' => 'shop.index',
 ] as $old => $route) {
     Route::get($old, fn () => redirect()->route($route, status: 301));
 }

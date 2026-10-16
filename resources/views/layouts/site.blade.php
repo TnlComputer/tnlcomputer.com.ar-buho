@@ -47,6 +47,22 @@
             }
         } catch {}
     </script>
+    @if (route_is('home'))
+        {{-- Datos del negocio para Google (los mismos que el Perfil de Empresa). --}}
+        <script type="application/ld+json">{!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'ComputerStore',
+            'name' => config('tnl.name'),
+            'url' => url('/'),
+            'logo' => asset('logo512.png'),
+            'image' => asset('logo512.png'),
+            'description' => __(config('tnl.tagline')),
+            'telephone' => '+54 11 4915-6462',
+            'email' => config('tnl.email'),
+            'areaServed' => 'Buenos Aires, Argentina',
+            'sameAs' => array_values(array_diff_key(config('tnl.social'), ['LinkedIn' => 1, 'GitHub' => 1])),
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
+    @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>
