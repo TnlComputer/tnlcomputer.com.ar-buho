@@ -16,7 +16,7 @@ class SitemapController extends Controller
             $urls[] = [route($route, $params), route("en.{$route}", $params)];
         };
 
-        foreach (['home', 'shop.index', 'hosting', 'design', 'service', 'portfolio', 'contact'] as $route) {
+        foreach (['home', 'shop.index', 'hosting', 'design', 'service', 'portfolio', 'contact', 'policies'] as $route) {
             $add($route);
         }
 

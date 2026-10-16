@@ -26,6 +26,7 @@ $site = function () {
         Route::get('/diseno-web', 'design')->name('design');
         Route::get('/service', 'service')->name('service');
         Route::get('/contacto', 'contact')->name('contact');
+        Route::get('/envios-y-devoluciones', 'policies')->name('policies');
         Route::get('/portfolio', 'portfolio')->name('portfolio');
         Route::get('/portfolio/descargar', 'portfolioPdf')->middleware('throttle:10,1')->name('portfolio.pdf');
     });

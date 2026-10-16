@@ -6,6 +6,7 @@ use App\Models\Certification;
 use App\Models\HostingPlan;
 use App\Models\Product;
 use App\Models\Project;
+use App\Models\ShippingZone;
 use App\Models\Skill;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
@@ -44,6 +45,12 @@ class PageController extends Controller
     public function contact(): View
     {
         return view('pages.contact');
+    }
+
+    /** Envíos, arrepentimiento, cambios y garantía (la pide Google Merchant Center y la ley de Defensa del Consumidor). */
+    public function policies(): View
+    {
+        return view('pages.policies', ['zones' => ShippingZone::active()->get()]);
     }
 
     public function portfolio(): View

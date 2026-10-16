@@ -97,6 +97,18 @@ class SiteTest extends TestCase
             ->assertDontSee('/tienda/producto/B', false);
     }
 
+    public function test_policies_page_lists_shipping_zones_and_withdrawal(): void
+    {
+        $this->seed(\Database\Seeders\ShippingZoneSeeder::class);
+
+        $this->get('/envios-y-devoluciones')->assertOk()
+            ->assertSee('Retiro sin cargo')->assertSee('Resto del país')
+            ->assertSee('id="arrepentimiento"', false)->assertSee('10 días corridos');
+        $this->get('/en/envios-y-devoluciones')->assertOk()->assertSee('Right of withdrawal')->assertSee('Free pickup');
+        $this->get('/')->assertSee(url('/envios-y-devoluciones').'#arrepentimiento', false);
+        $this->get('/sitemap.xml')->assertSee('<loc>'.url('/envios-y-devoluciones').'</loc>', false);
+    }
+
     public function test_google_feed_lists_buyable_products_with_photo(): void
     {
         $img = 'img/productos/catalogo/41817.png';

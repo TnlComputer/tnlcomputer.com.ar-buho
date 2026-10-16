@@ -196,7 +196,11 @@
         <div class="border-t border-zinc-200 dark:border-ink-700">
             <div class="container-x flex flex-col gap-2 py-6 text-xs text-zinc-500 sm:flex-row sm:justify-between">
                 <p>© {{ date('Y') }} TNL Computer. {{ __('Todos los derechos reservados.') }}</p>
-                <p>{{ __('Precios en pesos argentinos, sujetos a cambio sin previo aviso.') }}</p>
+                <p>
+                    <a href="{{ lroute('policies') }}" class="hover:text-brand-600 dark:hover:text-brand-400">{{ __('Envíos, cambios y devoluciones') }}</a>
+                    · <a href="{{ lroute('policies') }}#arrepentimiento" class="font-semibold hover:text-brand-600 dark:hover:text-brand-400">{{ __('Botón de arrepentimiento') }}</a>
+                    · {{ __('Precios en pesos argentinos, sujetos a cambio sin previo aviso.') }}
+                </p>
             </div>
         </div>
     </footer>
