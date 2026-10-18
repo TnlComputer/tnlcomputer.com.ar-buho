@@ -93,7 +93,7 @@ Flujo: carrito → datos y envío (el costo se cotiza por CP) → Mercado Pago �
 - **Reintegros:** se hacen desde Mercado Pago, y el pedido pasa solo a "Reintegrado".
 
 ### Actualizar precios
-Para actualizar precios, subí la lista nueva del proveedor en `/admin/productos/importar` (aplica el recargo de `TNL_MARKUP`, hoy 15%). Por SSH: `php artisan tnl:importar-csv lista.csv --desactivar`.
+Para actualizar precios, subí la lista nueva del proveedor en `/admin/productos/importar` (aplica el recargo de `TNL_MARKUP`, hoy 20%). Por SSH: `php artisan tnl:importar-csv lista.csv --desactivar`.
 
 ### Si el hosting fuera IIS (Windows)
 `public/web.config` ya tiene las reglas equivalentes al `.htaccess`. El sitio de IIS tiene que apuntar a la carpeta `public`.
