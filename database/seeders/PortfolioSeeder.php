@@ -42,7 +42,7 @@ class PortfolioSeeder extends Seeder
                 'description' => 'Plataforma del Team 48 para analizar el consumo eléctrico: dashboard, historial de consumos, análisis con un modelo de Machine Learning y recomendaciones de ahorro. Incluye login con JWT y Google, verificación por email, panel de administración e interfaz multilenguaje con tema claro/oscuro.',
                 'description_en' => 'Team 48 platform for analyzing electricity consumption: dashboard, consumption history, Machine Learning–based analysis and saving recommendations. Includes JWT and Google login, email verification, an admin panel and a multilingual UI with light/dark theme.',
                 'kind' => 'Hackathon', 'kind_en' => 'Hackathon', 'tags' => ['React', 'Spring Boot', 'JWT', 'MySQL', 'FastAPI', 'Machine Learning'],
-                'image' => $img.'web-energia.png', 'demo_url' => 'https://g9-latam-team-48.vercel.app',
+                'image' => $img.'web-energia.png', 'demo_url' => null,
                 'code_url' => 'https://github.com/No-Country-simulation/G9-LATAM-Team-48', 'year' => 2026, 'featured' => true,
             ],
             [
