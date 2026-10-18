@@ -12,9 +12,6 @@
         @if ($plans->isEmpty())
             <p class="text-center text-zinc-500">{{ __('Estamos actualizando los planes.') }} <a href="{{ lroute('contact') }}" class="text-brand-600 underline">{{ __('Consultanos') }}</a>.</p>
         @else
-            <p class="mx-auto mb-8 flex w-fit max-w-full items-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-center text-sm font-medium text-brand-800 dark:border-brand-800 dark:bg-brand-900/30 dark:text-brand-200">
-                <x-icon name="check" class="size-4 shrink-0" /> {{ __('El pago del hosting es anual, por adelantado. Los precios se muestran por mes para que puedas compararlos.') }}
-            </p>
             <div data-tabs>
                 <div class="mx-auto flex w-fit rounded-xl border border-zinc-200 bg-zinc-100 p-1 dark:border-ink-700 dark:bg-ink-900" role="tablist" aria-label="{{ __('Panel de control') }}">
                     @foreach ($plans->keys() as $i => $panel)
@@ -71,7 +68,7 @@
                     </div>
                 @endforeach
             </div>
-            <p class="mt-6 text-center text-xs text-zinc-500">{{ __('Precios en pesos argentinos más IVA (21%), expresados por mes. El pago es anual y se abona por adelantado. La renovación se mantiene al precio de lista vigente: sin promociones engañosas.') }}</p>
+            <p class="mt-6 text-center text-xs text-zinc-500">{{ __('Precios en pesos argentinos más IVA (21%), por mes. La renovación se mantiene al precio de lista vigente: sin promociones engañosas. Con pago semestral, anual o bianual se abona el período completo por adelantado.') }}</p>
         @endif
     </section>
 
