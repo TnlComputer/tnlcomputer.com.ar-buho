@@ -4,6 +4,30 @@
 
 @push('head')<meta name="robots" content="noindex, nofollow">@endpush
 
+@if ($order->paid_at && ! in_array($order->status, ['cancelled', 'refunded'], true))
+    {{-- Compra para Analytics/Merchant Center. Se manda una sola vez por navegador (y GA descarta repetidos con el mismo transaction_id). --}}
+    @php
+        $purchase = [
+            'transaction_id' => $order->number(),
+            'currency' => 'ARS',
+            'value' => (float) $order->total,
+            'shipping' => (float) $order->shipping_cost,
+            'items' => $order->items->map(fn ($i) => ['item_id' => $i->code, 'item_name' => $i->name, 'price' => (float) $i->unit_price, 'quantity' => $i->qty])->values(),
+        ];
+    @endphp
+    @push('analytics')
+        <script>
+            try {
+                const key = 'ga_purchase_' + @json($order->number());
+                if (!localStorage.getItem(key)) {
+                    gtag('event', 'purchase', @json($purchase));
+                    localStorage.setItem(key, '1');
+                }
+            } catch {}
+        </script>
+    @endpush
+@endif
+
 @php
     $timeline = [
         [__('Pedido creado'), $order->created_at],

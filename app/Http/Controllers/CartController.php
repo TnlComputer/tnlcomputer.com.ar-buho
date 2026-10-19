@@ -25,7 +25,8 @@ class CartController extends Controller
 
         $this->cart->add($product, (int) $request->input('qty', 1));
 
-        return back()->with('cart_added', $product->name);
+        return back()->with('cart_added', $product->name)
+            ->with('ga_add_to_cart', $product->gaItem(max(1, (int) $request->input('qty', 1))));
     }
 
     public function update(Request $request, Product $product): RedirectResponse

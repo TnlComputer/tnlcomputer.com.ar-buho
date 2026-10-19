@@ -46,6 +46,18 @@ class Product extends Model
         return 'code';
     }
 
+    /** Ítem con el formato de los eventos de e-commerce de Google Analytics. */
+    public function gaItem(int $qty = 1): array
+    {
+        return array_filter([
+            'item_id' => $this->code,
+            'item_name' => $this->name,
+            'item_category' => $this->category?->name,
+            'price' => (float) $this->price,
+            'quantity' => $qty,
+        ], fn ($v) => $v !== null);
+    }
+
     /** "DISPONIBLE" → "Disponible" / "Available". */
     public function stockLabel(): string
     {

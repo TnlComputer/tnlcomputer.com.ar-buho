@@ -22,6 +22,9 @@ return [
     'whatsapp' => env('TNL_WHATSAPP', '5491149156462'),
     'whatsapp_label' => '+54 9 11 4915-6462',
 
+    // ID de medición de Google Analytics 4 (también vinculado a Merchant Center). Vacío = sin Analytics.
+    'ga4' => env('TNL_GA4_ID', 'G-MB8W84WP8R'),
+
     // Link para dejar una reseña en el Perfil de Empresa de Google. Vacío = no se muestra.
     'google_review' => env('TNL_GOOGLE_REVIEW', 'https://g.page/r/CcniWzCtyV3NEBM/review'),
 

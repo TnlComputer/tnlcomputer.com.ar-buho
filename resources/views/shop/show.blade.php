@@ -22,6 +22,10 @@
     ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
 @endpush
 
+@push('analytics')
+    <script>gtag('event', 'view_item', @json(['currency' => 'ARS', 'value' => (float) $product->price, 'items' => [$product->gaItem()]]));</script>
+@endpush
+
 @section('content')
     <div class="container-x py-10">
         <nav class="text-sm text-zinc-500" aria-label="{{ __('Ruta') }}">

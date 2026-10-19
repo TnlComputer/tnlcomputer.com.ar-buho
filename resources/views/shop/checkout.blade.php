@@ -4,6 +4,10 @@
 
 @push('head')<meta name="robots" content="noindex">@endpush
 
+@push('analytics')
+    <script>gtag('event', 'begin_checkout', @json(['currency' => 'ARS', 'value' => $subtotal, 'items' => $lines->map(fn ($l) => $l->product->gaItem($l->qty))->values()]));</script>
+@endpush
+
 @section('content')
     <div class="container-x py-10">
         @include('shop.partials.steps', ['step' => 2])

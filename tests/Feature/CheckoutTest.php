@@ -350,6 +350,26 @@ class CheckoutTest extends TestCase
         $this->get("/pedido/{$order->token}")->assertDontSee('https://link.mercadopago.com.ar/tnl');
     }
 
+    public function test_google_analytics_ecommerce_events(): void
+    {
+        $product = Product::create(['code' => 'P1', 'name' => 'Placa de video', 'price' => 100000, 'stock' => 'DISPONIBLE']);
+
+        $this->get("/tienda/producto/{$product->code}")->assertOk()
+            ->assertSee('G-MB8W84WP8R', false)->assertSee("gtag('event', 'view_item'", false);
+
+        $this->from("/tienda/producto/{$product->code}")->post("/carrito/{$product->code}", ['qty' => 2]);
+        $this->get("/tienda/producto/{$product->code}")->assertSee("gtag('event', 'add_to_cart'", false)->assertSee('"quantity":2', false);
+        $this->get('/carrito')->assertSee("gtag('event', 'view_cart'", false);
+        $this->get('/checkout')->assertSee("gtag('event', 'begin_checkout'", false);
+
+        $pending = $this->makeOrder();
+        $this->get("/pedido/{$pending->token}")->assertOk()->assertDontSee("'purchase'", false);
+
+        $paid = $this->makeOrder(['status' => 'paid', 'paid_at' => now()]);
+        $this->get("/pedido/{$paid->token}")->assertOk()
+            ->assertSee("gtag('event', 'purchase'", false)->assertSee('"transaction_id":"'.$paid->number().'"', false)->assertSee('"value":207500', false);
+    }
+
     private function makeOrder(array $attrs = []): Order
     {
         $order = Order::create($attrs + [

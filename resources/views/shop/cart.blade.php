@@ -2,6 +2,12 @@
 
 @section('title', __('Carrito'))
 
+@if ($lines->isNotEmpty())
+    @push('analytics')
+        <script>gtag('event', 'view_cart', @json(['currency' => 'ARS', 'value' => $total, 'items' => $lines->map(fn ($l) => $l->product->gaItem($l->qty))->values()]));</script>
+    @endpush
+@endif
+
 @section('content')
     <div class="container-x py-10">
         @include('shop.partials.steps', ['step' => 1])

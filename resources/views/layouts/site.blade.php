@@ -71,6 +71,20 @@
         <link rel="preload" href="{{ Vite::asset("node_modules/@fontsource-variable/{$font}.woff2") }}" as="font" type="font/woff2" crossorigin>
     @endforeach
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if (config('tnl.ga4') && ! app()->isLocal())
+        {{-- Google Analytics 4. Los eventos de compra los agregan las vistas de la tienda con @push('analytics'). --}}
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('tnl.ga4') }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', @json(config('tnl.ga4')));
+            @if (session('ga_add_to_cart'))
+                gtag('event', 'add_to_cart', @json(['currency' => 'ARS', 'value' => session('ga_add_to_cart')['price'] * session('ga_add_to_cart')['quantity'], 'items' => [session('ga_add_to_cart')]]));
+            @endif
+        </script>
+        @stack('analytics')
+    @endif
     @stack('head')
 </head>
 <body class="flex min-h-dvh flex-col">
