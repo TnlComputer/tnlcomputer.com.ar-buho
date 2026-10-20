@@ -9,7 +9,7 @@
         <g:title>{{ \Illuminate\Support\Str::limit(preg_replace('/^\[[^\]]*\]\s*/', '', $product->name), 150, '') }}</g:title>
         <g:description>{{ \Illuminate\Support\Str::limit(strip_tags($product->description ?: $product->name), 5000, '') }}</g:description>
         <g:link>{{ route('shop.show', $product) }}</g:link>
-        <g:image_link>{{ $product->imageUrl() }}</g:image_link>
+        <g:image_link>{{ $product->imageUrl() }}?v={{ $imageVersion }}</g:image_link>
         <g:availability>in_stock</g:availability>
         <g:price>{{ number_format((float) $product->price, 2, '.', '') }} ARS</g:price>
         <g:condition>new</g:condition>
