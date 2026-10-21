@@ -69,6 +69,17 @@ class Order extends Model
         return $this->hasMany(Payment::class)->latest();
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    /** El cliente puede calificar lo que compró una vez que lo recibió. */
+    public function canReview(): bool
+    {
+        return $this->status === self::DELIVERED;
+    }
+
     public function events(): HasMany
     {
         return $this->hasMany(OrderEvent::class)->oldest('id');

@@ -4,8 +4,9 @@
 @section('description', \Illuminate\Support\Str::limit(($product->description ?: $product->name).' — '.money($product->price).' '.__('en TNL Computer.'), 155))
 @section('og_image', $product->imageUrl())
 
-@push('head')
-    <script type="application/ld+json">{!! json_encode([
+@php
+    $rating = $product->rating();
+    $schema = [
         '@context' => 'https://schema.org',
         '@type' => 'Product',
         'name' => $product->name,
@@ -19,7 +20,22 @@
             'availability' => 'https://schema.org/InStock',
             'url' => url()->current(),
         ],
-    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
+    ];
+    if ($rating) {
+        // Solo reseñas reales de compradores, aprobadas en el panel.
+        $schema['aggregateRating'] = ['@type' => 'AggregateRating', 'ratingValue' => $rating['average'], 'reviewCount' => $rating['count'], 'bestRating' => 5, 'worstRating' => 1];
+        $schema['review'] = $product->reviews->take(5)->map(fn ($r) => array_filter([
+            '@type' => 'Review',
+            'author' => ['@type' => 'Person', 'name' => $r->author],
+            'datePublished' => $r->approved_at?->toDateString(),
+            'reviewRating' => ['@type' => 'Rating', 'ratingValue' => $r->rating, 'bestRating' => 5, 'worstRating' => 1],
+            'reviewBody' => $r->comment,
+        ]))->values()->all();
+    }
+@endphp
+
+@push('head')
+    <script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
 @endpush
 
 @push('analytics')
@@ -46,6 +62,12 @@
             <div>
                 <p class="text-sm text-zinc-500">{{ __('Código') }}: {{ $product->code }}</p>
                 <h1 class="mt-2 text-3xl font-bold sm:text-4xl">{{ $product->name }}</h1>
+                @if ($rating)
+                    <a href="#resenas" class="mt-3 inline-flex items-center gap-2 text-sm text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white">
+                        <x-stars :value="$rating['average']" class="text-base" />
+                        <span>{{ str_replace('.', ',', (string) $rating['average']) }} · {{ trans_choice(':count opinión|:count opiniones', $rating['count']) }}</span>
+                    </a>
+                @endif
                 <p class="mt-6 font-display text-4xl font-bold text-zinc-950 dark:text-white">{{ money($product->price) }}</p>
                 <p class="mt-1 text-sm text-zinc-500">{{ __('Precio final con IVA. Pagalo en cuotas con tarjeta de crédito.') }}</p>
                 @if ($product->stock)
@@ -89,6 +111,32 @@
                 </ul>
             </div>
         </div>
+
+        @if ($rating)
+            <section id="resenas" class="mt-16 scroll-mt-24">
+                <div class="flex flex-wrap items-end gap-x-6 gap-y-2">
+                    <h2 class="text-2xl font-bold">{{ __('Opiniones de compradores') }}</h2>
+                    <p class="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
+                        <x-stars :value="$rating['average']" class="text-lg" />
+                        <strong class="text-zinc-950 dark:text-white">{{ str_replace('.', ',', (string) $rating['average']) }}</strong> {{ __('de 5') }} · {{ trans_choice(':count opinión|:count opiniones', $rating['count']) }}
+                    </p>
+                </div>
+                <ul class="mt-6 grid gap-4 md:grid-cols-2">
+                    @foreach ($product->reviews as $review)
+                        <li class="card p-5">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <x-stars :value="$review->rating" />
+                                <span class="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 dark:text-emerald-400"><x-icon name="check" class="size-3.5" /> {{ __('Compra verificada') }}</span>
+                            </div>
+                            @if ($review->comment)
+                                <p class="mt-3 text-sm whitespace-pre-line text-zinc-700 dark:text-zinc-300">{{ $review->comment }}</p>
+                            @endif
+                            <p class="mt-3 text-xs text-zinc-500">{{ $review->author }} · {{ $review->approved_at?->translatedFormat('d M Y') }}</p>
+                        </li>
+                    @endforeach
+                </ul>
+            </section>
+        @endif
 
         @if ($related->isNotEmpty())
             <section class="mt-20">

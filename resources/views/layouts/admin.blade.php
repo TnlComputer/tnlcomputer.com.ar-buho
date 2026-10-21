@@ -1,6 +1,7 @@
 @php
     $unread = \App\Models\Message::whereNull('read_at')->count();
     $toShip = \App\Models\Order::where('status', 'paid')->count();
+    $pendingReviews = \App\Models\Review::where('status', 'pending')->count();
     $menu = [
         ['Inicio', 'admin.dashboard', 'home', 'admin.dashboard'],
         ['Pedidos', 'admin.orders.index', 'cart', 'admin.orders.*'],
@@ -12,6 +13,7 @@
         ['Skills', 'admin.skills.index', 'code', 'admin.skills.*'],
         ['Certificaciones', 'admin.certifications.index', 'star', 'admin.certifications.*'],
         ['Mensajes', 'admin.messages.index', 'inbox', 'admin.messages.*'],
+        ['Reseñas', 'admin.reviews.index', 'star', 'admin.reviews.*'],
         ['Seguridad', 'admin.security', 'shield', 'admin.security*'],
     ];
 @endphp
@@ -46,6 +48,9 @@
                         @endif
                         @if ($route === 'admin.messages.index' && $unread)
                             <span class="ml-auto rounded-full bg-brand-600 px-2 text-xs leading-5 font-bold text-white">{{ $unread }}</span>
+                        @endif
+                        @if ($route === 'admin.reviews.index' && $pendingReviews)
+                            <span class="ml-auto rounded-full bg-amber-500 px-2 text-xs leading-5 font-bold text-white" title="Reseñas para revisar">{{ $pendingReviews }}</span>
                         @endif
                         @if ($route === 'admin.security' && ! auth()->user()->hasTwoFactor())
                             <span class="ml-auto rounded-full bg-amber-500 px-2 text-xs leading-5 font-bold text-white" title="Activá la verificación en dos pasos">!</span>

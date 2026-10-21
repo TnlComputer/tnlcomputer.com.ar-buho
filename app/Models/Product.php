@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -24,6 +25,22 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    /** Promedio y cantidad de reseñas publicadas: ['average' => 4.5, 'count' => 12], o null si no hay. */
+    public function rating(): ?array
+    {
+        $approved = $this->reviews->where('status', Review::APPROVED);
+
+        return $approved->isEmpty() ? null : [
+            'average' => round($approved->avg('rating'), 1),
+            'count' => $approved->count(),
+        ];
     }
 
     /** Productos que se muestran en la tienda. */

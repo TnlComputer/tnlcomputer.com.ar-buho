@@ -10,6 +10,7 @@ use App\Http\Controllers\InstallController;
 use App\Http\Controllers\MercadoPagoWebhookController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
@@ -40,6 +41,7 @@ $site = function () {
         Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
         Route::post('/pedido/{order}/pagar', [CheckoutController::class, 'pay'])->name('orders.pay');
         Route::post('/pedido/{order}/cancelar', [OrderController::class, 'cancel'])->name('orders.cancel');
+        Route::post('/pedido/{order}/opinar', [ReviewController::class, 'store'])->name('orders.review');
     });
 
     Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout');
@@ -120,6 +122,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('skills', Admin\SkillController::class)->except('show')->names('skills');
         Route::resource('certificaciones', Admin\CertificationController::class)->except('show')
             ->parameters(['certificaciones' => 'certification'])->names('certifications');
+        Route::get('resenas', [Admin\ReviewController::class, 'index'])->name('reviews.index');
+        Route::get('resenas/cartel', [Admin\ReviewController::class, 'poster'])->name('reviews.poster');
+        Route::put('resenas/{review}', [Admin\ReviewController::class, 'update'])->name('reviews.update');
+        Route::delete('resenas/{review}', [Admin\ReviewController::class, 'destroy'])->name('reviews.destroy');
         Route::resource('mensajes', Admin\MessageController::class)->only(['index', 'show', 'destroy'])
             ->parameters(['mensajes' => 'message'])->names('messages');
     });

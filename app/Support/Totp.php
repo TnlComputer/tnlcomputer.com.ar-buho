@@ -2,10 +2,6 @@
 
 namespace App\Support;
 
-use BaconQrCode\Renderer\Image\SvgImageBackEnd;
-use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use BaconQrCode\Writer;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -60,7 +56,7 @@ class Totp
 
     public static function qrSvg(string $uri): string
     {
-        return (new Writer(new ImageRenderer(new RendererStyle(200, 1), new SvgImageBackEnd)))->writeString($uri);
+        return Qr::svg($uri);
     }
 
     private static function at(string $secret, int $step): string

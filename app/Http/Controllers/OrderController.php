@@ -30,7 +30,7 @@ class OrderController extends Controller
         }
 
         return view('shop.order', [
-            'order' => $order->load('items', 'payments'),
+            'order' => $order->load('items', 'payments', 'reviews'),
             'paymentsEnabled' => app(MercadoPago::class)->configured(),
         ]);
     }

@@ -131,6 +131,39 @@
                     @endif
                 </section>
 
+                @php $reviewable = $order->canReview() ? $order->items->whereNotNull('product_id') : collect(); @endphp
+                @if ($reviewable->isNotEmpty())
+                    <section id="resenas" class="card p-6">
+                        <h2 class="font-sans text-base font-semibold">{{ __('Calificá lo que compraste') }}</h2>
+                        <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{{ __('Tu opinión se publica en la ficha del producto como compra verificada, con tu nombre y la inicial de tu apellido.') }}</p>
+                        @if (session('review_status'))
+                            <p class="mt-4 rounded-xl bg-emerald-50 p-3 text-sm text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-200" role="status">{{ session('review_status') }}</p>
+                        @endif
+                        <form method="POST" action="{{ lroute('orders.review', $order) }}" class="mt-5 divide-y divide-zinc-100 dark:divide-ink-700" data-once>
+                            @csrf
+                            @foreach ($reviewable as $item)
+                                @php $done = $order->reviews->firstWhere('product_id', $item->product_id); @endphp
+                                <div class="py-4 first:pt-0">
+                                    <p class="text-sm font-medium">{{ $item->name }}</p>
+                                    @if ($done)
+                                        <div class="mt-2 flex flex-wrap items-center gap-3 text-sm text-zinc-600 dark:text-zinc-400">
+                                            <x-stars :value="$done->rating" />
+                                            {{ $done->status === 'approved' ? __('Tu opinión ya está publicada. ¡Gracias!') : __('¡Gracias! Tu opinión está en revisión.') }}
+                                        </div>
+                                    @else
+                                        <div class="mt-2"><x-star-input :name="'reviews['.$item->product_id.'][rating]'" :value="old('reviews.'.$item->product_id.'.rating')" /></div>
+                                        <label for="comment-{{ $item->product_id }}" class="sr-only">{{ __('Comentario') }}</label>
+                                        <textarea id="comment-{{ $item->product_id }}" name="reviews[{{ $item->product_id }}][comment]" rows="2" maxlength="1000" class="input mt-3" placeholder="{{ __('Contanos qué te pareció (opcional)') }}">{{ old('reviews.'.$item->product_id.'.comment') }}</textarea>
+                                    @endif
+                                </div>
+                            @endforeach
+                            @if ($reviewable->contains(fn ($item) => ! $order->reviews->firstWhere('product_id', $item->product_id)))
+                                <div class="pt-4"><button class="btn btn-primary" data-label="{{ __('Enviando…') }}">{{ __('Enviar mi opinión') }}</button></div>
+                            @endif
+                        </form>
+                    </section>
+                @endif
+
                 @if ($order->status === 'delivered' && config('tnl.google_review'))
                     <section class="card flex flex-wrap items-center gap-4 p-6">
                         <x-icon name="star" class="size-6 shrink-0 text-amber-500" />

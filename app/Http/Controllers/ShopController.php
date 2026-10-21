@@ -68,6 +68,7 @@ class ShopController extends Controller
     public function show(Product $product): View
     {
         abort_unless($product->active, 404);
+        $product->load(['reviews' => fn ($q) => $q->approved()->latest('approved_at')]);
 
         $related = Product::visible()
             ->where('category_id', $product->category_id)

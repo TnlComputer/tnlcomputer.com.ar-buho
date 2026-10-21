@@ -35,6 +35,9 @@ document.querySelectorAll('form[data-confirm]').forEach((form) => {
     });
 });
 
+// Botón de imprimir (cartel de reseñas del panel)
+document.querySelectorAll('[data-print]').forEach((btn) => btn.addEventListener('click', () => window.print()));
+
 // Carrito: cambiar cantidad envía el formulario
 document.querySelectorAll('[data-autosubmit]').forEach((el) => {
     el.addEventListener('change', () => el.form.requestSubmit());
