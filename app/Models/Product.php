@@ -11,10 +11,11 @@ class Product extends Model
     public const SIN_STOCK = 'SIN STOCK';
 
     protected $fillable = [
-        'code', 'category_id', 'name', 'description', 'price', 'stock', 'image', 'featured', 'active',
+        'code', 'category_id', 'name', 'description', 'specs', 'price', 'stock', 'image', 'featured', 'active',
     ];
 
     protected $casts = [
+        'specs' => 'array',
         'price' => 'decimal:2',
         'featured' => 'boolean',
         'active' => 'boolean',
@@ -56,6 +57,28 @@ class Product extends Model
             'price' => (float) $this->price,
             'quantity' => $qty,
         ], fn ($v) => $v !== null);
+    }
+
+    /** Características como texto para el panel: una por línea, "Nombre: valor". */
+    public function specsText(): string
+    {
+        return collect($this->specs ?? [])->map(fn ($s) => "{$s[0]}: {$s[1]}")->implode("\n");
+    }
+
+    /**
+     * Lee el texto del panel ("Nombre: valor" por línea). Las líneas sin ":" o con algo vacío se ignoran.
+     *
+     * @return list<array{0: string, 1: string}>|null
+     */
+    public static function parseSpecs(?string $text): ?array
+    {
+        $specs = collect(preg_split('/\R/', (string) $text))
+            ->map(fn ($line) => array_map('trim', explode(':', $line, 2)))
+            ->filter(fn ($s) => count($s) === 2 && $s[0] !== '' && $s[1] !== '')
+            ->map(fn ($s) => [mb_substr($s[0], 0, 60), mb_substr($s[1], 0, 200)])
+            ->values()->all();
+
+        return $specs ?: null;
     }
 
     /** "DISPONIBLE" → "Disponible" / "Available". */

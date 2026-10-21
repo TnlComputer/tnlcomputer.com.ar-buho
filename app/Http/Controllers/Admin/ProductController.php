@@ -89,9 +89,11 @@ class ProductController extends Controller
             'price' => ['required', 'numeric', 'min:0'],
             'stock' => ['nullable', 'string', 'max:60'],
             'description' => ['nullable', 'string', 'max:5000'],
+            'specs' => ['nullable', 'string', 'max:5000'],
             'photo' => ['nullable', 'image', 'max:4096'],
         ]);
 
+        $data['specs'] = Product::parseSpecs($data['specs'] ?? null);
         $data['image'] = $this->storeUpload($request->file('photo'), 'productos', $product->image);
         $data['featured'] = $request->boolean('featured');
         $data['active'] = $request->boolean('active');

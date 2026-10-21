@@ -128,6 +128,23 @@ class SiteTest extends TestCase
             ->assertDontSee('<g:id>D</g:id>', false);
     }
 
+    public function test_product_specs_are_edited_shown_and_sent_to_google(): void
+    {
+        $this->actingAs(User::create(['name' => 'A', 'email' => 'a@example.com', 'password' => 'x']));
+        $product = $this->product(['code' => 'K1', 'name' => 'Teclado Redragon Kumara', 'image' => 'img/productos/catalogo/41817.png']);
+
+        $this->put("/admin/productos/{$product->code}", [
+            'code' => 'K1', 'name' => $product->name, 'price' => 1000, 'active' => '1',
+            'specs' => "Conexión: USB\n\nlínea sin valor\nSwitches:  Outemu Red ",
+        ])->assertRedirect();
+
+        $this->assertSame([['Conexión', 'USB'], ['Switches', 'Outemu Red']], $product->fresh()->specs);
+        $this->get('/admin/productos/K1/edit')->assertSee("Conexión: USB\nSwitches: Outemu Red");
+        $this->get('/tienda/producto/K1')->assertSee('Características')->assertSee('Outemu Red');
+        $this->get('/feed/google.xml')->assertSee('<g:attribute_name>Switches</g:attribute_name>', false)
+            ->assertSee('<g:attribute_value>Outemu Red</g:attribute_value>', false);
+    }
+
     public function test_google_feed_sends_brand_and_part_number_when_known(): void
     {
         $img = 'img/productos/catalogo/41817.png';

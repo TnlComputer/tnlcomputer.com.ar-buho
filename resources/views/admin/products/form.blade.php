@@ -15,6 +15,8 @@
         <x-field name="price" label="Precio" type="number" step="0.01" min="0" required :value="$product->price" />
         <x-field name="stock" label="Stock" :value="$product->stock" hint="Texto libre: DISPONIBLE, CONSULTAR, SIN STOCK (no se muestra)…" />
         <x-field name="description" label="Descripción" type="textarea" :value="$product->description" class="sm:col-span-2" />
+        <x-field name="specs" label="Características" type="textarea" rows="8" :value="$product->specsText()" class="sm:col-span-2"
+            hint="Una por línea, con el formato Nombre: valor. Ej.: Conexión: USB. Se muestran en la ficha y se envían a Google." />
         <div class="sm:col-span-2">
             <label class="label" for="f-photo">Foto</label>
             <div class="flex items-center gap-4">

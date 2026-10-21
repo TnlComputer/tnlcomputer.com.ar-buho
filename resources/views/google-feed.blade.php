@@ -26,6 +26,13 @@
 @unless (\App\Support\ProductIdentifiers::identified($ids))
         <g:identifier_exists>no</g:identifier_exists>
 @endunless
+@foreach ($product->specs ?? [] as [$label, $value])
+        <g:product_detail>
+            <g:section_name>Características</g:section_name>
+            <g:attribute_name>{{ $label }}</g:attribute_name>
+            <g:attribute_value>{{ $value }}</g:attribute_value>
+        </g:product_detail>
+@endforeach
 @if ($product->category)
         <g:product_type>{{ $product->category->name }}</g:product_type>
 @endif

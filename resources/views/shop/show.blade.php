@@ -58,6 +58,20 @@
                     <div class="mt-6 text-zinc-600 dark:text-zinc-400">{!! nl2br(e($product->description)) !!}</div>
                 @endif
 
+                @if ($product->specs)
+                    <div class="mt-6">
+                        <h2 class="font-sans text-base font-semibold">{{ __('Características') }}</h2>
+                        <dl class="mt-3 divide-y divide-zinc-100 rounded-xl border border-zinc-200 text-sm dark:divide-ink-700 dark:border-ink-700">
+                            @foreach ($product->specs as [$label, $value])
+                                <div class="grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 px-4 py-2.5">
+                                    <dt class="text-zinc-500">{{ $label }}</dt>
+                                    <dd class="font-medium text-zinc-900 dark:text-white">{{ $value }}</dd>
+                                </div>
+                            @endforeach
+                        </dl>
+                    </div>
+                @endif
+
                 <form method="POST" action="{{ lroute('cart.add', $product) }}" class="mt-8 flex flex-wrap gap-3">
                     @csrf
                     <label for="qty" class="sr-only">{{ __('Cantidad') }}</label>
