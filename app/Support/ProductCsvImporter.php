@@ -97,14 +97,14 @@ class ProductCsvImporter
             $product = Product::firstOrNew(['code' => mb_substr($code, 0, 60)]);
             $exists = $product->exists;
 
+            // En los productos que ya existen solo se actualiza lo que cambia con cada lista (precio, stock, foto).
+            // El nombre, el rubro y la descripción se corrigen en el panel y la lista del proveedor no los pisa.
             $product->fill(array_filter([
-                'name' => mb_substr($name, 0, 255),
+                'name' => $exists ? null : mb_substr($name, 0, 255),
                 'price' => round($price * (1 + $adjustPercent / 100)),
                 'stock' => $get('stock') ?: ($exists ? null : 'DISPONIBLE'),
-                'category_id' => ($category = $get('category')) ? $this->category($category)->id : null,
+                'category_id' => ! $exists && ($category = $get('category')) ? $this->category($category)->id : null,
                 'image' => $get('image') ?: null,
-                // Solo en productos nuevos: la descripción de los existentes se trabaja en el panel y la lista del
-                // proveedor no la tiene que pisar con la suya.
                 'description' => $exists ? null : ($get('description') ?: null),
             ], fn ($v) => $v !== null));
             $product->active = true;

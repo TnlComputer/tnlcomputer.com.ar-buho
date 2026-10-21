@@ -34,20 +34,26 @@ class ProductCsvImporterTest extends TestCase
 
         $this->assertSame(['created' => 1, 'updated' => 1, 'skipped' => 1, 'deactivated' => 1], array_intersect_key($result, array_flip(['created', 'updated', 'skipped', 'deactivated'])));
         $this->assertEquals(2200, Product::where('code', 'A1')->value('price'));
-        $this->assertSame('Mouse Logitech', Product::where('code', 'A1')->value('name'));
+        // El nombre de un producto existente no se pisa (se corrige en el panel).
+        $this->assertSame('Mouse', Product::where('code', 'A1')->value('name'));
         $this->assertSame('Teclados', Product::where('code', 'B2')->first()->category->name);
         $this->assertFalse((bool) Product::where('code', 'OLD')->value('active'));
     }
 
-    public function test_description_and_specs_of_existing_products_are_kept(): void
+    public function test_name_category_description_and_specs_of_existing_products_are_kept(): void
     {
-        Product::create(['code' => 'A1', 'name' => 'Mouse', 'price' => 1000, 'description' => 'Texto trabajado', 'specs' => [['DPI', '3200']]]);
+        $category = \App\Models\Category::create(['name' => 'Mouses', 'slug' => 'mouses']);
+        Product::create(['code' => 'A1', 'name' => 'Mouse corregido', 'price' => 1000, 'category_id' => $category->id,
+            'description' => 'Texto trabajado', 'specs' => [['DPI', '3200']]]);
 
         $file = tempnam(sys_get_temp_dir(), 'csv');
-        file_put_contents($file, "code,name,price,description\nA1,Mouse,1500,Texto del proveedor\nB2,Teclado,3000,Teclado nuevo\n");
+        file_put_contents($file, "code,name,category,price,description\nA1,MOUSE MAL,Redes,1500,Texto del proveedor\nB2,Teclado,Teclados,3000,Teclado nuevo\n");
         (new ProductCsvImporter())->import($file);
 
-        $this->assertSame('Texto trabajado', Product::where('code', 'A1')->value('description'));
+        $a1 = Product::where('code', 'A1')->first();
+        $this->assertEquals(1500, $a1->price);
+        $this->assertSame(['Mouse corregido', $category->id], [$a1->name, $a1->category_id]);
+        $this->assertSame('Texto trabajado', $a1->description);
         $this->assertSame([['DPI', '3200']], Product::where('code', 'A1')->first()->specs);
         $this->assertSame('Teclado nuevo', Product::where('code', 'B2')->value('description'));
     }
