@@ -128,6 +128,21 @@ class SiteTest extends TestCase
             ->assertDontSee('<g:id>D</g:id>', false);
     }
 
+    public function test_google_feed_sends_brand_and_part_number_when_known(): void
+    {
+        $img = 'img/productos/catalogo/41817.png';
+        $this->product(['code' => '19648', 'name' => 'Disco Solido SSD 480GB SATA KINGSTON A400 (SA400S37/480G)', 'image' => $img]);
+        $this->product(['code' => '41947', 'name' => 'Webcam sin datos', 'image' => $img]);
+
+        $xml = $this->get('/feed/google.xml')->assertOk()->getContent();
+        $item = fn (string $id) => preg_match('#<g:id>'.$id.'</g:id>.*?</item>#s', $xml, $m) ? $m[0] : '';
+
+        $this->assertStringContainsString('<g:brand>Kingston</g:brand>', $item('19648'));
+        $this->assertStringContainsString('<g:mpn>SA400S37/480G</g:mpn>', $item('19648'));
+        $this->assertStringNotContainsString('identifier_exists', $item('19648'));
+        $this->assertStringContainsString('<g:identifier_exists>no</g:identifier_exists>', $item('41947'));
+    }
+
     public function test_home_has_business_structured_data(): void
     {
         $this->get('/')->assertSee('{"@context":"https://schema.org","@type":"ComputerStore"', false);

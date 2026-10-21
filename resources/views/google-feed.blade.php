@@ -13,7 +13,19 @@
         <g:availability>in_stock</g:availability>
         <g:price>{{ number_format((float) $product->price, 2, '.', '') }} ARS</g:price>
         <g:condition>new</g:condition>
+@php $ids = \App\Support\ProductIdentifiers::for($product); @endphp
+@if ($ids['brand'])
+        <g:brand>{{ $ids['brand'] }}</g:brand>
+@endif
+@if ($ids['gtin'])
+        <g:gtin>{{ $ids['gtin'] }}</g:gtin>
+@endif
+@if ($ids['mpn'])
+        <g:mpn>{{ $ids['mpn'] }}</g:mpn>
+@endif
+@unless (\App\Support\ProductIdentifiers::identified($ids))
         <g:identifier_exists>no</g:identifier_exists>
+@endunless
 @if ($product->category)
         <g:product_type>{{ $product->category->name }}</g:product_type>
 @endif
