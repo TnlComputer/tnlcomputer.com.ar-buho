@@ -29,8 +29,9 @@
             </div>
             <div class="relative">
                 <div class="absolute -inset-4 -z-10 rounded-[2.5rem] bg-gradient-to-br from-brand-500/20 to-sky-400/20 blur-2xl"></div>
-                <img src="{{ asset('img/secciones/pexels-pok-rie-1024.webp') }}" alt="{{ __('Componentes de computadora') }}" width="1024" height="683"
-                     srcset="{{ asset('img/secciones/pexels-pok-rie-640.webp') }} 640w, {{ asset('img/secciones/pexels-pok-rie-1024.webp') }} 1024w" sizes="(min-width: 1024px) 560px, 100vw"
+                {{-- Foto de Unsplash (licencia libre, sin atribución obligatoria). --}}
+                <img src="{{ asset('img/secciones/pc-rgb-1024.webp') }}" alt="{{ __('Interior de una PC gamer con water cooler e iluminación RGB') }}" width="1024" height="768"
+                     srcset="{{ asset('img/secciones/pc-rgb-640.webp') }} 640w, {{ asset('img/secciones/pc-rgb-1024.webp') }} 1024w" sizes="(min-width: 1024px) 560px, 100vw"
                      class="aspect-[4/3] w-full rounded-[2rem] object-cover shadow-2xl shadow-zinc-900/20" fetchpriority="high">
                 <div class="card absolute -bottom-6 -left-4 hidden items-center gap-3 p-4 shadow-xl sm:flex">
                     <span class="grid size-11 place-items-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"><x-icon name="shield" /></span>
