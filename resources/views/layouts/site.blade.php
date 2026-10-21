@@ -38,7 +38,7 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
     <link rel="apple-touch-icon" href="{{ asset('logo192.png') }}">
 
-    <script>
+    <script nonce="{{ Vite::cspNonce() }}">
         // Aplica el tema antes de pintar para evitar el parpadeo.
         try {
             const t = localStorage.getItem('theme');
@@ -74,7 +74,7 @@
     @if (config('tnl.ga4') && ! app()->isLocal())
         {{-- Google Analytics 4. Los eventos de compra los agregan las vistas de la tienda con @push('analytics'). --}}
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('tnl.ga4') }}"></script>
-        <script>
+        <script nonce="{{ Vite::cspNonce() }}">
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());

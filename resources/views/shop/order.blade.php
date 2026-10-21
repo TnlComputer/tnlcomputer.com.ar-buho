@@ -16,7 +16,7 @@
         ];
     @endphp
     @push('analytics')
-        <script>
+        <script nonce="{{ Vite::cspNonce() }}">
             try {
                 const key = 'ga_purchase_' + @json($order->number());
                 if (!localStorage.getItem(key)) {

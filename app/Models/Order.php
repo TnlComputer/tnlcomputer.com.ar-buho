@@ -50,6 +50,13 @@ class Order extends Model
             $order->token ??= Str::random(40);
             $order->status ??= self::PENDING;
         });
+
+        static::created(fn (Order $order) => OrderEvent::record($order, null));
+        static::updated(function (Order $order) {
+            if ($order->wasChanged('status')) {
+                OrderEvent::record($order, $order->getOriginal('status'));
+            }
+        });
     }
 
     public function items(): HasMany
@@ -60,6 +67,11 @@ class Order extends Model
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class)->latest();
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(OrderEvent::class)->oldest('id');
     }
 
     public function zone(): BelongsTo

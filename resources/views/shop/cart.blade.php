@@ -4,7 +4,7 @@
 
 @if ($lines->isNotEmpty())
     @push('analytics')
-        <script>gtag('event', 'view_cart', @json(['currency' => 'ARS', 'value' => $total, 'items' => $lines->map(fn ($l) => $l->product->gaItem($l->qty))->values()]));</script>
+        <script nonce="{{ Vite::cspNonce() }}">gtag('event', 'view_cart', @json(['currency' => 'ARS', 'value' => $total, 'items' => $lines->map(fn ($l) => $l->product->gaItem($l->qty))->values()]));</script>
     @endpush
 @endif
 

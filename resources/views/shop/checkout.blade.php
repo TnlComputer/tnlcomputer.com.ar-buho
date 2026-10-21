@@ -5,7 +5,7 @@
 @push('head')<meta name="robots" content="noindex">@endpush
 
 @push('analytics')
-    <script>gtag('event', 'begin_checkout', @json(['currency' => 'ARS', 'value' => $subtotal, 'items' => $lines->map(fn ($l) => $l->product->gaItem($l->qty))->values()]));</script>
+    <script nonce="{{ Vite::cspNonce() }}">gtag('event', 'begin_checkout', @json(['currency' => 'ARS', 'value' => $subtotal, 'items' => $lines->map(fn ($l) => $l->product->gaItem($l->qty))->values()]));</script>
 @endpush
 
 @section('content')
@@ -46,7 +46,7 @@
                         @foreach ($pickups as $pickup)
                             <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-zinc-200 p-4 has-checked:border-brand-500 has-checked:bg-brand-50/50 dark:border-ink-700 dark:has-checked:bg-brand-900/20">
                                 <input type="radio" name="delivery" value="pickup" class="mt-1 accent-brand-600" data-delivery @checked($delivery === 'pickup' && (int) old('pickup_zone', $pickups->first()->id) === $pickup->id)
-                                       onchange="this.form.pickup_zone.value='{{ $pickup->id }}'">
+                                       data-pickup-zone="{{ $pickup->id }}">
                                 <span class="flex-1">
                                     <span class="block font-semibold text-zinc-900 dark:text-white">{{ $pickup->tr('name') }}</span>
                                     @if ($pickup->tr('eta'))<span class="text-sm text-zinc-500">{{ $pickup->tr('eta') }}</span>@endif

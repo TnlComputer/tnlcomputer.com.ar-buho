@@ -16,6 +16,9 @@ return [
     // Segundos mínimos entre que se carga un formulario y se envía (anti-spam). 0 = desactivado.
     'form_min_seconds' => (int) env('TNL_FORM_MIN_SECONDS', 3),
 
+    // Content-Security-Policy: "report" = solo avisa (en el log) lo que bloquearía; "enforce" = bloquea; "off" = sin CSP.
+    'csp' => env('TNL_CSP', 'report'),
+
     // Link fijo de cobro del negocio en Mercado Pago (sin monto), para pedidos sin link propio. Vacío = no se usa.
     'payment_link' => env('TNL_PAYMENT_LINK'),
 

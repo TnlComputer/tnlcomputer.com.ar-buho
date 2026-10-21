@@ -126,12 +126,24 @@
 
             <div class="card p-6 text-sm">
                 <h2 class="font-sans text-base font-semibold">Historial</h2>
-                <ul class="mt-3 space-y-1.5 text-zinc-600 dark:text-zinc-400">
-                    <li>Creado: {{ $order->created_at->format('d/m/Y H:i') }}</li>
-                    @if ($order->paid_at)<li>Pagado: {{ $order->paid_at->format('d/m/Y H:i') }}</li>@endif
-                    @if ($order->shipped_at)<li>Enviado: {{ $order->shipped_at->format('d/m/Y H:i') }}</li>@endif
-                    @if ($order->delivered_at)<li>Entregado: {{ $order->delivered_at->format('d/m/Y H:i') }}</li>@endif
-                </ul>
+                @if ($order->events->isNotEmpty())
+                    <ul class="mt-3 space-y-2.5 text-zinc-600 dark:text-zinc-400">
+                        @foreach ($order->events as $event)
+                            <li>
+                                <span class="font-medium text-zinc-900 dark:text-white">{{ \App\Models\Order::STATUSES[$event->to_status] ?? $event->to_status }}</span>
+                                <span class="block text-xs">{{ $event->created_at->format('d/m/Y H:i') }} · {{ $event->user?->name ?? $event->sourceLabel() }}@if ($event->ip) · IP {{ $event->ip }}@endif</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    {{-- Pedidos anteriores al historial de cambios: solo quedan las fechas. --}}
+                    <ul class="mt-3 space-y-1.5 text-zinc-600 dark:text-zinc-400">
+                        <li>Creado: {{ $order->created_at->format('d/m/Y H:i') }}</li>
+                        @if ($order->paid_at)<li>Pagado: {{ $order->paid_at->format('d/m/Y H:i') }}</li>@endif
+                        @if ($order->shipped_at)<li>Enviado: {{ $order->shipped_at->format('d/m/Y H:i') }}</li>@endif
+                        @if ($order->delivered_at)<li>Entregado: {{ $order->delivered_at->format('d/m/Y H:i') }}</li>@endif
+                    </ul>
+                @endif
             </div>
         </aside>
     </div>

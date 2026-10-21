@@ -23,7 +23,7 @@
 @endpush
 
 @push('analytics')
-    <script>gtag('event', 'view_item', @json(['currency' => 'ARS', 'value' => (float) $product->price, 'items' => [$product->gaItem()]]));</script>
+    <script nonce="{{ Vite::cspNonce() }}">gtag('event', 'view_item', @json(['currency' => 'ARS', 'value' => (float) $product->price, 'items' => [$product->gaItem()]]));</script>
 @endpush
 
 @section('content')

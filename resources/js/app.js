@@ -131,6 +131,9 @@ document.querySelectorAll('[data-checkout]').forEach((form) => {
     };
 
     form.querySelectorAll('[data-delivery]').forEach((r) => r.addEventListener('change', render));
+    form.querySelectorAll('[data-pickup-zone]').forEach((r) =>
+        r.addEventListener('change', () => (form.elements.pickup_zone.value = r.dataset.pickupZone)),
+    );
     form.querySelectorAll('[data-addr]').forEach((el) => el.addEventListener('change', () => !/\d{4}/.test(postal.value) && quote()));
     postal?.addEventListener('input', () => {
         clearTimeout(timer);

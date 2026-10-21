@@ -12,6 +12,7 @@
         ['Skills', 'admin.skills.index', 'code', 'admin.skills.*'],
         ['Certificaciones', 'admin.certifications.index', 'star', 'admin.certifications.*'],
         ['Mensajes', 'admin.messages.index', 'inbox', 'admin.messages.*'],
+        ['Seguridad', 'admin.security', 'shield', 'admin.security*'],
     ];
 @endphp
 <!DOCTYPE html>
@@ -22,7 +23,7 @@
     <meta name="robots" content="noindex">
     <title>@yield('title', 'Panel') · TNL Admin</title>
     <link rel="icon" href="{{ asset('favicon.ico') }}">
-    <script>try { if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark') } catch {}</script>
+    <script nonce="{{ Vite::cspNonce() }}">try { if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark') } catch {}</script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-dvh bg-zinc-50 dark:bg-ink-950">
@@ -45,6 +46,9 @@
                         @endif
                         @if ($route === 'admin.messages.index' && $unread)
                             <span class="ml-auto rounded-full bg-brand-600 px-2 text-xs leading-5 font-bold text-white">{{ $unread }}</span>
+                        @endif
+                        @if ($route === 'admin.security' && ! auth()->user()->hasTwoFactor())
+                            <span class="ml-auto rounded-full bg-amber-500 px-2 text-xs leading-5 font-bold text-white" title="Activá la verificación en dos pasos">!</span>
                         @endif
                     </a>
                 @endforeach

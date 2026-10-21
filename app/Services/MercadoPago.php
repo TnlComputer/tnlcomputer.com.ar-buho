@@ -120,14 +120,14 @@ class MercadoPago
 
     /**
      * Valida la firma x-signature del webhook (HMAC-SHA256 con la clave secreta de Webhooks).
-     * Si no hay clave configurada devuelve true: igual no hay riesgo porque el pago se consulta a la API,
-     * pero se recomienda configurarla.
+     * En producción la clave es obligatoria: sin MP_WEBHOOK_SECRET se rechazan todos los avisos (los pagos igual
+     * se actualizan al volver de Mercado Pago o con "Volver a consultar"). En local/pruebas se aceptan sin firma.
      */
     public function validSignature(Request $request, string $dataId): bool
     {
         $secret = config('services.mercadopago.webhook_secret');
         if (blank($secret)) {
-            return true;
+            return ! app()->isProduction();
         }
 
         $parts = [];

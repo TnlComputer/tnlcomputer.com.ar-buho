@@ -3,19 +3,22 @@
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CspReportController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\GoogleFeedController;
+use App\Http\Controllers\InstallController;
 use App\Http\Controllers\MercadoPagoWebhookController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SitemapController;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 // Instalador de un solo uso (hosting sin SSH). Solo existe con INSTALL_TOKEN en el .env y sin installed.lock.
-if (\App\Http\Controllers\InstallController::enabled()) {
-    Route::get('/instalar', [\App\Http\Controllers\InstallController::class, 'show']);
-    Route::post('/instalar', [\App\Http\Controllers\InstallController::class, 'run'])->middleware('throttle:5,1');
+if (InstallController::enabled()) {
+    Route::get('/instalar', [InstallController::class, 'show']);
+    Route::post('/instalar', [InstallController::class, 'run'])->middleware('throttle:5,1');
 }
 
 // Sitio público. Se registra dos veces: en español (/...) y en inglés (/en/..., rutas "en.*").
@@ -58,8 +61,14 @@ Route::prefix('en')->name('en.')->group($site);
 // Avisos de pago de Mercado Pago (sin CSRF: los valida MercadoPago::validSignature y la consulta a la API).
 Route::post('/webhooks/mercadopago', MercadoPagoWebhookController::class)
     ->middleware('throttle:120,1')
-    ->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class)
+    ->withoutMiddleware(ValidateCsrfToken::class)
     ->name('webhooks.mercadopago');
+
+// Reportes de la Content-Security-Policy (los manda el navegador, sin cookies ni CSRF).
+Route::post('/csp-report', CspReportController::class)
+    ->middleware('throttle:20,1')
+    ->withoutMiddleware(ValidateCsrfToken::class)
+    ->name('csp.report');
 
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('/feed/google.xml', GoogleFeedController::class)->name('feed.google');
@@ -78,10 +87,20 @@ foreach ([
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('login', [Admin\AuthController::class, 'create'])->middleware('guest')->name('login');
     Route::post('login', [Admin\AuthController::class, 'store'])->middleware(['guest', 'throttle:login']);
+    Route::get('verificacion', [Admin\AuthController::class, 'challenge'])->middleware('guest')->name('two-factor');
+    Route::post('verificacion', [Admin\AuthController::class, 'verify'])->middleware(['guest', 'throttle:two-factor']);
     Route::post('logout', [Admin\AuthController::class, 'destroy'])->middleware('auth')->name('logout');
 
-    Route::middleware('auth')->group(function () {
+    // auth.session: al cambiar la contraseña se cierran las sesiones abiertas en otros dispositivos.
+    Route::middleware(['auth', 'auth.session'])->group(function () {
         Route::get('/', Admin\DashboardController::class)->name('dashboard');
+        Route::get('seguridad', [Admin\SecurityController::class, 'show'])->name('security');
+        Route::middleware('throttle:two-factor')->group(function () {
+            Route::post('seguridad/2fa', [Admin\SecurityController::class, 'enable'])->name('security.enable');
+            Route::delete('seguridad/2fa', [Admin\SecurityController::class, 'disable'])->name('security.disable');
+            Route::post('seguridad/codigos', [Admin\SecurityController::class, 'recoveryCodes'])->name('security.codes');
+            Route::put('seguridad/contrasena', [Admin\SecurityController::class, 'password'])->name('security.password');
+        });
         Route::get('pedidos', [Admin\OrderController::class, 'index'])->name('orders.index');
         Route::get('pedidos/{order:id}', [Admin\OrderController::class, 'show'])->name('orders.show');
         Route::put('pedidos/{order:id}', [Admin\OrderController::class, 'update'])->name('orders.update');
