@@ -103,7 +103,9 @@ class ProductCsvImporter
                 'stock' => $get('stock') ?: ($exists ? null : 'DISPONIBLE'),
                 'category_id' => ($category = $get('category')) ? $this->category($category)->id : null,
                 'image' => $get('image') ?: null,
-                'description' => $get('description') ?: null,
+                // Solo en productos nuevos: la descripción de los existentes se trabaja en el panel y la lista del
+                // proveedor no la tiene que pisar con la suya.
+                'description' => $exists ? null : ($get('description') ?: null),
             ], fn ($v) => $v !== null));
             $product->active = true;
             $product->save();
