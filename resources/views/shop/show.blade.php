@@ -6,12 +6,13 @@
 
 @php
     $rating = $product->rating();
+    $gallery = $product->galleryUrls();
     $schema = [
         '@context' => 'https://schema.org',
         '@type' => 'Product',
         'name' => $product->name,
         'sku' => $product->code,
-        'image' => $product->imageUrl(),
+        'image' => $gallery,
         'category' => $product->category?->tr('name'),
         'offers' => [
             '@type' => 'Offer',
@@ -52,11 +53,23 @@
         </nav>
 
         <div class="mt-6 grid gap-10 lg:grid-cols-2">
-            <div class="card relative grid aspect-square place-items-center overflow-hidden bg-white p-8 dark:bg-white">
-                @if ($product->featured)
-                    <span class="absolute top-4 left-4 rounded-full bg-brand-600 px-3 py-1 text-xs font-bold text-white uppercase">{{ __('Oferta') }}</span>
+            <div data-gallery>
+                <div class="card relative grid aspect-square place-items-center overflow-hidden bg-white p-8 dark:bg-white">
+                    @if ($product->featured)
+                        <span class="absolute top-4 left-4 rounded-full bg-brand-600 px-3 py-1 text-xs font-bold text-white uppercase">{{ __('Oferta') }}</span>
+                    @endif
+                    <img src="{{ $gallery[0] }}" alt="{{ $product->name }}" class="max-h-full w-full object-contain" width="600" height="600" data-gallery-main>
+                </div>
+                @if (count($gallery) > 1)
+                    <div class="mt-3 grid grid-cols-5 gap-2 sm:grid-cols-6">
+                        @foreach ($gallery as $i => $url)
+                            <button type="button" data-gallery-thumb="{{ $url }}" aria-label="{{ __('Ver foto :n', ['n' => $i + 1]) }}" @if ($i === 0) aria-current="true" @endif
+                                class="aspect-square overflow-hidden rounded-xl border-2 border-zinc-200 bg-white p-1 hover:border-brand-400 aria-[current=true]:border-brand-600 dark:border-ink-700">
+                                <img src="{{ $url }}" alt="" class="size-full object-contain" width="96" height="96" loading="lazy">
+                            </button>
+                        @endforeach
+                    </div>
                 @endif
-                <img src="{{ $product->imageUrl() }}" alt="{{ $product->name }}" class="max-h-full w-full object-contain" width="600" height="600">
             </div>
 
             <div>

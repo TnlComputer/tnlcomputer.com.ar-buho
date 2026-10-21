@@ -12,6 +12,8 @@ use Database\Seeders\HostingPlanSeeder;
 use Database\Seeders\PortfolioSeeder;
 use Database\Seeders\ShippingZoneSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
@@ -143,6 +145,27 @@ class SiteTest extends TestCase
         $this->get('/tienda/producto/K1')->assertSee('Características')->assertSee('Outemu Red');
         $this->get('/feed/google.xml')->assertSee('<g:attribute_name>Switches</g:attribute_name>', false)
             ->assertSee('<g:attribute_value>Outemu Red</g:attribute_value>', false);
+    }
+
+    public function test_extra_photos_are_uploaded_removed_and_shown_in_gallery(): void
+    {
+        $this->actingAs(User::create(['name' => 'A', 'email' => 'a@example.com', 'password' => 'x']));
+        $product = $this->product(['code' => 'G1', 'image' => 'img/productos/catalogo/41817.png']);
+        $form = ['code' => 'G1', 'name' => $product->name, 'price' => 1000, 'active' => '1'];
+
+        $this->put('/admin/productos/G1', $form + ['photos' => [UploadedFile::fake()->image('a.jpg'), UploadedFile::fake()->image('b.jpg')]])->assertRedirect();
+        [$first, $second] = $product->fresh()->images;
+
+        try {
+            $this->get('/tienda/producto/G1')->assertSee('data-gallery-thumb="'.asset($second).'"', false);
+            $this->get('/feed/google.xml')->assertSee('<g:additional_image_link>'.asset($first), false);
+
+            $this->put('/admin/productos/G1', $form + ['remove_images' => [$first]])->assertRedirect();
+            $this->assertSame([$second], $product->fresh()->images);
+            $this->assertFileDoesNotExist(public_path($first));
+        } finally {
+            File::delete([public_path($first), public_path($second)]);
+        }
     }
 
     public function test_google_feed_sends_brand_and_part_number_when_known(): void

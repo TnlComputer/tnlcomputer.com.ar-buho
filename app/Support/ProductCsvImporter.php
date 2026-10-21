@@ -12,7 +12,8 @@ use RuntimeException;
  * Importa/actualiza productos desde un CSV (por ejemplo la lista de un proveedor).
  *
  * Columnas reconocidas (encabezado obligatorio, el orden no importa, acepta nombres en español):
- *   code|codigo, name|nombre|detalle, category|rubro|familia, price|precio, stock, image|imagen, description|descripcion
+ *   code|codigo, name|nombre|detalle, category|rubro|familia, price|precio, stock, image|imagen, description|descripcion,
+ *   images|imagenes (fotos adicionales, separadas con "|")
  * Separador coma o punto y coma. Precio "1.234,56", "1234.56" o "1234".
  */
 class ProductCsvImporter
@@ -24,6 +25,7 @@ class ProductCsvImporter
         'price' => ['price', 'precio', 'precio final', 'pvp'],
         'stock' => ['stock'],
         'image' => ['image', 'imagen'],
+        'images' => ['images', 'imagenes', 'imágenes'],
         'description' => ['description', 'descripcion', 'descripción'],
     ];
 
@@ -105,6 +107,7 @@ class ProductCsvImporter
                 'stock' => $get('stock') ?: ($exists ? null : 'DISPONIBLE'),
                 'category_id' => ! $exists && ($category = $get('category')) ? $this->category($category)->id : null,
                 'image' => $get('image') ?: null,
+                'images' => array_values(array_filter(array_map('trim', explode('|', (string) $get('images'))))) ?: null,
                 'description' => $exists ? null : ($get('description') ?: null),
             ], fn ($v) => $v !== null));
             $product->active = true;

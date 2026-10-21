@@ -10,6 +10,9 @@
         <g:description>{{ \Illuminate\Support\Str::limit(strip_tags($product->description ?: $product->name), 5000, '') }}</g:description>
         <g:link>{{ route('shop.show', $product) }}</g:link>
         <g:image_link>{{ $product->imageUrl() }}?v={{ $imageVersion }}</g:image_link>
+@foreach (array_slice($product->galleryUrls(), 1, 10) as $url)
+        <g:additional_image_link>{{ $url }}?v={{ $imageVersion }}</g:additional_image_link>
+@endforeach
         <g:availability>in_stock</g:availability>
         <g:price>{{ number_format((float) $product->price, 2, '.', '') }} ARS</g:price>
         <g:condition>new</g:condition>

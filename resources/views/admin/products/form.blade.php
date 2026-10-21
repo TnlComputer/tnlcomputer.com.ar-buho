@@ -26,6 +26,22 @@
             <p class="mt-1 text-xs text-zinc-500">JPG, PNG o WebP, hasta 4 MB.</p>
             @error('photo')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
         </div>
+        <div class="sm:col-span-2">
+            <label class="label" for="f-photos">Más fotos (otras posiciones)</label>
+            @if ($product->images)
+                <div class="mb-3 flex flex-wrap gap-3">
+                    @foreach ($product->images as $path)
+                        <label class="flex flex-col items-center gap-1 text-xs text-zinc-500">
+                            <img src="{{ asset($path) }}" alt="" class="size-20 rounded-xl border border-zinc-200 bg-white object-contain p-1 dark:border-ink-700">
+                            <span><input type="checkbox" name="remove_images[]" value="{{ $path }}"> Quitar</span>
+                        </label>
+                    @endforeach
+                </div>
+            @endif
+            <input id="f-photos" type="file" name="photos[]" accept="image/*" multiple class="text-sm">
+            <p class="mt-1 text-xs text-zinc-500">Podés elegir varias a la vez; se agregan después de la principal y se ven como miniaturas en la ficha.</p>
+            @error('photos.*')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
+        </div>
         <div class="flex flex-wrap gap-6 sm:col-span-2">
             <x-admin.checkbox name="featured" label="En oferta (aparece en el inicio)" :checked="$product->featured" />
             <x-admin.checkbox name="active" label="Visible en la tienda" :checked="$product->active" />

@@ -66,7 +66,9 @@ class ProductController extends Controller
 
     public function destroy(Product $product): RedirectResponse
     {
-        $this->deleteUpload($product->image);
+        foreach ([$product->image, ...($product->images ?? [])] as $path) {
+            $this->deleteUpload($path);
+        }
         $product->delete();
 
         return back()->with('status', 'Producto eliminado.');
@@ -91,14 +93,34 @@ class ProductController extends Controller
             'description' => ['nullable', 'string', 'max:5000'],
             'specs' => ['nullable', 'string', 'max:5000'],
             'photo' => ['nullable', 'image', 'max:4096'],
+            'photos' => ['nullable', 'array', 'max:10'],
+            'photos.*' => ['image', 'max:4096'],
+            'remove_images' => ['nullable', 'array'],
         ]);
 
         $data['specs'] = Product::parseSpecs($data['specs'] ?? null);
         $data['image'] = $this->storeUpload($request->file('photo'), 'productos', $product->image);
+        $data['images'] = $this->saveExtraImages($request, $product->images ?? []);
         $data['featured'] = $request->boolean('featured');
         $data['active'] = $request->boolean('active');
-        unset($data['photo']);
+        unset($data['photo'], $data['photos'], $data['remove_images']);
 
         $product->fill($data)->save();
+    }
+
+    /** Quita las fotos adicionales marcadas y agrega las nuevas al final. */
+    private function saveExtraImages(Request $request, array $images): ?array
+    {
+        $remove = (array) $request->input('remove_images', []);
+        foreach (array_intersect($images, $remove) as $path) {
+            $this->deleteUpload($path);
+        }
+        $images = array_values(array_diff($images, $remove));
+
+        foreach ($request->file('photos', []) as $file) {
+            $images[] = $this->storeUpload($file, 'productos');
+        }
+
+        return $images ?: null;
     }
 }

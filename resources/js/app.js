@@ -145,3 +145,16 @@ document.querySelectorAll('[data-checkout]').forEach((form) => {
     render();
     if (postal?.value) quote();
 });
+
+// Galería de la ficha de producto: la miniatura elegida pasa a la foto grande.
+document.querySelectorAll('[data-gallery]').forEach((gallery) => {
+    const main = gallery.querySelector('[data-gallery-main]');
+    const thumbs = gallery.querySelectorAll('[data-gallery-thumb]');
+    thumbs.forEach((thumb) => {
+        thumb.addEventListener('click', () => {
+            main.src = thumb.dataset.galleryThumb;
+            thumbs.forEach((t) => t.removeAttribute('aria-current'));
+            thumb.setAttribute('aria-current', 'true');
+        });
+    });
+});

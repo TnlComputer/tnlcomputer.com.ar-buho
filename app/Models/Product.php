@@ -12,11 +12,12 @@ class Product extends Model
     public const SIN_STOCK = 'SIN STOCK';
 
     protected $fillable = [
-        'code', 'category_id', 'name', 'description', 'specs', 'price', 'stock', 'image', 'featured', 'active',
+        'code', 'category_id', 'name', 'description', 'specs', 'price', 'stock', 'image', 'images', 'featured', 'active',
     ];
 
     protected $casts = [
         'specs' => 'array',
+        'images' => 'array',
         'price' => 'decimal:2',
         'featured' => 'boolean',
         'active' => 'boolean',
@@ -111,10 +112,25 @@ class Product extends Model
      */
     public function imageUrl(): string
     {
-        $path = $this->image;
+        return self::assetUrl($this->image) ?? asset('img/sin-imagen.svg');
+    }
 
+    /**
+     * Todas las fotos que existen en disco: la principal primero y después las adicionales.
+     *
+     * @return list<string>
+     */
+    public function galleryUrls(): array
+    {
+        $urls = array_values(array_filter(array_map(self::assetUrl(...), [$this->image, ...($this->images ?? [])])));
+
+        return $urls ?: [asset('img/sin-imagen.svg')];
+    }
+
+    private static function assetUrl(?string $path): ?string
+    {
         return $path && is_file(public_path($path))
             ? asset(implode('/', array_map('rawurlencode', explode('/', $path))))
-            : asset('img/sin-imagen.svg');
+            : null;
     }
 }
