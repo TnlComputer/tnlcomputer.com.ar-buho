@@ -4,7 +4,7 @@
 @section('description', __('Diseño web, branding, marketing digital y desarrollo de sitios y sistemas a medida con Laravel, PHP y JavaScript.'))
 
 @section('content')
-    <x-page-header :eyebrow="__('Diseño y desarrollo web')" :title="__('Sitios que se ven bien y funcionan mejor')" image="img/secciones/portfolio1-1024.webp">
+    <x-page-header :eyebrow="__('Diseño y desarrollo web')" :title="__('Sitios que se ven bien y funcionan mejor')" image="img/secciones/diseno-web-1024.webp">
         {{ __('Analizamos, diseñamos y desarrollamos tu web según lo que necesita tu negocio: desde una landing hasta un sistema de gestión completo.') }}
         <x-slot:actions>
             <div class="mt-8 flex flex-wrap gap-3">

@@ -109,7 +109,7 @@
 
     {{-- Por qué TNL --}}
     <section class="container-x grid items-center gap-12 py-20 md:py-28 lg:grid-cols-2">
-        <img src="{{ asset('img/secciones/service-1-1024.webp') }}" srcset="{{ asset('img/secciones/service-1-640.webp') }} 640w, {{ asset('img/secciones/service-1-1024.webp') }} 1024w" sizes="(min-width: 1024px) 600px, 100vw" alt="{{ __('Técnico reparando una computadora') }}" loading="lazy" width="1024" height="683" class="aspect-[4/3] w-full rounded-[2rem] object-cover">
+        <img src="{{ asset('img/secciones/pc-armado-1024.webp') }}" srcset="{{ asset('img/secciones/pc-armado-640.webp') }} 640w, {{ asset('img/secciones/pc-armado-1024.webp') }} 1024w" sizes="(min-width: 1024px) 600px, 100vw" alt="{{ __('PC armada por dentro: motherboard, water cooler y placa de video') }}" loading="lazy" width="1024" height="768" class="aspect-[4/3] w-full rounded-[2rem] object-cover">
         <div>
             <p class="eyebrow">{{ __('Por qué elegirnos') }}</p>
             <h2 class="mt-3 text-3xl font-bold sm:text-4xl">{{ __('Atención directa, de alguien que sabe') }}</h2>

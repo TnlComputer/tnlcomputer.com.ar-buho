@@ -4,7 +4,7 @@
 @section('description', __('Service técnico de PC y notebooks: no enciende, pantalla azul, se apaga, temperatura, se mojó. Pedí tu diagnóstico online.'))
 
 @section('content')
-    <x-page-header :eyebrow="__('Service técnico')" :title="__('¿Tu PC o notebook no anda bien?')" image="img/secciones/maintenance-2-1440.webp">
+    <x-page-header :eyebrow="__('Service técnico')" :title="__('¿Tu PC o notebook no anda bien?')" image="img/secciones/service-reparacion-1024.webp">
         {{ __('Contanos qué le pasa y te respondemos con los pasos a seguir. Reparamos PCs de escritorio y notebooks de todas las marcas.') }}
     </x-page-header>
 
