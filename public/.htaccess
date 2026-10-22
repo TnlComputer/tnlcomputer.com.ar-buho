@@ -24,6 +24,12 @@ DirectoryIndex index.php
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
+    # /public/... y /index.php/... muestran el sitio duplicado: 301 a la URL limpia (el query string se conserva).
+    RewriteCond %{THE_REQUEST} ^\S+\s/+public(?:/+index\.php)?(?:/+([^?\s]*))?[?\s] [NC]
+    RewriteRule ^ https://%{HTTP_HOST}/%1 [L,R=301,NE]
+    RewriteCond %{THE_REQUEST} ^\S+\s/+index\.php(?:/+([^?\s]*))?[?\s] [NC]
+    RewriteRule ^ https://%{HTTP_HOST}/%1 [L,R=301,NE]
+
     # Redirect Trailing Slashes If Not A Folder...
     # Se toma la URL de THE_REQUEST (la que pidió el navegador): REQUEST_URI ya trae el /public/ que agrega el .htaccess de la raíz.
     RewriteCond %{REQUEST_FILENAME} !-d

@@ -58,7 +58,7 @@ class PageController extends Controller
         return view('pages.portfolio', $this->portfolioData());
     }
 
-    /** El mismo contenido del portfolio en un PDF para descargar (en el idioma actual). */
+    /** El mismo contenido del portfolio en un PDF para descargar (en el idioma actual). Sin indexar: duplica la página. */
     public function portfolioPdf(): Response
     {
         $name = config('tnl.profile.name');
@@ -66,7 +66,8 @@ class PageController extends Controller
         return Pdf::loadView('pdf.portfolio', $this->portfolioData())
             ->setPaper('a4')
             ->setOption(['chroot' => public_path(), 'isRemoteEnabled' => false, 'isFontSubsettingEnabled' => true])
-            ->download(Str::slug($name).'-portfolio'.(is_en() ? '-en' : '').'.pdf');
+            ->download(Str::slug($name).'-portfolio'.(is_en() ? '-en' : '').'.pdf')
+            ->header('X-Robots-Tag', 'noindex');
     }
 
     private function portfolioData(): array
