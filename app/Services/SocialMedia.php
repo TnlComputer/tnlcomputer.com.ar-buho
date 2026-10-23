@@ -10,16 +10,21 @@ use Illuminate\Support\Str;
 use RuntimeException;
 
 /**
- * Publica en la página de Facebook, en Instagram (cuenta profesional vinculada a esa página), en X y en TikTok.
+ * Publica en la página de Facebook, en Instagram (cuenta profesional vinculada a esa página), en Threads, en X y en TikTok.
  * Las credenciales van en el .env (ver .env.example); una red sin credenciales simplemente no se usa.
  */
 class SocialMedia
 {
-    public const NETWORKS = ['facebook', 'instagram', 'x', 'tiktok'];
+    public const NETWORKS = ['facebook', 'instagram', 'threads', 'x', 'tiktok'];
 
     private const GRAPH = 'https://graph.facebook.com';
 
     private const X_API = 'https://api.x.com/2';
+
+    private const THREADS_API = 'https://graph.threads.net/v1.0';
+
+    /** Token de Threads vigente: dura 60 días y se renueva solo cada semana. */
+    private const THREADS_TOKEN_FILE = 'app/threads-token.json';
 
     private const TIKTOK_API = 'https://open.tiktokapis.com/v2';
 
@@ -37,6 +42,7 @@ class SocialMedia
             'facebook' => filled($c['facebook_page_id']) && filled($c['facebook_page_token']),
             'instagram' => filled($c['instagram_user_id']) && filled($c['facebook_page_token']),
             'x' => filled($c['x_api_key']) && filled($c['x_api_secret']) && filled($c['x_access_token']) && filled($c['x_access_secret']),
+            'threads' => filled($c['threads_token']),
             'tiktok' => filled($c['tiktok_client_key']) && filled($c['tiktok_client_secret']) && filled($c['tiktok_refresh_token']),
             default => false,
         };
@@ -106,6 +112,73 @@ class SocialMedia
             ]));
 
         return $r->json('data.id') ?? throw new RuntimeException('X: '.$r->status().' '.$r->body());
+    }
+
+    /** Post con foto en Threads: igual que Instagram, contenedor y después publicación. */
+    public function threads(string $imageUrl, string $text): string
+    {
+        ['access_token' => $token, 'user_id' => $user] = $this->threadsToken();
+        $http = Http::baseUrl(self::THREADS_API)->asForm()->acceptJson()->timeout(60);
+
+        $container = $this->graphId($http->post("{$user}/threads", [
+            'media_type' => 'IMAGE',
+            'image_url' => $imageUrl,
+            'text' => $text,
+            'access_token' => $token,
+        ]), 'id');
+
+        for ($i = 0; $i < 10; $i++) {
+            $status = $http->get($container, ['fields' => 'status,error_message', 'access_token' => $token]);
+            if ($status->json('status') === 'FINISHED') {
+                break;
+            }
+            if (in_array($status->json('status'), ['ERROR', 'EXPIRED'], true)) {
+                throw new RuntimeException('Threads no pudo procesar la imagen: '.$status->json('error_message'));
+            }
+            sleep(3);
+        }
+
+        return $this->graphId($http->post("{$user}/threads_publish", [
+            'creation_id' => $container,
+            'access_token' => $token,
+        ]), 'id');
+    }
+
+    /**
+     * Token de larga duración de Threads y el id de la cuenta. El token se renueva cada 7 días (vence a los 60)
+     * y se guarda en storage/; si en el .env se carga uno nuevo, se usa ese.
+     *
+     * @return array{access_token: string, user_id: string}
+     */
+    private function threadsToken(): array
+    {
+        $file = storage_path(self::THREADS_TOKEN_FILE);
+        $env = config('services.social.threads_token');
+        $saved = is_file($file) ? (array) json_decode((string) file_get_contents($file), true) : [];
+        if (($saved['env'] ?? null) !== $env) {
+            $saved = ['env' => $env, 'access_token' => $env, 'refreshed_at' => time()];
+        }
+
+        if ($saved['refreshed_at'] < time() - 7 * 86400) {
+            $r = Http::acceptJson()->timeout(30)->get('https://graph.threads.net/refresh_access_token', [
+                'grant_type' => 'th_refresh_token',
+                'access_token' => $saved['access_token'],
+            ]);
+            if ($r->json('access_token')) {
+                $saved['access_token'] = $r->json('access_token');
+                $saved['refreshed_at'] = time();
+            } else {
+                report(new RuntimeException('Threads: no se pudo renovar el token: '.$r->body()));
+            }
+        }
+
+        $saved['user_id'] ??= $this->graphId(
+            Http::acceptJson()->timeout(30)->get(self::THREADS_API.'/me', ['fields' => 'id', 'access_token' => $saved['access_token']]),
+            'id'
+        );
+        file_put_contents($file, json_encode($saved));
+
+        return ['access_token' => $saved['access_token'], 'user_id' => $saved['user_id']];
     }
 
     /** Foto en TikTok (publicación directa; TikTok baja la imagen de la URL). Devuelve el id de la publicación. */

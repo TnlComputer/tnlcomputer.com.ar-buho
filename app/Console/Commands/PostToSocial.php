@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 use Throwable;
 
 /**
- * Publica un producto (foto, precio y link) en Facebook, Instagram, X y TikTok. Lo corre el scheduler en los horarios de
+ * Publica un producto (foto, precio y link) en Facebook, Instagram, Threads, X y TikTok. Lo corre el scheduler en los horarios de
  * SOCIAL_TIMES; elige al azar entre los que se pueden comprar y no se publicaron en los últimos SOCIAL_REPEAT_DAYS días.
  *
  * Uso:
@@ -24,10 +24,10 @@ class PostToSocial extends Command
 {
     protected $signature = 'tnl:redes
         {--producto= : Código del producto (por defecto, uno al azar)}
-        {--red=*     : facebook, instagram, x o tiktok (por defecto, todas las configuradas)}
+        {--red=*     : facebook, instagram, threads, x o tiktok (por defecto, todas las configuradas)}
         {--dry-run   : Arma la imagen y muestra los textos, sin publicar}';
 
-    protected $description = 'Publica un producto de la tienda en Facebook, Instagram, X y TikTok.';
+    protected $description = 'Publica un producto de la tienda en Facebook, Instagram, Threads, X y TikTok.';
 
     public function handle(SocialMedia $social): int
     {
@@ -69,6 +69,7 @@ class PostToSocial extends Command
                     'facebook' => $social->facebook($imageUrl, $text),
                     'instagram' => $social->instagram($imageUrl, $text),
                     'x' => $social->x(public_path($card), $text),
+                    'threads' => $social->threads($imageUrl, $text),
                     'tiktok' => $social->tiktok($imageUrl, $product->name, $text),
                 };
                 SocialPost::create(['product_id' => $product->id, 'network' => $network, 'status' => 'ok', 'remote_id' => $id]);
@@ -118,6 +119,14 @@ class PostToSocial extends Command
             ->filter()->unique()->map(fn ($t) => '#'.preg_replace('/[^A-Za-z0-9]/', '', $t))->implode(' ');
 
         return match ($network) {
+            // Threads acepta hasta 500 caracteres.
+            'threads' => Str::limit($product->name, 200)."
+
+{$price}
+
+Compralo online: {$url}
+
+#TNLComputer",
             // En X el link cuenta 23 caracteres, sea cual sea su largo; el total no puede pasar de 280.
             'x' => Str::limit($product->name, 150)." — {$price}\n{$url}\n#TNLComputer",
             // En Instagram y TikTok los links del texto no se pueden tocar.

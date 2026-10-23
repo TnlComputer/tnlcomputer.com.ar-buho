@@ -62,6 +62,8 @@ return [
         'x_api_secret' => env('X_API_SECRET'),
         'x_access_token' => env('X_ACCESS_TOKEN'),
         'x_access_secret' => env('X_ACCESS_TOKEN_SECRET'),
+        // Token de larga duración de Threads (60 días; el sitio lo renueva solo mientras se siga usando).
+        'threads_token' => env('THREADS_ACCESS_TOKEN'),
         'tiktok_client_key' => env('TIKTOK_CLIENT_KEY'),
         'tiktok_client_secret' => env('TIKTOK_CLIENT_SECRET'),
         'tiktok_refresh_token' => env('TIKTOK_REFRESH_TOKEN'),
