@@ -137,9 +137,9 @@ Compralo online: {$url}
         };
     }
 
-    /** Nombre sin el "[código]" del proveedor adelante, como en el feed de Google. */
+    /** Nombre sin el "[código]" del proveedor adelante ni el "(código de barras)" al final. */
     private function name(Product $product): string
     {
-        return preg_replace('/^\[[^\]]*\]\s*/', '', $product->name);
+        return preg_replace(['/^\[[^\]]*\]\s*/', '/\s*\(\d{8,14}\)\s*$/'], '', $product->name);
     }
 }
