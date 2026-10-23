@@ -66,7 +66,7 @@ class PostToSocial extends Command
 
             try {
                 $id = match ($network) {
-                    'facebook' => $social->facebook($imageUrl, $text),
+                    'facebook' => $social->facebook(public_path($card), $text),
                     'instagram' => $social->instagram($imageUrl, $text),
                     'x' => $social->x(public_path($card), $text),
                     'threads' => $social->threads($imageUrl, $text),

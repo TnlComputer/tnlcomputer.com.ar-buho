@@ -48,12 +48,11 @@ class SocialMedia
         };
     }
 
-    /** Foto en la página de Facebook. Devuelve el id de la publicación. */
-    public function facebook(string $imageUrl, string $text): string
+    /** Foto en la página de Facebook (se sube el archivo, no hace falta que esté publicado). Devuelve el id de la publicación. */
+    public function facebook(string $imagePath, string $text): string
     {
         $c = config('services.social');
-        $r = $this->graph()->post("{$c['facebook_page_id']}/photos", [
-            'url' => $imageUrl,
+        $r = $this->graph()->attach('source', file_get_contents($imagePath), basename($imagePath))->post("{$c['facebook_page_id']}/photos", [
             'message' => $text,
             'access_token' => $c['facebook_page_token'],
         ]);
