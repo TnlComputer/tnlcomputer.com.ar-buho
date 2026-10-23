@@ -48,4 +48,20 @@ return [
         'expiration_hours' => (int) env('MP_EXPIRATION_HOURS', 48),
     ],
 
+    // Publicación automática de productos en redes (php artisan tnl:redes). Pasos para sacar cada dato en .env.example.
+    'social' => [
+        // Horarios (hora de Buenos Aires) en que sale una publicación por día. Vacío = no se publica solo.
+        'times' => array_filter(array_map('trim', explode(',', (string) env('SOCIAL_TIMES', '10:00,13:00,18:00,21:00')))),
+        // Días que tiene que pasar para que un producto se vuelva a publicar.
+        'repeat_days' => (int) env('SOCIAL_REPEAT_DAYS', 60),
+        'graph_version' => env('META_GRAPH_VERSION', 'v23.0'),
+        'facebook_page_id' => env('FACEBOOK_PAGE_ID'),
+        'facebook_page_token' => env('FACEBOOK_PAGE_TOKEN'),
+        'instagram_user_id' => env('INSTAGRAM_USER_ID'),
+        'x_api_key' => env('X_API_KEY'),
+        'x_api_secret' => env('X_API_SECRET'),
+        'x_access_token' => env('X_ACCESS_TOKEN'),
+        'x_access_secret' => env('X_ACCESS_TOKEN_SECRET'),
+    ],
+
 ];

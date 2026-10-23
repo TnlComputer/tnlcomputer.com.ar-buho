@@ -12,7 +12,7 @@ use Illuminate\Http\Response;
 class GoogleFeedController extends Controller
 {
     /** Productos que no se venden solos (van con una PC o notebook armada) o que no son nuevos. */
-    private const EXCLUDE = '/solo para pc armada|pc o notebook armada|para sku notebook|\brma\b/i';
+    public const EXCLUDE = '/solo para pc armada|pc o notebook armada|para sku notebook|\brma\b/i';
 
     /** Se suma a la URL de cada imagen; cambiarlo obliga a Google a volver a descargarlas ("Imagen no procesada"). */
     private const IMAGE_VERSION = 2;
