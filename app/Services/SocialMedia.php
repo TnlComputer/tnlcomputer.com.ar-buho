@@ -52,10 +52,11 @@ class SocialMedia
     public function facebook(string $imagePath, string $text): string
     {
         $c = config('services.social');
-        $r = $this->graph()->attach('source', file_get_contents($imagePath), basename($imagePath))->post("{$c['facebook_page_id']}/photos", [
-            'message' => $text,
-            'access_token' => $c['facebook_page_token'],
-        ]);
+        $r = Http::baseUrl(self::GRAPH.'/'.config('services.social.graph_version'))->acceptJson()->timeout(60)
+            ->attach('source', file_get_contents($imagePath), basename($imagePath))->post("{$c['facebook_page_id']}/photos", [
+                'message' => $text,
+                'access_token' => $c['facebook_page_token'],
+            ]);
 
         return $this->graphId($r, 'post_id', 'id');
     }
