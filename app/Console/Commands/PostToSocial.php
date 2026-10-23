@@ -70,7 +70,7 @@ class PostToSocial extends Command
                     'instagram' => $social->instagram($imageUrl, $text),
                     'x' => $social->x(public_path($card), $text),
                     'threads' => $social->threads($imageUrl, $text),
-                    'tiktok' => $social->tiktok($imageUrl, $product->name, $text),
+                    'tiktok' => $social->tiktok($imageUrl, $this->name($product), $text),
                 };
                 SocialPost::create(['product_id' => $product->id, 'network' => $network, 'status' => 'ok', 'remote_id' => $id]);
                 $this->line("  {$network}: publicado ({$id})");
@@ -114,13 +114,14 @@ class PostToSocial extends Command
     private function text(Product $product, string $network): string
     {
         $url = route('shop.show', $product);
+        $name = $this->name($product);
         $price = money($product->price);
         $tags = collect(['TNLComputer', 'Tecnologia', 'Hardware', Str::studly(Str::ascii((string) $product->category?->name))])
             ->filter()->unique()->map(fn ($t) => '#'.preg_replace('/[^A-Za-z0-9]/', '', $t))->implode(' ');
 
         return match ($network) {
             // Threads acepta hasta 500 caracteres.
-            'threads' => Str::limit($product->name, 200)."
+            'threads' => Str::limit($name, 200)."
 
 {$price}
 
@@ -128,11 +129,17 @@ Compralo online: {$url}
 
 #TNLComputer",
             // En X el link cuenta 23 caracteres, sea cual sea su largo; el total no puede pasar de 280.
-            'x' => Str::limit($product->name, 150)." — {$price}\n{$url}\n#TNLComputer",
+            'x' => Str::limit($name, 150)." — {$price}\n{$url}\n#TNLComputer",
             // En Instagram y TikTok los links del texto no se pueden tocar.
-            'instagram', 'tiktok' => "{$product->name}\n\n{$price}\n\nEncontralo en tnlcomputer.com.ar (código {$product->code}) o consultanos por WhatsApp al "
+            'instagram', 'tiktok' => "{$name}\n\n{$price}\n\nEncontralo en tnlcomputer.com.ar (código {$product->code}) o consultanos por WhatsApp al "
                 .config('tnl.whatsapp_label').".\n\n{$tags}",
-            default => "{$product->name}\n\n{$price}\n\nCompralo online: {$url}\nConsultas por WhatsApp: ".whatsapp_url()."\n\n{$tags}",
+            default => "{$name}\n\n{$price}\n\nCompralo online: {$url}\nConsultas por WhatsApp: ".whatsapp_url()."\n\n{$tags}",
         };
+    }
+
+    /** Nombre sin el "[código]" del proveedor adelante, como en el feed de Google. */
+    private function name(Product $product): string
+    {
+        return preg_replace('/^\[[^\]]*\]\s*/', '', $product->name);
     }
 }
