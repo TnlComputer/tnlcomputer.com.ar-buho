@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 use Throwable;
 
 /**
- * Publica un producto (foto, precio y link) en Facebook, Instagram y X. Lo corre el scheduler en los horarios de
+ * Publica un producto (foto, precio y link) en Facebook, Instagram, X y TikTok. Lo corre el scheduler en los horarios de
  * SOCIAL_TIMES; elige al azar entre los que se pueden comprar y no se publicaron en los últimos SOCIAL_REPEAT_DAYS días.
  *
  * Uso:
@@ -24,10 +24,10 @@ class PostToSocial extends Command
 {
     protected $signature = 'tnl:redes
         {--producto= : Código del producto (por defecto, uno al azar)}
-        {--red=*     : facebook, instagram o x (por defecto, todas las configuradas)}
+        {--red=*     : facebook, instagram, x o tiktok (por defecto, todas las configuradas)}
         {--dry-run   : Arma la imagen y muestra los textos, sin publicar}';
 
-    protected $description = 'Publica un producto de la tienda en Facebook, Instagram y X.';
+    protected $description = 'Publica un producto de la tienda en Facebook, Instagram, X y TikTok.';
 
     public function handle(SocialMedia $social): int
     {
@@ -69,6 +69,7 @@ class PostToSocial extends Command
                     'facebook' => $social->facebook($imageUrl, $text),
                     'instagram' => $social->instagram($imageUrl, $text),
                     'x' => $social->x(public_path($card), $text),
+                    'tiktok' => $social->tiktok($imageUrl, $product->name, $text),
                 };
                 SocialPost::create(['product_id' => $product->id, 'network' => $network, 'status' => 'ok', 'remote_id' => $id]);
                 $this->line("  {$network}: publicado ({$id})");
@@ -119,8 +120,8 @@ class PostToSocial extends Command
         return match ($network) {
             // En X el link cuenta 23 caracteres, sea cual sea su largo; el total no puede pasar de 280.
             'x' => Str::limit($product->name, 150)." — {$price}\n{$url}\n#TNLComputer",
-            // En Instagram los links del texto no se pueden tocar.
-            'instagram' => "{$product->name}\n\n{$price}\n\nEncontralo en tnlcomputer.com.ar (código {$product->code}) o consultanos por WhatsApp al "
+            // En Instagram y TikTok los links del texto no se pueden tocar.
+            'instagram', 'tiktok' => "{$product->name}\n\n{$price}\n\nEncontralo en tnlcomputer.com.ar (código {$product->code}) o consultanos por WhatsApp al "
                 .config('tnl.whatsapp_label').".\n\n{$tags}",
             default => "{$product->name}\n\n{$price}\n\nCompralo online: {$url}\nConsultas por WhatsApp: ".whatsapp_url()."\n\n{$tags}",
         };

@@ -62,6 +62,13 @@ return [
         'x_api_secret' => env('X_API_SECRET'),
         'x_access_token' => env('X_ACCESS_TOKEN'),
         'x_access_secret' => env('X_ACCESS_TOKEN_SECRET'),
+        'tiktok_client_key' => env('TIKTOK_CLIENT_KEY'),
+        'tiktok_client_secret' => env('TIKTOK_CLIENT_SECRET'),
+        'tiktok_refresh_token' => env('TIKTOK_REFRESH_TOKEN'),
+        // Hasta que TikTok apruebe la app (auditoría), solo deja publicar en privado: SELF_ONLY.
+        'tiktok_privacy' => env('TIKTOK_PRIVACY', 'PUBLIC_TO_EVERYONE'),
+        // Dirección registrada en la app de TikTok a la que vuelve la autorización (tnl:tiktok-conectar).
+        'tiktok_redirect_uri' => env('TIKTOK_REDIRECT_URI', 'https://www.tnlcomputer.com.ar/'),
     ],
 
 ];

@@ -10,16 +10,21 @@ use Illuminate\Support\Str;
 use RuntimeException;
 
 /**
- * Publica en la página de Facebook, en Instagram (cuenta profesional vinculada a esa página) y en X.
+ * Publica en la página de Facebook, en Instagram (cuenta profesional vinculada a esa página), en X y en TikTok.
  * Las credenciales van en el .env (ver .env.example); una red sin credenciales simplemente no se usa.
  */
 class SocialMedia
 {
-    public const NETWORKS = ['facebook', 'instagram', 'x'];
+    public const NETWORKS = ['facebook', 'instagram', 'x', 'tiktok'];
 
     private const GRAPH = 'https://graph.facebook.com';
 
     private const X_API = 'https://api.x.com/2';
+
+    private const TIKTOK_API = 'https://open.tiktokapis.com/v2';
+
+    /** Token de TikTok vigente (el de acceso dura 24 horas y cada renovación puede traer otro de renovación). */
+    private const TIKTOK_TOKEN_FILE = 'app/tiktok-token.json';
 
     /** Carpeta (dentro de public/) de las imágenes armadas para las publicaciones. */
     private const CARD_DIR = 'uploads/social';
@@ -32,6 +37,7 @@ class SocialMedia
             'facebook' => filled($c['facebook_page_id']) && filled($c['facebook_page_token']),
             'instagram' => filled($c['instagram_user_id']) && filled($c['facebook_page_token']),
             'x' => filled($c['x_api_key']) && filled($c['x_api_secret']) && filled($c['x_access_token']) && filled($c['x_access_secret']),
+            'tiktok' => filled($c['tiktok_client_key']) && filled($c['tiktok_client_secret']) && filled($c['tiktok_refresh_token']),
             default => false,
         };
     }
@@ -100,6 +106,69 @@ class SocialMedia
             ]));
 
         return $r->json('data.id') ?? throw new RuntimeException('X: '.$r->status().' '.$r->body());
+    }
+
+    /** Foto en TikTok (publicación directa; TikTok baja la imagen de la URL). Devuelve el id de la publicación. */
+    public function tiktok(string $imageUrl, string $title, string $text): string
+    {
+        $r = Http::withToken($this->tiktokToken())->acceptJson()->timeout(30)
+            ->post(self::TIKTOK_API.'/post/publish/content/init/', [
+                'post_info' => [
+                    'title' => Str::limit($title, 85),
+                    'description' => $text,
+                    'privacy_level' => config('services.social.tiktok_privacy'),
+                    'disable_comment' => false,
+                    'auto_add_music' => true,
+                ],
+                'source_info' => ['source' => 'PULL_FROM_URL', 'photo_cover_index' => 0, 'photo_images' => [$imageUrl]],
+                'post_mode' => 'DIRECT_POST',
+                'media_type' => 'PHOTO',
+            ]);
+
+        return $r->json('data.publish_id') ?? throw new RuntimeException('TikTok: '.($r->json('error.message') ?: $r->status().' '.$r->body()));
+    }
+
+    /** Pide un token a TikTok, con el código de autorización (tnl:tiktok-conectar) o con el de renovación. */
+    public function tiktokRequest(array $form): array
+    {
+        $c = config('services.social');
+        $r = Http::asForm()->acceptJson()->timeout(30)->post(self::TIKTOK_API.'/oauth/token/', [
+            'client_key' => $c['tiktok_client_key'],
+            'client_secret' => $c['tiktok_client_secret'],
+            ...$form,
+        ]);
+        if (! $r->json('access_token')) {
+            throw new RuntimeException('TikTok: '.($r->json('error_description') ?: $r->body()));
+        }
+
+        return $r->json();
+    }
+
+    /**
+     * Token de acceso de TikTok: se renueva con el de renovación y se guarda en storage/. Si en el .env se carga un
+     * TIKTOK_REFRESH_TOKEN nuevo (porque se volvió a conectar la cuenta), se usa ese.
+     */
+    private function tiktokToken(): string
+    {
+        $file = storage_path(self::TIKTOK_TOKEN_FILE);
+        $env = config('services.social.tiktok_refresh_token');
+        $saved = is_file($file) ? (array) json_decode((string) file_get_contents($file), true) : [];
+        if (($saved['env'] ?? null) !== $env) {
+            $saved = [];
+        }
+        if (($saved['expires_at'] ?? 0) > time() + 300) {
+            return $saved['access_token'];
+        }
+
+        $token = $this->tiktokRequest(['grant_type' => 'refresh_token', 'refresh_token' => $saved['refresh_token'] ?? $env]);
+        file_put_contents($file, json_encode([
+            'env' => $env,
+            'access_token' => $token['access_token'],
+            'refresh_token' => $token['refresh_token'] ?? $saved['refresh_token'] ?? $env,
+            'expires_at' => time() + (int) ($token['expires_in'] ?? 86400),
+        ]));
+
+        return $token['access_token'];
     }
 
     /**
