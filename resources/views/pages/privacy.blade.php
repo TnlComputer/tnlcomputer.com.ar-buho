@@ -29,7 +29,7 @@
             <div class="prose-tnl mt-4 text-zinc-600 dark:text-zinc-400">
                 <p>{{ __('Solo con quienes necesitamos para cumplir con tu compra: Mercado Pago (para cobrar), la empresa de envíos (nombre, teléfono y dirección de entrega) y nuestro proveedor de hosting, donde se guarda el sitio. También podemos tener que informarlos si lo pide una autoridad competente.') }}</p>
                 <p>{{ __('Usamos Google Analytics para saber cuántas personas visitan el sitio y qué páginas ven. Google usa cookies para eso; podés bloquearlas desde la configuración de tu navegador sin que el sitio deje de funcionar.') }}</p>
-                <p>{{ __('Publicamos nuestros productos en nuestras propias cuentas de redes sociales (Facebook, Instagram, Threads y TikTok) mediante una aplicación propia. Esa aplicación solo publica contenido nuestro y no accede a datos de otros usuarios de esas plataformas.') }}</p>
+                <p>{{ __('Publicamos nuestros productos en nuestras propias cuentas de redes sociales (Facebook, Instagram y Threads) mediante una aplicación propia. Esa aplicación solo publica contenido nuestro y no accede a datos de otros usuarios de esas plataformas.') }}</p>
             </div>
         </section>
 
