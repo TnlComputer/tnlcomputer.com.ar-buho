@@ -9,7 +9,7 @@ class ImportCsv extends Command
 {
     protected $signature = 'tnl:importar-csv
         {archivo* : Uno o más CSV}
-        {--ajuste= : Porcentaje a sumar a los precios (por defecto TNL_MARKUP, hoy 25%)}
+        {--ajuste= : Porcentaje a sumar a los precios (por defecto TNL_MARKUP, hoy 20%)}
         {--desactivar : Oculta los productos que no estén en los CSV}';
 
     protected $description = 'Crea o actualiza productos y precios desde archivos CSV (ver App\Support\ProductCsvImporter)';

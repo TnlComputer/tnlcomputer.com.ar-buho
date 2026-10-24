@@ -40,7 +40,7 @@ return [
     ],
 
     // Recargo (%) que se suma al precio de la lista del proveedor al importarla.
-    'markup' => (float) env('TNL_MARKUP', 25),
+    'markup' => (float) env('TNL_MARKUP', 20),
 
     // Familias de rubros para el menú de la tienda (por slug). Los rubros que no estén acá van a "Otros".
     'shop_groups' => [
