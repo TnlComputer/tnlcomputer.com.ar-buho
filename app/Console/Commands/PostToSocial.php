@@ -70,7 +70,7 @@ class PostToSocial extends Command
                     'instagram' => $social->instagram($imageUrl, $text),
                     'x' => $social->x(public_path($card), $text),
                     'threads' => $social->threads($imageUrl, $text),
-                    'tiktok' => $social->tiktok($imageUrl, $this->name($product), $text),
+                    'tiktok' => $social->tiktok($imageUrl, $social->displayName($product), $text),
                 };
                 SocialPost::create(['product_id' => $product->id, 'network' => $network, 'status' => 'ok', 'remote_id' => $id]);
                 $this->line("  {$network}: publicado ({$id})");
@@ -114,7 +114,7 @@ class PostToSocial extends Command
     private function text(Product $product, string $network): string
     {
         $url = route('shop.show', $product);
-        $name = $this->name($product);
+        $name = app(SocialMedia::class)->displayName($product);
         $price = money($product->price);
         $tags = collect(['TNLComputer', 'Tecnologia', 'Hardware', Str::studly(Str::ascii((string) $product->category?->name))])
             ->filter()->unique()->map(fn ($t) => '#'.preg_replace('/[^A-Za-z0-9]/', '', $t))->implode(' ');
@@ -135,11 +135,5 @@ Compralo online: {$url}
                 .config('tnl.whatsapp_label').".\n\n{$tags}",
             default => "{$name}\n\n{$price}\n\nCompralo online: {$url}\nConsultas por WhatsApp: ".whatsapp_url()."\n\n{$tags}",
         };
-    }
-
-    /** Nombre sin el "[código]" del proveedor adelante ni el "(código de barras)" al final. */
-    private function name(Product $product): string
-    {
-        return preg_replace(['/^\[[^\]]*\]\s*/', '/\s*\(\d{8,14}\)\s*$/'], '', $product->name);
     }
 }

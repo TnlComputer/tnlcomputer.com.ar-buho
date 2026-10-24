@@ -277,8 +277,10 @@ class SocialMedia
     }
 
     /**
-     * Imagen cuadrada de 1080×1080 en JPG (Instagram no acepta PNG ni WebP): la foto del producto sobre blanco
-     * y una franja con el sitio y el precio. Devuelve la ruta relativa a public/.
+     * Imagen vertical de 1080×1350 (4:5, la que más lugar ocupa en el feed de Instagram) en JPG, porque Instagram
+     * no acepta PNG ni WebP: fondo con los colores de la marca, la foto del producto en un recuadro blanco, el nombre,
+     * el precio destacado y una línea con envíos y el sitio. Se dibuja al doble de tamaño y se achica al final para que
+     * los bordes redondeados y los textos queden suaves. Devuelve la ruta relativa a public/.
      */
     public function card(Product $product): string
     {
@@ -287,7 +289,7 @@ class SocialMedia
             throw new RuntimeException("No se pudo leer la imagen de {$product->code} ({$product->image}).");
         }
         // Muchas fotos del proveedor traen mucho margen blanco o transparente: se pasa a fondo blanco y se recorta
-        // para que el producto llene la imagen.
+        // para que el producto llene el recuadro.
         $flat = imagecreatetruecolor(imagesx($photo), imagesy($photo));
         imagefill($flat, 0, 0, imagecolorallocate($flat, 255, 255, 255));
         imagecopy($flat, $photo, 0, 0, 0, 0, imagesx($photo), imagesy($photo));
@@ -296,36 +298,137 @@ class SocialMedia
             $photo = $trimmed;
         }
 
-        $size = 1080;
-        $band = 150;
-        $card = imagecreatetruecolor($size, $size);
-        imagefill($card, 0, 0, imagecolorallocate($card, 255, 255, 255));
+        $k = 2;
+        [$W, $H] = [1080 * $k, 1350 * $k];
+        $img = imagecreatetruecolor($W, $H);
+        $color = fn (int $hex, int $alpha = 0) => imagecolorallocatealpha($img, $hex >> 16 & 255, $hex >> 8 & 255, $hex & 255, $alpha);
+        $display = resource_path('fonts/SpaceGrotesk-Bold.ttf');
+        $semi = resource_path('fonts/Inter-SemiBold.ttf');
+        $bold = resource_path('fonts/Inter-ExtraBold.ttf');
 
-        // La foto entra en el área libre sin deformarse; las chicas se agrandan como mucho al doble.
-        [$w, $h] = [imagesx($photo), imagesy($photo)];
-        $scale = min(($size - 80) / $w, ($size - $band - 80) / $h, 2);
-        [$dw, $dh] = [(int) round($w * $scale), (int) round($h * $scale)];
-        imagecopyresampled($card, $photo, (int) (($size - $dw) / 2), (int) (($size - $band - $dh) / 2), 0, 0, $dw, $dh, $w, $h);
-
-        imagefilledrectangle($card, 0, $size - $band, $size, $size, imagecolorallocate($card, 0xA8, 0x33, 0x8F));
-        $font = base_path('vendor/dompdf/dompdf/lib/fonts/DejaVuSans-Bold.ttf');
-        if (function_exists('imagettftext') && is_file($font)) {
-            $white = imagecolorallocate($card, 255, 255, 255);
-            $baseline = $size - (int) ($band / 2) + 16;
-            imagettftext($card, 30, 0, 50, $baseline, $white, $font, 'tnlcomputer.com.ar');
-            $price = money($product->price);
-            $box = imagettfbbox(52, 0, $font, $price);
-            imagettftext($card, 52, 0, $size - 50 - ($box[2] - $box[0]), $baseline + 10, $white, $font, $price);
+        // Fondo: degradé vertical del violeta de la marca a casi negro, con un resplandor arriba a la derecha.
+        for ($y = 0; $y < $H; $y++) {
+            $t = $y / $H;
+            imageline($img, 0, $y, $W, $y, imagecolorallocate($img, (int) (0x8A + (0x24 - 0x8A) * $t), (int) (0x28 + (0x0B - 0x28) * $t), (int) (0x74 + (0x22 - 0x74) * $t)));
         }
+        for ($r = 900 * $k; $r > 0; $r -= 30 * $k) {
+            imagefilledellipse($img, 960 * $k, 120 * $k, $r * 2, $r * 2, $color(0xC946AE, 122));
+        }
+
+        // Arriba: logo, nombre de la tienda y el rubro.
+        imagefilledellipse($img, 102 * $k, 96 * $k, 84 * $k, 84 * $k, $color(0xFFFFFF));
+        if ($logo = @imagecreatefrompng(public_path('logo192.png'))) {
+            imagecopyresampled($img, $logo, 72 * $k, 64 * $k, 0, 0, 60 * $k, 64 * $k, imagesx($logo), imagesy($logo));
+        }
+        imagettftext($img, 30 * $k, 0, 160 * $k, 110 * $k, $color(0xFFFFFF), $display, 'TNL Computer');
+        if ($category = $product->category?->name) {
+            $label = mb_strtoupper($category);
+            $box = imagettfbbox(18 * $k, 0, $semi, $label);
+            $pw = $box[2] - $box[0] + 48 * $k;
+            // Blanco al 20 % sobre el fondo, mezclado a mano: con transparencia las uniones del redondeo se notan.
+            $bg = imagecolorat($img, $W - 60 * $k - (int) ($pw / 2), 96 * $k);
+            $mix = fn (int $shift) => (int) round(($bg >> $shift & 255) * 0.8 + 255 * 0.2);
+            $this->roundedRect($img, $W - 60 * $k - $pw, 72 * $k, $W - 60 * $k, 120 * $k, 24 * $k, $color($mix(16) << 16 | $mix(8) << 8 | $mix(0)));
+            imagettftext($img, 18 * $k, 0, $W - 60 * $k - $pw + 24 * $k, 104 * $k, $color(0xFFFFFF), $semi, $label);
+        }
+
+        // Recuadro blanco con la foto: entra sin deformarse; las chicas se agrandan como mucho al doble.
+        [$bx1, $by1, $bx2, $by2] = [60 * $k, 170 * $k, $W - 60 * $k, 870 * $k];
+        $this->roundedRect($img, $bx1, $by1, $bx2, $by2, 44 * $k, $color(0xFFFFFF));
+        [$w, $h] = [imagesx($photo), imagesy($photo)];
+        $pad = 60 * $k;
+        $scale = min(($bx2 - $bx1 - 2 * $pad) / $w, ($by2 - $by1 - 2 * $pad) / $h, 2 * $k);
+        [$dw, $dh] = [(int) round($w * $scale), (int) round($h * $scale)];
+        imagecopyresampled($img, $photo, (int) (($bx1 + $bx2 - $dw) / 2), (int) (($by1 + $by2 - $dh) / 2), 0, 0, $dw, $dh, $w, $h);
+
+        // Nombre (hasta 2 renglones) y precio en una etiqueta amarilla.
+        $y = 960 * $k;
+        foreach ($this->wrap($this->displayName($product), $display, 44 * $k, $W - 120 * $k, 2) as $line) {
+            imagettftext($img, 44 * $k, 0, 60 * $k, $y, $color(0xFFFFFF), $display, $line);
+            $y += 60 * $k;
+        }
+        $price = money($product->price);
+        $box = imagettfbbox(76 * $k, 0, $bold, $price);
+        $tw = $box[2] - $box[0];
+        $py = 1080 * $k;
+        $this->roundedRect($img, 60 * $k, $py, 60 * $k + $tw + 64 * $k, $py + 130 * $k, 30 * $k, $color(0xFFD23F));
+        imagettftext($img, 76 * $k, 0, 92 * $k - $box[0], $py + 103 * $k, $color(0x24081F), $bold, $price);
+        // Al lado del precio, achicado si el precio es largo.
+        $x = 60 * $k + $tw + 100 * $k;
+        $note = 22 * $k;
+        while ($note > 15 * $k && ($b = imagettfbbox($note, 0, $semi, 'Pagá con Mercado Pago'))[2] - $b[0] > $W - 60 * $k - $x) {
+            $note -= $k;
+        }
+        imagettftext($img, $note, 0, $x, $py + 58 * $k, $color(0xFFFFFF), $semi, 'Comprá online');
+        imagettftext($img, $note, 0, $x, $py + 96 * $k, $color(0xFFFFFF, 40), $semi, 'Pagá con Mercado Pago');
+
+        // Pie: envíos y el sitio.
+        imageline($img, 60 * $k, 1250 * $k, $W - 60 * $k, 1250 * $k, $color(0xFFFFFF, 105));
+        imagettftext($img, 24 * $k, 0, 60 * $k, 1305 * $k, $color(0xFFFFFF, 30), $semi, 'Envíos a todo el país  ·  Garantía');
+        $site = 'tnlcomputer.com.ar';
+        $box = imagettfbbox(26 * $k, 0, $display, $site);
+        imagettftext($img, 26 * $k, 0, $W - 60 * $k - ($box[2] - $box[0]), 1306 * $k, $color(0xFFD23F), $display, $site);
+
+        $card = imagecreatetruecolor(1080, 1350);
+        imagecopyresampled($card, $img, 0, 0, 0, 0, 1080, 1350, $W, $H);
 
         $dir = public_path(self::CARD_DIR);
         if (! is_dir($dir)) {
             mkdir($dir, 0755, true);
         }
         $file = self::CARD_DIR.'/'.Str::slug($product->code ?: (string) $product->id).'.jpg';
-        imagejpeg($card, public_path($file), 88);
+        imagejpeg($card, public_path($file), 90);
 
         return $file;
+    }
+
+    /** Nombre para mostrar: sin el "[código]" del proveedor adelante ni el "(código de barras)" al final. */
+    public function displayName(Product $product): string
+    {
+        return preg_replace(['/^\[[^\]]*\]\s*/', '/\s*\(\d{8,14}\)\s*$/'], '', $product->name);
+    }
+
+    /** Rectángulo relleno con las esquinas redondeadas. */
+    private function roundedRect(\GdImage $img, int $x1, int $y1, int $x2, int $y2, int $r, int $color): void
+    {
+        imagefilledrectangle($img, $x1 + $r + 1, $y1, $x2 - $r - 1, $y2, $color);
+        if ($y2 - $y1 > 2 * $r + 2) {
+            imagefilledrectangle($img, $x1, $y1 + $r + 1, $x1 + $r, $y2 - $r - 1, $color);
+            imagefilledrectangle($img, $x2 - $r, $y1 + $r + 1, $x2, $y2 - $r - 1, $color);
+        }
+        // Un cuarto de círculo por esquina, sin pisar los rectángulos: así los colores semitransparentes no se suman.
+        foreach ([[$x1 + $r, $y1 + $r, 180], [$x2 - $r, $y1 + $r, 270], [$x2 - $r, $y2 - $r, 0], [$x1 + $r, $y2 - $r, 90]] as [$cx, $cy, $from]) {
+            imagefilledarc($img, $cx, $cy, $r * 2, $r * 2, $from, $from + 90, $color, IMG_ARC_PIE);
+        }
+    }
+
+    /**
+     * Parte el texto en renglones que entren en $width; si sobra texto, el último renglón termina en "…".
+     *
+     * @return list<string>
+     */
+    private function wrap(string $text, string $font, int $size, int $width, int $maxLines): array
+    {
+        $fits = fn (string $s) => (($b = imagettfbbox($size, 0, $font, $s))[2] - $b[0]) <= $width;
+        $lines = [''];
+        foreach (preg_split('/\s+/', trim($text)) as $word) {
+            $try = trim(end($lines).' '.$word);
+            if ($fits($try)) {
+                $lines[array_key_last($lines)] = $try;
+            } else {
+                $lines[] = $word;
+            }
+        }
+        if (count($lines) > $maxLines) {
+            $lines = array_slice($lines, 0, $maxLines);
+            $last = $lines[$maxLines - 1].'…';
+            while (! $fits($last) && mb_strlen($last) > 1) {
+                $last = rtrim(mb_substr($last, 0, -2)).'…';
+            }
+            $lines[$maxLines - 1] = $last;
+        }
+
+        return $lines;
     }
 
     /** Primer id que venga en la respuesta de Meta, o una excepción con el mensaje de error. */
