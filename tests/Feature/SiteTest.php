@@ -196,7 +196,16 @@ class SiteTest extends TestCase
         $this->product(['code' => 'C', 'name' => 'Inactivo', 'active' => false]);
 
         $this->get('/tienda')->assertSee('Visible')->assertDontSee('Agotado')->assertDontSee('Inactivo');
-        $this->get('/tienda/producto/C')->assertNotFound();
+        $this->get('/tienda/producto/C')->assertRedirect(url('/tienda/rubro/memorias-ram'))->assertStatus(301);
+    }
+
+    public function test_discontinued_product_redirects_to_the_one_with_the_same_part_number(): void
+    {
+        $this->product(['code' => '41700', 'name' => 'Gabinete Aconcawa Giulito (GB-KIT0012)', 'active' => false]);
+        $this->product(['code' => 'ml70030', 'name' => 'Gabinete Kit Aconcawa Giulito (GB-KIT0012)']);
+
+        $this->get('/tienda/producto/41700')->assertStatus(301)->assertRedirect(url('/tienda/producto/ml70030'));
+        $this->get('/en/tienda/producto/41700')->assertRedirect(url('/en/tienda/producto/ml70030'));
     }
 
     public function test_search_does_not_break_on_sql_characters(): void

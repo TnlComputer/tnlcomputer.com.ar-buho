@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Support\ProductIdentifiers;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -65,9 +67,11 @@ class ShopController extends Controller
         return $groups;
     }
 
-    public function show(Product $product): View
+    public function show(Product $product): View|RedirectResponse
     {
-        abort_unless($product->active, 404);
+        if (! $product->active) {
+            return redirect($this->replacementUrl($product), 301);
+        }
         $product->load(['reviews' => fn ($q) => $q->approved()->latest('approved_at')]);
 
         $related = Product::visible()
@@ -78,5 +82,20 @@ class ShopController extends Controller
             ->get();
 
         return view('shop.show', compact('product', 'related'));
+    }
+
+    /**
+     * A dónde mandar a quien llega a un producto dado de baja (Google puede tener la ficha vieja indexada):
+     * al que sigue a la venta con el mismo número de parte (el proveedor a veces lo cambia de código), o a su rubro.
+     */
+    private function replacementUrl(Product $product): string
+    {
+        $mpn = ProductIdentifiers::for($product)['mpn'];
+        $same = $mpn ? Product::visible()->where('name', 'like', '%'.addcslashes($mpn, '%_\\').'%')->first() : null;
+        if ($same) {
+            return lroute('shop.show', $same);
+        }
+
+        return $product->category?->active ? lroute('shop.category', $product->category) : lroute('shop.index');
     }
 }
