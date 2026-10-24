@@ -3,14 +3,13 @@
 namespace App\Services;
 
 use App\Models\Product;
-use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use RuntimeException;
 
 /**
- * Publica en la página de Facebook, en Instagram (cuenta profesional vinculada a esa página), en Threads, en X y en TikTok.
+ * Publica en la página de Facebook, en Instagram (cuenta profesional, con su propio token), en Threads, en X y en TikTok.
  * Las credenciales van en el .env (ver .env.example); una red sin credenciales simplemente no se usa.
  */
 class SocialMedia
@@ -20,6 +19,12 @@ class SocialMedia
     private const GRAPH = 'https://graph.facebook.com';
 
     private const X_API = 'https://api.x.com/2';
+
+    /** API de Instagram con inicio de sesión de Instagram: no hace falta vincular la cuenta a la página de Facebook. */
+    private const INSTAGRAM_API = 'https://graph.instagram.com';
+
+    /** Token de Instagram vigente: dura 60 días y se renueva solo cada semana, como el de Threads. */
+    private const INSTAGRAM_TOKEN_FILE = 'app/instagram-token.json';
 
     private const THREADS_API = 'https://graph.threads.net/v1.0';
 
@@ -40,7 +45,7 @@ class SocialMedia
 
         return match ($network) {
             'facebook' => filled($c['facebook_page_id']) && filled($c['facebook_page_token']),
-            'instagram' => filled($c['instagram_user_id']) && filled($c['facebook_page_token']),
+            'instagram' => filled($c['instagram_token']),
             'x' => filled($c['x_api_key']) && filled($c['x_api_secret']) && filled($c['x_access_token']) && filled($c['x_access_secret']),
             'threads' => filled($c['threads_token']),
             'tiktok' => filled($c['tiktok_client_key']) && filled($c['tiktok_client_secret']) && filled($c['tiktok_refresh_token']),
@@ -64,17 +69,17 @@ class SocialMedia
     /** Foto en Instagram: se crea el contenedor, se espera a que Meta baje la imagen y se publica. */
     public function instagram(string $imageUrl, string $text): string
     {
-        $c = config('services.social');
-        $token = $c['facebook_page_token'];
+        $token = $this->instagramToken();
+        $http = Http::baseUrl(self::INSTAGRAM_API.'/'.config('services.social.graph_version'))->asForm()->acceptJson()->timeout(60);
 
-        $container = $this->graphId($this->graph()->post("{$c['instagram_user_id']}/media", [
+        $container = $this->graphId($http->post('me/media', [
             'image_url' => $imageUrl,
             'caption' => $text,
             'access_token' => $token,
         ]), 'id');
 
         for ($i = 0; $i < 10; $i++) {
-            $status = $this->graph()->get($container, ['fields' => 'status_code', 'access_token' => $token])->json('status_code');
+            $status = $http->get($container, ['fields' => 'status_code', 'access_token' => $token])->json('status_code');
             if ($status === 'FINISHED') {
                 break;
             }
@@ -84,10 +89,37 @@ class SocialMedia
             sleep(3);
         }
 
-        return $this->graphId($this->graph()->post("{$c['instagram_user_id']}/media_publish", [
+        return $this->graphId($http->post('me/media_publish', [
             'creation_id' => $container,
             'access_token' => $token,
         ]), 'id');
+    }
+
+    /** Token de larga duración de Instagram: se renueva cada 7 días (vence a los 60); si en el .env se carga uno nuevo, se usa ese. */
+    private function instagramToken(): string
+    {
+        $file = storage_path(self::INSTAGRAM_TOKEN_FILE);
+        $env = config('services.social.instagram_token');
+        $saved = is_file($file) ? (array) json_decode((string) file_get_contents($file), true) : [];
+        if (($saved['env'] ?? null) !== $env) {
+            $saved = ['env' => $env, 'access_token' => $env, 'refreshed_at' => time()];
+        }
+
+        if ($saved['refreshed_at'] < time() - 7 * 86400) {
+            $r = Http::acceptJson()->timeout(30)->get(self::INSTAGRAM_API.'/refresh_access_token', [
+                'grant_type' => 'ig_refresh_token',
+                'access_token' => $saved['access_token'],
+            ]);
+            if ($r->json('access_token')) {
+                $saved['access_token'] = $r->json('access_token');
+                $saved['refreshed_at'] = time();
+            } else {
+                report(new RuntimeException('Instagram: no se pudo renovar el token: '.$r->body()));
+            }
+        }
+        file_put_contents($file, json_encode($saved));
+
+        return $saved['access_token'];
     }
 
     /** Post en X con la imagen. Si la subida de la imagen falla, sale igual con el link (X arma la vista previa). */
@@ -294,11 +326,6 @@ class SocialMedia
         imagejpeg($card, public_path($file), 88);
 
         return $file;
-    }
-
-    private function graph(): PendingRequest
-    {
-        return Http::baseUrl(self::GRAPH.'/'.config('services.social.graph_version'))->asForm()->acceptJson()->timeout(60);
     }
 
     /** Primer id que venga en la respuesta de Meta, o una excepción con el mensaje de error. */

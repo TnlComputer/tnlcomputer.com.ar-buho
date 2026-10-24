@@ -57,7 +57,8 @@ return [
         'graph_version' => env('META_GRAPH_VERSION', 'v23.0'),
         'facebook_page_id' => env('FACEBOOK_PAGE_ID'),
         'facebook_page_token' => env('FACEBOOK_PAGE_TOKEN'),
-        'instagram_user_id' => env('INSTAGRAM_USER_ID'),
+        // Token de larga duración de Instagram (60 días; el sitio lo renueva solo mientras se siga usando).
+        'instagram_token' => env('INSTAGRAM_ACCESS_TOKEN'),
         'x_api_key' => env('X_API_KEY'),
         'x_api_secret' => env('X_API_SECRET'),
         'x_access_token' => env('X_ACCESS_TOKEN'),
