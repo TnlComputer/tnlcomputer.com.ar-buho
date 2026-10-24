@@ -53,6 +53,17 @@ class PageController extends Controller
         return view('pages.policies', ['zones' => ShippingZone::active()->get()]);
     }
 
+    /** Política de privacidad (Ley 25.326; también la piden las apps de redes sociales). */
+    public function privacy(): View
+    {
+        return view('pages.privacy');
+    }
+
+    public function terms(): View
+    {
+        return view('pages.terms');
+    }
+
     public function portfolio(): View
     {
         return view('pages.portfolio', $this->portfolioData());

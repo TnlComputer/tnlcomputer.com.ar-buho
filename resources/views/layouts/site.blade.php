@@ -213,6 +213,8 @@
                 <p>
                     <a href="{{ lroute('policies') }}" class="hover:text-brand-600 dark:hover:text-brand-400">{{ __('Envíos, cambios y devoluciones') }}</a>
                     · <a href="{{ lroute('policies') }}#arrepentimiento" class="font-semibold hover:text-brand-600 dark:hover:text-brand-400">{{ __('Botón de arrepentimiento') }}</a>
+                    · <a href="{{ lroute('terms') }}" class="hover:text-brand-600 dark:hover:text-brand-400">{{ __('Términos y condiciones') }}</a>
+                    · <a href="{{ lroute('privacy') }}" class="hover:text-brand-600 dark:hover:text-brand-400">{{ __('Política de privacidad') }}</a>
                     · {{ __('Precios en pesos argentinos, sujetos a cambio sin previo aviso.') }}
                 </p>
             </div>
